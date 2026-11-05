@@ -448,3 +448,59 @@ export const techStack = [
     context: "Experienced in building cross-platform desktop applications with Electron.",
   },
 ];
+
+// ---------------------------------------------------------------------------
+// Character-sheet content. Edit freely: the sheet renders straight from this.
+// Anything in [square brackets] is a placeholder waiting for your real content.
+// ---------------------------------------------------------------------------
+export const sheet = {
+  abilities: [
+    { name: "React", score: 17 },
+    { name: "UX design", score: 18 },
+    { name: "React Native", score: 16 },
+    { name: "Databases", score: 15 },
+    { name: "Debugging", score: 14 },
+    { name: "[Your pick]", score: 10 },
+  ],
+  saves: [
+    { name: "Bugs", bonus: 4, proficient: true },
+    { name: "Due", bonus: 2, proficient: false },
+    { name: "Merge", bonus: 3, proficient: false },
+    { name: "Review", bonus: 4, proficient: true },
+    { name: "Scope", bonus: 1, proficient: false },
+    { name: "Rest", bonus: 2, proficient: false },
+  ],
+  saveNotes: [
+    { kind: "A", text: "advantage when normalising databases" },
+    { kind: "+", text: "+1 on saves [add your own perk]" },
+  ],
+  languages: [
+    { name: "JavaScript", level: 7 },
+    { name: "TypeScript", level: 5 },
+    { name: "HTML/CSS", level: 8 },
+    { name: "SQL", level: 6 },
+    { name: "C#", level: 4 },
+    { name: "Java", level: 3 },
+  ],
+  languagesNote: "Currently learning: [your next language]",
+  // Soft skills and "get to know me" skills. level 7+ = filled dot.
+  skills: [
+    { name: "Problem solving", level: 8 },
+    { name: "Creativity", level: 8 },
+    { name: "Music", level: 8 },
+    { name: "Communication", level: 7 },
+    { name: "Teamwork", level: 7 },
+    { name: "Tutoring", level: 7 },
+    { name: "Attention to detail", level: 7 },
+    { name: "Adaptability", level: 7 },
+    { name: "Empathy", level: 7 },
+    { name: "Time management", level: 6 },
+    { name: "Customer service", level: 6 },
+    { name: "[Add a skill]", level: 5 },
+  ],
+  training: [
+    { title: "Platforms & hosting", items: "Firebase, GitHub Pages, Render, Vercel, MongoDB" },
+    { title: "Tools", items: "Figma, Visual Studio Code, GitHub, Canva, [add more]" },
+    { title: "AI assistants", items: "Claude, Gemini, Copilot, ChatGPT, Skywork AI, [one more]" },
+  ],
+};

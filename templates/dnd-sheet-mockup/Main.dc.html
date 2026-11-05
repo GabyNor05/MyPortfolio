@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Gaby Norris: character sheet portfolio</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@400;500;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0e0c1a}
+a{color:#ba9fe1;text-decoration:none}a:hover{color:#ede9ff}
+button{font-family:'Roboto Condensed','DM Sans',sans-serif;cursor:pointer}
+input,select,textarea{font-family:'DM Sans',sans-serif}
+input::placeholder,textarea::placeholder{color:#9a95c4}
+.roll{transition:border-color .15s,background .15s}
+.roll:hover{border-color:#ede9ff!important;background:#1d1935!important}
+.thin:hover{background:rgba(186,159,225,0.16)!important}
+@keyframes dcspin{from{transform:rotate(0deg)}to{transform:rotate(720deg)}}
+</style>
+</helmet>
+<div style="position:relative;background:#0e0c1a;color:#c4c5e8;font-family:'DM Sans',sans-serif;min-height:1300px">
+
+<!-- BACKGROUND IMAGE SLOT (Background tweak: paste an image URL) -->
+<div aria-hidden="true" style="position:absolute;left:0;right:0;top:0;bottom:0;background-image:{{bgImage}};background-size:cover;background-position:center;opacity:0.5"></div>
+<div aria-hidden="true" style="position:absolute;left:0;right:0;top:0;bottom:0;background-image:radial-gradient(circle at 12% 0%, rgba(95,91,175,0.32), transparent 45%), radial-gradient(circle at 92% 40%, rgba(86,141,228,0.16), transparent 42%), linear-gradient(rgba(14,12,26,0.5), rgba(14,12,26,0.9))"></div>
+
+<div style="position:relative">
+
+<!-- HEADER BAR -->
+<header style="position:sticky;top:0;z-index:30;background:rgba(14,12,26,0.96);border-bottom:2px solid rgba(186,159,225,0.55)">
+<div style="max-width:1480px;margin:0 auto;padding:10px 16px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between">
+<div style="display:flex;align-items:center;gap:14px;min-width:0">
+<img src="/_blob/642a2ac7da5ad2c5c3a526dad3fbcd0f" alt="Portrait of Gaby Norris" style="width:56px;height:56px;object-fit:cover;border:2px solid #ba9fe1;border-radius:4px;flex:none">
+<div style="min-width:0">
+<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+<span style="font-family:'Cinzel',serif;font-weight:700;font-size:24px;color:#ede9ff;line-height:1.1">Gaby Norris</span>
+<a href="Login.dc.html" class="thin" style="display:inline-flex;align-items:center;min-height:22px;padding:0 8px;border:1px solid #ba9fe1;border-radius:3px;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#ede9ff">Manage</a>
+</div>
+<div style="font-family:'Roboto Condensed',sans-serif;font-size:13px;color:#c4c5e8;margin-top:3px">Interactive Developer / UX Designer</div>
+<div style="font-family:'Roboto Condensed',sans-serif;font-size:11px;color:#a8a3d4">Level 3</div>
+</div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+<a href="https://github.com/GabyNor05" class="thin" style="display:flex;align-items:center;gap:7px;min-height:32px;padding:0 12px;border:1px solid #ba9fe1;border-radius:3px;color:#ede9ff;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.06em;text-transform:uppercase">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ba9fe1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+GitHub</a>
+<a href="https://www.behance.net/gabynorris1" class="thin" style="display:flex;align-items:center;gap:7px;min-height:32px;padding:0 12px;border:1px solid #ba9fe1;border-radius:3px;color:#ede9ff;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.06em;text-transform:uppercase">
+<span aria-hidden="true" style="font-weight:700;font-size:13px;letter-spacing:0;color:#ba9fe1">B&#275;</span>Behance</a>
+<button type="button" class="thin" style="display:flex;align-items:center;gap:7px;min-height:32px;padding:0 12px;border:1px solid #ba9fe1;border-radius:3px;background:transparent;color:#ede9ff;font-weight:700;font-size:12px;letter-spacing:0.06em;text-transform:uppercase">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ba9fe1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+Hear my story</button>
+
+<div style="display:flex;align-items:stretch;border:1px solid rgba(186,159,225,0.55);border-radius:3px;min-height:32px">
+<div style="display:flex;align-items:center;padding:0 12px;font-family:'Roboto Condensed',sans-serif;font-size:12px;color:#ede9ff;max-width:260px"><b style="letter-spacing:0.06em;text-transform:uppercase;margin-right:6px">Campaign:</b><span style="color:#c4c5e8">Open Window Institute</span></div>
+<button type="button" onClick="{{goProjects}}" aria-label="Open the quest log" class="thin" style="width:34px;border:0;border-left:1px solid rgba(186,159,225,0.55);background:transparent;color:#ba9fe1;display:flex;align-items:center;justify-content:center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg></button>
+<button type="button" onClick="{{toggleDrawer}}" aria-label="Open the side drawer" aria-expanded="{{drawerOpen}}" class="thin" style="width:34px;border:0;border-left:1px solid rgba(186,159,225,0.55);background:transparent;color:#ba9fe1;display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+</div>
+</div>
+</div>
+</header>
+
+<main style="max-width:1480px;margin:0 auto;padding:20px 16px 110px;display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start">
+
+<!-- LEFT CLUSTER: abilities + two thin columns -->
+<div style="flex:1 1 540px;min-width:0;display:flex;flex-direction:column;gap:12px">
+
+<section aria-label="Ability scores" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 8px;padding-bottom:12px">
+<sc-for list="{{abilities}}" as="a" hint-placeholder-count="5">
+<div style="flex:0 1 70px;min-width:58px;position:relative;border:2px solid rgba(186,159,225,0.55);border-radius:10px;background:rgba(21,18,42,0.92);padding:10px 6px 24px;text-align:center">
+<div style="font-family:'Roboto Condensed',sans-serif;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#b8b3dd;min-height:28px;display:flex;align-items:center;justify-content:center;line-height:1.15">{{a.name}}</div>
+<button type="button" class="roll" onClick="{{a.roll}}" aria-label="{{a.aria}}" style="display:block;width:100%;margin-top:4px;border:1px solid #ba9fe1;border-radius:5px;background:#0e0c1a;padding:10px 0;font-family:'Cinzel',serif;font-weight:700;font-size:26px;color:#ede9ff;line-height:1.1">{{a.mod}}</button>
+<div style="position:absolute;left:50%;bottom:-12px;transform:translateX(-50%);min-width:38px;box-sizing:border-box;border:2px solid #ba9fe1;border-radius:999px;background:#0e0c1a;padding:1px 10px;font-family:'Cinzel',serif;font-weight:700;font-size:14px;color:#ede9ff">{{a.score}}</div>
+</div>
+</sc-for>
+</section>
+
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start">
+
+<!-- COLUMN A: SAVING THROWS + PROFICIENCIES -->
+<div style="flex:1 1 250px;min-width:0;max-width:100%;display:flex;flex-direction:column;gap:12px">
+
+<section aria-label="Saving throws" style="border:2px solid rgba(186,159,225,0.55);border-radius:14px;background:rgba(21,18,42,0.92);padding:16px 12px 12px">
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 8px">
+<sc-for list="{{saves}}" as="s" hint-placeholder-count="6">
+<div style="min-width:0;display:flex;align-items:center;gap:6px;padding-right:20px">
+<span aria-label="{{s.profLabel}}" style="flex:none;width:9px;height:9px;box-sizing:border-box;border-radius:50%;border:1.5px solid #ba9fe1;background:{{s.dot}}"></span>
+<div style="flex:1 1 0;min-width:0;position:relative;height:30px;box-sizing:border-box;border:1px solid #ba9fe1;border-radius:999px;background:#0e0c1a;display:flex;align-items:center;justify-content:center;padding:0 20px 0 6px">
+<span style="font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#ede9ff;text-decoration:underline dotted;text-underline-offset:3px">{{s.name}}</span>
+<button type="button" class="roll" onClick="{{s.roll}}" aria-label="{{s.aria}}" style="position:absolute;right:-20px;top:-6px;width:40px;height:40px;box-sizing:border-box;border:1px solid #ba9fe1;border-radius:50%;background:#15122a;padding:0;font-family:'Roboto Condensed',sans-serif;font-size:16px;color:#ede9ff;display:flex;align-items:center;justify-content:center">{{s.bonus}}</button>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="margin-top:12px;display:flex;flex-direction:column;gap:6px;font-family:'Roboto Condensed',sans-serif;font-size:13px;line-height:1.35;color:#c4c5e8">
+<div style="display:flex;gap:8px;align-items:flex-start"><span aria-hidden="true" style="flex:none;width:16px;height:16px;border-radius:50%;background:#ba9fe1;color:#14102a;font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center">A</span><span>advantage when normalising databases</span></div>
+<div style="display:flex;gap:8px;align-items:flex-start"><span aria-hidden="true" style="flex:none;width:16px;height:16px;border-radius:50%;border:1px solid #ba9fe1;color:#ba9fe1;font-weight:700;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center">+</span><span>+1 on saves [add your own perk]</span></div>
+</div>
+<div style="padding-top:10px;text-align:center;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#ede9ff">Saving throws</div>
+</section>
+
+<aside aria-label="Proficiencies and training" style="border:2px solid rgba(186,159,225,0.55);border-radius:10px;background:rgba(21,18,42,0.92);padding:6px 16px 16px">
+<sc-for list="{{training}}" as="g" hint-placeholder-count="4">
+<div style="padding:11px 0;border-bottom:1px solid rgba(186,159,225,0.2)">
+<div style="font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#ba9fe1">{{g.title}}</div>
+<div style="margin-top:3px;font-family:'Roboto Condensed',sans-serif;font-size:15px;line-height:1.45;color:#ede9ff">{{g.items}}</div>
+</div>
+</sc-for>
+<div style="padding-top:12px;text-align:center;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#ede9ff">Proficiencies &amp; training</div>
+</aside>
+</div>
+
+<!-- COLUMN B: SKILLS -->
+<section aria-label="Skills" style="flex:1 1 250px;min-width:0;max-width:100%;border:2px solid rgba(186,159,225,0.55);border-radius:10px;background:rgba(21,18,42,0.92);padding:12px 14px 12px">
+<div style="display:flex;align-items:center;gap:10px;padding:0 2px 6px;font-family:'Roboto Condensed',sans-serif;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#a8a3d4">
+<span style="flex:none;width:26px">Prof</span><span style="flex-grow:1">Skill</span><span style="flex:none;width:48px;text-align:right">Bonus</span>
+</div>
+<sc-for list="{{skills}}" as="s" hint-placeholder-count="11">
+<div style="display:flex;align-items:center;gap:10px;padding:7px 2px;border-top:1px solid rgba(186,159,225,0.16)">
+<span aria-label="{{s.profLabel}}" style="flex:none;width:26px;display:flex;justify-content:center"><span style="width:10px;height:10px;box-sizing:border-box;border-radius:50%;border:1.5px solid #ba9fe1;background:{{s.dot}}"></span></span>
+<span style="flex-grow:1;min-width:0;font-family:'Roboto Condensed',sans-serif;font-size:16px;color:#ede9ff">{{s.name}}</span>
+<button type="button" class="roll" onClick="{{s.roll}}" aria-label="{{s.aria}}" style="flex:none;width:48px;box-sizing:border-box;border:1px solid #ba9fe1;border-radius:4px;background:#0e0c1a;padding:3px 0;font-family:'Roboto Condensed',sans-serif;font-size:16px;color:#ede9ff">{{s.bonus}}</button>
+</div>
+</sc-for>
+<div style="padding-top:10px;text-align:center;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:#ede9ff">Skills</div>
+</section>
+</div>
+</div>
+
+<!-- RIGHT: TABBED MAIN SECTION -->
+<section style="flex:1.45 1 620px;min-width:0;border:2px solid rgba(186,159,225,0.55);border-radius:10px;background:rgba(21,18,42,0.92);padding:4px 24px 28px">
+
+<div role="tablist" aria-label="Portfolio sections" style="display:flex;flex-wrap:wrap;gap:2px 22px;border-bottom:1px solid rgba(186,159,225,0.25)">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+<button type="button" role="tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="min-height:42px;padding:0 2px;background:transparent;border:0;border-bottom:3px solid {{t.line}};color:{{t.fg}};font-weight:700;font-size:15px;letter-spacing:0.08em;text-transform:uppercase">{{t.label}}</button>
+</sc-for>
+<a href="https://www.linkedin.com/" class="thin" aria-label="LinkedIn, add your profile URL" style="margin-left:auto;align-self:center;display:flex;align-items:center;gap:7px;min-height:30px;padding:0 12px;border:1px solid rgba(186,159,225,0.55);border-radius:3px;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#ede9ff"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ba9fe1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>LinkedIn</a>
+</div>
+
+<sc-if value="{{isOverview}}" hint-placeholder-val="{{true}}">
+<div role="tabpanel" style="padding-top:26px">
+<div style="font-family:'Roboto Condensed',sans-serif;font-size:13px;letter-spacing:0.2em;text-transform:uppercase;color:#ba9fe1">Hi, I'm</div>
+<h1 style="margin:6px 0 0;font-family:'Cinzel',serif;font-weight:700;font-size:52px;line-height:1.05;color:#ede9ff">Gaby Norris</h1>
+<div style="margin-top:10px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:27px;color:#ba9fe1">Interactive Developer &amp; UX Designer</div>
+<p style="margin:16px 0 0;font-size:17px;line-height:1.7;max-width:640px">Third-year student at Open Window Institute, crafting digital experiences that live at the intersection of code and design. I build things that feel as intentional as they look.</p>
+<div style="margin-top:24px;display:flex;flex-wrap:wrap;gap:10px">
+<button type="button" onClick="{{goProjects}}" style="min-height:36px;padding:0 18px;border-radius:4px;border:0;background:#ba9fe1;color:#14102a;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase">Open the quest log</button>
+<button type="button" onClick="{{goContact}}" class="thin" style="min-height:36px;padding:0 18px;border-radius:4px;border:1px solid #ba9fe1;background:transparent;color:#ede9ff;font-size:13px;letter-spacing:0.08em;text-transform:uppercase">Send a raven</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{isProjects}}" hint-placeholder-val="{{false}}">
+<div role="tabpanel" style="padding-top:18px">
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+<sc-for list="{{chips}}" as="c" hint-placeholder-count="4">
+<button type="button" onClick="{{c.pick}}" style="min-height:30px;padding:0 14px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border:1px solid {{c.border}};background:{{c.bg}};color:{{c.fg}}">{{c.label}}</button>
+</sc-for>
+</div>
+<div style="margin-top:14px;display:flex;gap:12px;padding:0 6px 6px 50px;font-family:'Roboto Condensed',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#a8a3d4">
+<span style="flex:2 1 180px">Project</span><span style="flex:1 1 120px">Type</span><span style="flex:0 0 44px">Year</span><span style="flex:1 1 110px">Solution</span><span style="flex:0 0 110px"></span>
+</div>
+<sc-for list="{{quests}}" as="q" hint-placeholder-count="6">
+<div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:12px 6px;border-top:1px solid rgba(186,159,225,0.2)">
+<div style="flex:none;width:34px;height:34px;border:2px solid #ba9fe1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-weight:700;color:#ede9ff">{{q.initial}}</div>
+<div style="flex:2 1 180px;min-width:0">
+<div style="font-size:17px;color:#ede9ff;font-weight:500">{{q.title}}</div>
+<div style="font-size:13px;line-height:1.45;color:#b8b3dd;margin-top:2px">{{q.blurb}}</div>
+</div>
+<div style="flex:1 1 120px;font-family:'Roboto Condensed',sans-serif;font-size:14px;color:#c4c5e8">{{q.kind}}</div>
+<div style="flex:0 0 44px;font-family:'Roboto Condensed',sans-serif;font-size:14px;color:#c4c5e8">{{q.year}}</div>
+<div style="flex:1 1 110px;font-family:'Roboto Condensed',sans-serif;font-size:14px;color:#c4c5e8">{{q.solution}}</div>
+<a href="Project.dc.html" class="thin" aria-label="View quest" style="flex:0 0 110px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:6px;min-height:32px;border:1px solid #ba9fe1;border-radius:3px;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#ede9ff">View quest<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ba9fe1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></a>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{isAbout}}" hint-placeholder-val="{{false}}">
+<div role="tabpanel" style="padding-top:26px;display:flex;flex-direction:column;gap:22px">
+<div>
+<div style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#ba9fe1">The developer</div>
+<h2 style="margin:4px 0 0;font-family:'Cinzel',serif;font-size:25px;color:#ede9ff">Why I develop</h2>
+<p style="margin:10px 0 0;font-family:'Cormorant Garamond',serif;font-size:23px;line-height:1.5;color:#c4c5e8;max-width:720px">You know that feeling when you find a bug in your code and after hours of debugging, you finally fix it? That rush of excitement and accomplishment is what keeps me hooked on development.</p>
+</div>
+<div style="border-top:1px solid rgba(186,159,225,0.2);padding-top:22px">
+<div style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#ba9fe1">The designer</div>
+<h2 style="margin:4px 0 0;font-family:'Cinzel',serif;font-size:25px;color:#ede9ff">Me as a designer</h2>
+<p style="margin:10px 0 0;font-family:'Cormorant Garamond',serif;font-size:23px;line-height:1.5;color:#c4c5e8;max-width:720px">Great design is not just about making things look good, but about solving problems and creating meaningful experiences for users.</p>
+</div>
+<div style="border-top:1px solid rgba(186,159,225,0.2);padding-top:22px">
+<div style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#ba9fe1">The tinkerer</div>
+<h2 style="margin:4px 0 0;font-family:'Cinzel',serif;font-size:25px;color:#ede9ff">Love for technology</h2>
+<p style="margin:10px 0 0;font-family:'Cormorant Garamond',serif;font-size:23px;line-height:1.5;color:#a8a3d4;max-width:720px">[Your paragraph goes here]</p>
+</div>
+
+</div>
+</sc-if>
+
+<sc-if value="{{isContact}}" hint-placeholder-val="{{false}}">
+<div role="tabpanel" style="padding-top:26px;max-width:640px">
+<h2 style="margin:0;font-family:'Cinzel',serif;font-size:30px;color:#ede9ff">Send a raven</h2>
+<p style="margin:8px 0 0;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:#c4c5e8">Whether you have a freelance brief, an opportunity to share, or just want to say hello, I'd love to hear from you.</p>
+<form style="margin-top:20px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;flex-direction:column;gap:5px">
+<label for="n" style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#a8a3d4">Name</label>
+<input id="n" type="text" placeholder="Your name" style="min-height:42px;padding:0 12px;border-radius:5px;border:1px solid rgba(186,159,225,0.55);background:#0e0c1a;color:#ede9ff;font-size:15px">
+</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<label for="e" style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#a8a3d4">Email</label>
+<input id="e" type="email" placeholder="you@example.com" style="min-height:42px;padding:0 12px;border-radius:5px;border:1px solid rgba(186,159,225,0.55);background:#0e0c1a;color:#ede9ff;font-size:15px">
+</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<label for="r" style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#a8a3d4">Reason for the quest</label>
+<select id="r" style="min-height:42px;padding:0 12px;border-radius:5px;border:1px solid rgba(186,159,225,0.55);background:#0e0c1a;color:#ede9ff;font-size:15px">
+<option>Freelance work</option><option>Job opportunity</option><option>Feedback</option>
+</select>
+</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<label for="m" style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#a8a3d4">Message</label>
+<textarea id="m" placeholder="Write your message" style="min-height:120px;padding:10px 12px;border-radius:5px;border:1px solid rgba(186,159,225,0.55);background:#0e0c1a;color:#ede9ff;font-size:15px;resize:vertical"></textarea>
+</div>
+<button type="button" onClick="{{rollToSend}}" style="align-self:flex-start;display:flex;align-items:center;gap:8px;min-height:38px;padding:0 20px;border-radius:4px;border:0;background:#ba9fe1;color:#14102a;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase">
+<svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true"><polygon points="50,4 92,28 92,72 50,96 8,72 8,28" fill="none" stroke="#14102a" stroke-width="8"/><polygon points="50,24 78,68 22,68" fill="none" stroke="#14102a" stroke-width="8"/></svg>
+Roll to send
+</button>
+</form>
+</div>
+</sc-if>
+
+</section>
+</main>
+
+<!-- SIDE DRAWER (game log) -->
+<sc-if value="{{drawerOpen}}" hint-placeholder-val="{{false}}">
+<div style="position:fixed;left:0;right:0;top:0;bottom:0;z-index:40;display:flex;justify-content:flex-end">
+<div onClick="{{toggleDrawer}}" aria-hidden="true" style="flex-grow:1;background:rgba(14,12,26,0.55)"></div>
+<aside role="dialog" aria-label="Game log" style="width:320px;max-width:90%;box-sizing:border-box;background:#121021;border-left:2px solid rgba(186,159,225,0.55);padding:18px 20px;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;align-items:center;justify-content:space-between">
+<span style="font-family:'Cinzel',serif;font-weight:700;font-size:20px;color:#ede9ff">Game log</span>
+<button type="button" onClick="{{toggleDrawer}}" aria-label="Close the drawer" class="thin" style="width:32px;height:32px;border:1px solid rgba(186,159,225,0.55);border-radius:3px;background:transparent;color:#ede9ff;font-size:16px">&times;</button>
+</div>
+<div style="font-family:'Roboto Condensed',sans-serif;font-size:13px;color:#a8a3d4">Every roll you make on the sheet appears here. [Drawer content to be decided]</div>
+<div style="border-top:1px solid rgba(186,159,225,0.2);padding-top:8px">
+<sc-for list="{{drawerLog}}" as="l" hint-placeholder-count="3">
+<div style="padding:8px 0;border-bottom:1px solid rgba(186,159,225,0.14);font-family:'Roboto Condensed',sans-serif;font-size:14px;line-height:1.4;color:#c4c5e8">{{l.text}}</div>
+</sc-for>
+</div>
+</aside>
+</div>
+</sc-if>
+
+<!-- FLOATING DICE TRAY + ACTION BUTTONS -->
+<div style="position:fixed;right:22px;bottom:22px;display:flex;flex-direction:column;align-items:flex-end;gap:12px;z-index:20">
+<sc-if value="{{trayOpen}}" hint-placeholder-val="{{false}}">
+<div role="region" aria-label="Dice tray" style="width:290px;box-sizing:border-box;border:2px solid rgba(186,159,225,0.55);border-radius:10px;background:rgba(14,12,26,0.97);padding:14px">
+<div style="font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#ba9fe1">Dice tray</div>
+<div aria-live="polite" style="margin-top:8px;min-height:62px">
+<div style="font-family:'Cinzel',serif;font-weight:700;font-size:40px;line-height:1.1;color:#ede9ff">{{lastTotal}}</div>
+<div style="font-family:'Roboto Condensed',sans-serif;font-size:14px;color:#c4c5e8">{{lastText}}</div>
+</div>
+<div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{dice}}" as="d" hint-placeholder-count="6">
+<button type="button" onClick="{{d.pick}}" class="thin" style="min-height:32px;min-width:44px;padding:0 10px;border:1px solid #ba9fe1;border-radius:4px;background:transparent;color:#ede9ff;font-weight:700;font-size:13px">{{d.label}}</button>
+</sc-for>
+</div>
+<div style="margin-top:12px;border-top:1px solid rgba(186,159,225,0.2);padding-top:8px">
+<sc-for list="{{log}}" as="l" hint-placeholder-count="3">
+<div style="font-family:'Roboto Condensed',sans-serif;font-size:13px;line-height:1.6;color:#a8a3d4">{{l.text}}</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+<div style="display:flex;gap:10px;align-items:center">
+<button type="button" aria-label="Download my CV as a PDF" class="thin" style="width:44px;height:44px;border-radius:50%;border:2px solid #ba9fe1;background:#15122a;color:#ede9ff;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="12" x2="12" y2="18"/><polyline points="9 15 12 18 15 15"/></svg></button>
+<button type="button" onClick="{{toggleTray}}" aria-label="Open the dice tray" aria-expanded="{{trayOpen}}" style="width:52px;height:52px;border-radius:50%;border:0;background:#ba9fe1;color:#14102a;display:flex;align-items:center;justify-content:center"><svg width="26" height="26" viewBox="0 0 100 100" aria-hidden="true" style="animation:{{spinAnim}}"><polygon points="50,4 92,28 92,72 50,96 8,72 8,28" fill="none" stroke="#14102a" stroke-width="7"/><polygon points="50,24 78,68 22,68" fill="none" stroke="#14102a" stroke-width="7"/></svg></button>
+</div>
+</div>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"bgUrl":{"editor":"text","default":"","section":"Background"},"$preview":{"width":1280,"height":1300}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'overview', filter: 'All', trayOpen: false, drawerOpen: false, rolling: false, last: null, log: [] };
+  }
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  roll(label, mod, sides) {
+    if (this.state.rolling) return;
+    this.setState({ rolling: true });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => {
+      const d = 1 + Math.floor(Math.random() * sides);
+      const total = d + mod;
+      let text = mod === 0 && label.startsWith('d') ? label + ': ' + d : label + ': d' + sides + ' (' + d + ') ' + (mod >= 0 ? '+ ' : '- ') + Math.abs(mod) + ' = ' + total;
+      if (sides === 20 && d === 20) text += ' Natural 20!';
+      if (sides === 20 && d === 1) text += ' Natural 1';
+      const entry = { total: String(total), text };
+      this.setState({ rolling: false, last: entry, trayOpen: true, log: [entry].concat(this.state.log).slice(0, 20) });
+    }, 650);
+  }
+
+  renderVals() {
+    const bg = (this.props.bgUrl ?? '').trim();
+    const tab = this.state.tab;
+    const f = this.state.filter;
+    const signed = (n) => (n >= 0 ? '+' : '-') + Math.abs(n);
+
+    const tabDefs = [
+      { id: 'overview', label: 'Overview' },
+      { id: 'projects', label: 'Projects' },
+      { id: 'about', label: 'About' },
+      { id: 'contact', label: 'Contact' }
+    ];
+    const tabs = tabDefs.map((t) => ({
+      label: t.label,
+      selected: t.id === tab,
+      pick: () => this.setState({ tab: t.id }),
+      fg: t.id === tab ? '#ede9ff' : '#a8a3d4',
+      line: t.id === tab ? '#ba9fe1' : 'transparent'
+    }));
+
+    const all = [
+      { title: 'ForageScan', kind: 'UX Design', year: 2025, solution: 'Mobile App', blurb: 'Empowering safe foraging through technology.' },
+      { title: 'TutorAid', kind: 'Interactive Development', year: 2025, solution: 'React Web App', blurb: 'Connecting students with reliable tutors for academic success.' },
+      { title: 'Disney+ Finder', kind: 'Interactive Development', year: 2025, solution: 'React Web App', blurb: 'Quickly discover high-quality movies and TV shows on Disney+.' },
+      { title: 'SheIsDesign', kind: 'Interactive Development', year: 2026, solution: 'Electron App', blurb: '[One-line summary]' },
+      { title: 'Whelmer', kind: 'Personal Project', year: 2026, solution: 'React Native App', blurb: '[One-line summary]' },
+      { title: 'Nia', kind: 'UX Design', year: 2026, solution: 'AI-assisted Wearable Ecosystem', blurb: 'Swahili for purpose or intention. An intuitive AI assistant that helps you focus deeply.' }
+    ];
+    const quests = all.filter((p) => f === 'All' || p.kind === f).map((p) => ({ ...p, initial: p.title.charAt(0) }));
+    const chips = ['All', 'UX Design', 'Interactive Development', 'Personal Project'].map((l) => {
+      const on = l === f;
+      return {
+        label: l,
+        pick: () => this.setState({ filter: l }),
+        bg: on ? '#ba9fe1' : 'transparent',
+        fg: on ? '#14102a' : '#c4c5e8',
+        border: on ? '#ba9fe1' : 'rgba(186,159,225,0.45)'
+      };
+    });
+
+    const rawAbilities = [
+      { name: 'React', score: 17 },
+      { name: 'UX design', score: 18 },
+      { name: 'React Native', score: 16 },
+      { name: 'Databases', score: 15 },
+      { name: 'Debugging', score: 14 },
+      { name: '[Your pick]', score: 10 }
+    ];
+    const abilities = rawAbilities.map((a) => {
+      const m = Math.floor((a.score - 10) / 2);
+      return { name: a.name, score: a.score, mod: signed(m), aria: 'Roll ' + a.name + ' check, d20 ' + signed(m), roll: () => this.roll(a.name, m, 20) };
+    });
+
+    const rawSaves = [
+      ['Bugs', 4, true], ['Due', 2, false], ['Merge', 3, false],
+      ['Review', 4, true], ['Scope', 1, false], ['Rest', 2, false]
+    ];
+    const saves = rawSaves.map(([name, b, prof]) => ({
+      name, bonus: signed(b),
+      dot: prof ? '#ba9fe1' : 'transparent',
+      profLabel: prof ? 'Proficient save' : 'Not proficient',
+      aria: 'Roll ' + name + ' saving throw, d20 ' + signed(b),
+      roll: () => this.roll(name + ' save', b, 20)
+    }));
+
+    const rawSkills = [
+      ['React', 8], ['HTML/CSS', 8], ['JavaScript', 7], ['Tailwind CSS', 7],
+      ['Node.js', 6], ['SQL', 6], ['React Native', 6], ['Express', 5],
+      ['Electron', 4], ['C#', 4], ['Java', 3]
+    ];
+    const skills = rawSkills.map(([name, lvl]) => {
+      const strong = lvl >= 7;
+      const mid = lvl >= 4 && lvl < 7;
+      return {
+        name, bonus: signed(lvl),
+        dot: strong ? '#ba9fe1' : 'transparent',
+        profLabel: strong ? 'Highly proficient' : mid ? 'Proficient' : 'Learning',
+        aria: 'Roll ' + name + ', d20 ' + signed(lvl),
+        roll: () => this.roll(name, lvl, 20)
+      };
+    });
+
+    const training = [
+      { title: 'Frameworks & libraries', items: 'DaisyUI, shadcn/ui, GSAP, Vite, [add more]' },
+      { title: 'Platforms & hosting', items: 'Firebase, GitHub Pages, Render, Vercel, MongoDB' },
+      { title: 'Tools', items: 'Figma, Visual Studio Code, GitHub, Canva, [add more]' },
+      { title: 'AI assistants', items: 'Claude, Gemini, Copilot, ChatGPT, Skywork AI, [one more]' }
+    ];
+
+    const dice = [4, 6, 8, 10, 12, 20].map((s) => ({ label: 'd' + s, pick: () => this.roll('d' + s, 0, s) }));
+    const last = this.state.last;
+
+    return {
+      tabs, quests, chips, abilities, saves, skills, training, dice,
+      bgImage: bg ? 'url(' + bg + ')' : 'none',
+      isOverview: tab === 'overview',
+      isProjects: tab === 'projects',
+      isAbout: tab === 'about',
+      isContact: tab === 'contact',
+      goProjects: () => this.setState({ tab: 'projects' }),
+      goContact: () => this.setState({ tab: 'contact' }),
+      goOverview: () => this.setState({ tab: 'overview' }),
+      rollToSend: () => this.roll('Roll to send', 0, 20),
+      toggleTray: () => this.setState({ trayOpen: !this.state.trayOpen }),
+      toggleDrawer: () => this.setState({ drawerOpen: !this.state.drawerOpen }),
+      drawerOpen: this.state.drawerOpen,
+      drawerLog: this.state.log,
+      trayOpen: this.state.trayOpen,
+      spinAnim: this.state.rolling ? 'dcspin 0.65s linear' : 'none',
+      lastTotal: last ? last.total : '–',
+      lastText: last ? last.text : 'Click any modifier or die to roll.',
+      log: this.state.log.slice(1, 5)
+    };
+  }
+}
+</script>
+</body>
+</html>

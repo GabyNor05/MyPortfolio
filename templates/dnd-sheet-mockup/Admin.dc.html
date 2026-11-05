@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Manage: dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=DM+Sans:wght@400;500;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0e0c1a}
+a{text-decoration:none}
+.thin:hover{background:rgba(186,159,225,0.16)!important}
+input::placeholder,textarea::placeholder{color:#9a95c4}
+</style>
+</helmet>
+<div style="min-height:1500px;background:#0e0c1a;background-image:radial-gradient(circle at 12% 0%, rgba(95,91,175,0.3), transparent 45%);color:#c4c5e8;font-family:'DM Sans',sans-serif">
+
+<header style="background:rgba(18,16,33,0.92);border-bottom:2px solid rgba(186,159,225,0.35)">
+<div style="max-width:1240px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px">
+<div style="display:flex;align-items:baseline;gap:12px">
+<span style="font-family:'Cinzel',serif;font-weight:700;font-size:22px;color:#ede9ff">Manage</span>
+<span style="font-size:13px;color:#a8a3d4">gabynorris616@gmail.com</span>
+</div>
+<div style="display:flex;gap:8px">
+<a href="Main.dc.html" class="thin" style="display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border:1px solid #ba9fe1;border-radius:3px;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#ede9ff">View site</a>
+<a href="Login.dc.html" class="thin" style="display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border:1px solid #ba9fe1;border-radius:3px;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:#ede9ff">Sign out</a>
+</div>
+</div>
+</header>
+
+<main style="max-width:1240px;margin:0 auto;padding:28px 20px;display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start">
+
+<!-- UPLOAD A PROJECT -->
+<section style="flex:2 1 520px;min-width:0;border:2px solid rgba(186,159,225,0.55);border-radius:10px;background:rgba(21,18,42,0.92);padding:22px 24px 26px">
+<h1 style="margin:0;font-family:'Cinzel',serif;font-size:24px;color:#ede9ff">Add a quest</h1>
+<p style="margin:6px 0 0;font-size:14px;color:#b8b3dd">New projects are saved to the database and appear in the quest log straight away.</p>
+<form style="margin-top:18px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;flex-wrap:wrap;gap:14px">
+<div style="flex:2 1 220px;display:flex;flex-direction:column;gap:5px">
+<label for="t" style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#a8a3d4">Title</label>
+<input id="t" type="text" placeholder="Project name" style="min-height:42px;padding:0 12px;border-radius:5px;border:1px solid rgba(186,159,225,0.4);background:#0e0c1a;color:#ede9ff;font-size:15px">
+</div>
+<div style="flex:1 1 160px;display:flex;flex-direction:column;gap:5px">
+<label for="ty" style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#a8a3d4">Type</label>
+<select id="ty" style="min-height:42px;padding:0 12px;border-radius:5px;border:1px solid rgba(186,159,225,0.4);background:#0e0c1a;color:#ede9ff;font-size:15px"><option>UX Design</option><option>Interactive Development</option><option>Personal Project</option></select>
+</div>
+<div style="flex:0 1 100px;display:flex;flex-direction:column;gap:5px">
+<label for="y" style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#a8a3d4">Year</label>
+<input id="y" type="text" placeholder="2026" style="min-height:42px;padding:0 12px;border-radius:5px;border:1px solid rgba(186,159,225,0.4);background:#0e0c1a;color:#ede9ff;font-size:15px">
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<label for="s" style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#a8a3d4">Solution</label>
+<input id="s" type="text" placeholder="e.g. React Web App" style="min-height:42px;padding:0 12px;border-radius:5px;border:1px solid rgba(186,159,225,0.4);background:#0e0c1a;color:#ede9ff;font-size:15px">
+</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<label for="sd" style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#a8a3d4">One-line summary</label>
+<input id="sd" type="text" placeholder="Shown in the quest log" style="min-height:42px;padding:0 12px;border-radius:5px;border:1px solid rgba(186,159,225,0.4);background:#0e0c1a;color:#ede9ff;font-size:15px">
+</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<label for="fd" style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#a8a3d4">Full description</label>
+<textarea id="fd" placeholder="The quest brief" style="min-height:110px;padding:10px 12px;border-radius:5px;border:1px solid rgba(186,159,225,0.4);background:#0e0c1a;color:#ede9ff;font-size:15px;resize:vertical"></textarea>
+</div>
+<div style="display:flex;flex-direction:column;gap:5px">
+<label for="rf" style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#a8a3d4">Reflection</label>
+<textarea id="rf" placeholder="What you learned" style="min-height:90px;padding:10px 12px;border-radius:5px;border:1px solid rgba(186,159,225,0.4);background:#0e0c1a;color:#ede9ff;font-size:15px;resize:vertical"></textarea>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:14px">
+<div style="flex:1 1 220px;display:flex;flex-direction:column;gap:5px">
+<label for="th" style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#a8a3d4">Thumbnail</label>
+<input id="th" type="file" style="min-height:42px;padding:8px 10px;border-radius:5px;border:1px dashed rgba(186,159,225,0.5);background:#0e0c1a;color:#c4c5e8;font-size:14px">
+</div>
+<div style="flex:1 1 220px;display:flex;flex-direction:column;gap:5px">
+<label for="lk" style="font-family:'Roboto Condensed',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#a8a3d4">Links (label, url)</label>
+<input id="lk" type="text" placeholder="GitHub Repo, https://github.com/..." style="min-height:42px;padding:0 12px;border-radius:5px;border:1px solid rgba(186,159,225,0.4);background:#0e0c1a;color:#ede9ff;font-size:15px">
+</div>
+</div>
+<button type="button" style="align-self:flex-start;min-height:38px;padding:0 22px;border-radius:4px;border:0;background:#ba9fe1;color:#14102a;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase">Save quest</button>
+</form>
+</section>
+
+<div style="flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:20px">
+
+<section style="border:2px solid rgba(186,159,225,0.55);border-radius:10px;background:rgba(21,18,42,0.92);padding:18px 20px">
+<h2 style="margin:0;font-family:'Cinzel',serif;font-size:18px;color:#ede9ff">Quest log</h2>
+<div style="margin-top:8px">
+<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid rgba(186,159,225,0.2)"><span style="flex-grow:1;color:#ede9ff">ForageScan</span><a href="Admin.dc.html" class="thin" style="min-height:28px;display:inline-flex;align-items:center;padding:0 10px;border:1px solid rgba(186,159,225,0.5);border-radius:3px;font-size:12px;color:#ede9ff">Edit</a></div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid rgba(186,159,225,0.2)"><span style="flex-grow:1;color:#ede9ff">TutorAid</span><a href="Admin.dc.html" class="thin" style="min-height:28px;display:inline-flex;align-items:center;padding:0 10px;border:1px solid rgba(186,159,225,0.5);border-radius:3px;font-size:12px;color:#ede9ff">Edit</a></div>
+<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid rgba(186,159,225,0.2)"><span style="flex-grow:1;color:#ede9ff">[More projects]</span><a href="Admin.dc.html" class="thin" style="min-height:28px;display:inline-flex;align-items:center;padding:0 10px;border:1px solid rgba(186,159,225,0.5);border-radius:3px;font-size:12px;color:#ede9ff">Edit</a></div>
+</div>
+</section>
+
+<section style="border:2px solid rgba(186,159,225,0.55);border-radius:10px;background:rgba(21,18,42,0.92);padding:18px 20px">
+<h2 style="margin:0;font-family:'Cinzel',serif;font-size:18px;color:#ede9ff">Ravens received</h2>
+<p style="margin:8px 0 0;font-size:14px;color:#a8a3d4">Messages from the contact form appear here: name, email, reason and message.</p>
+<div style="margin-top:12px;border:1px dashed rgba(186,159,225,0.4);border-radius:6px;padding:16px;font-size:14px;color:#a8a3d4">[No messages yet]</div>
+</section>
+
+<section style="border:2px solid rgba(186,159,225,0.55);border-radius:10px;background:rgba(21,18,42,0.92);padding:18px 20px">
+<h2 style="margin:0;font-family:'Cinzel',serif;font-size:18px;color:#ede9ff">Character sheet data</h2>
+<p style="margin:8px 0 0;font-size:14px;line-height:1.5;color:#a8a3d4">Edit ability scores, skills, tools and AI assistants without touching code.</p>
+<a href="Admin.dc.html" class="thin" style="margin-top:12px;display:inline-flex;align-items:center;min-height:32px;padding:0 14px;border:1px solid #ba9fe1;border-radius:3px;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#ede9ff">Edit sheet</a>
+</section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
