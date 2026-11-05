@@ -29,13 +29,13 @@ export default function Header() {
       <div className="hdr-in">
         <div className="hdr-id">
           <img src={headshot} alt="Portrait of Gaby Norris" />
-          <div style={{ minWidth: 0 }}>
+          <div className="hdr-text">
             <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
               <Link to="/" className="hdr-name">Gaby Norris</Link>
               <Link to="/auth" className="manage">Manage</Link>
             </div>
-            <div className="rc" style={{ fontSize: 13, color: "var(--text-2)", marginTop: 3 }}>Interactive Developer / UX Designer</div>
-            <div className="rc" style={{ fontSize: 11, color: "var(--muted)" }}>Level 3</div>
+            <div className="rc" style={{ fontSize: 15, color: "var(--text-2)", marginTop: 4 }}>Interactive Developer / UX Designer</div>
+            <div className="rc" style={{ fontSize: 13, color: "var(--text)", fontWeight: 700 }}>Level 3</div>
           </div>
         </div>
 

@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ChevronLeft } from "lucide-react";
 import { FaLinkedin } from "react-icons/fa";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useProjects } from "../../../lib/useProjects";
@@ -19,12 +19,33 @@ const real = (t) => (t && t !== "..." ? t : null);
 export const blurb = (p) => real(p.shortDescription) || real(p.fullDescription) || "Details coming soon.";
 
 function Overview({ go }) {
+  const { projects } = useProjects();
+  const ref = useRef(null);
+  const list = useMemo(() => [...projects].sort((a, b) => b.year - a.year || a.title.localeCompare(b.title)), [projects]);
+  const scroll = (d) => ref.current && ref.current.scrollBy({ left: d * 420, behavior: "smooth" });
   return (
     <>
       <div className="eyebrow">Hi, I'm</div>
       <h1 className="h1">Gaby Norris</h1>
       <div className="sub">Interactive Developer &amp; UX Designer</div>
       <p className="lede">{find("content-001").description}</p>
+
+      <div className="car-head">
+        <div className="sec-h" style={{ flex: 1, marginBottom: 0, marginRight: 14 }}>Recent quests</div>
+        <div className="car-arrows">
+          <button type="button" className="thin icon-btn" aria-label="Scroll projects left" onClick={() => scroll(-1)}><ChevronLeft size={14} /></button>
+          <button type="button" className="thin icon-btn" aria-label="Scroll projects right" onClick={() => scroll(1)}><ChevronRight size={14} /></button>
+        </div>
+      </div>
+      <div className="car" ref={ref} tabIndex={0} aria-label="Project thumbnails">
+        {list.map((p) => (
+          <Link key={p.id} to={`/project/${p.id}`} className="car-card">
+            <div className="car-thumb">{p.title.charAt(0)}</div>
+            <div className="car-meta"><b>{p.title}</b><span>{p.type} · {p.year}</span></div>
+          </Link>
+        ))}
+      </div>
+
       <div className="btn-row">
         <button type="button" className="solid" onClick={() => go("projects")}>Open the quest log</button>
         <button type="button" className="thin" style={{ minHeight: 36, padding: "0 18px", fontSize: 13 }} onClick={() => go("contact")}>Send a raven</button>
@@ -94,16 +115,23 @@ function Projects() {
   );
 }
 
+const ABOUT = [["content-002", "Developer", "The developer"], ["content-003", "Designer", "The designer"], ["content-004", "Tinkerer", "The tinkerer"]];
+
 function About() {
-  const blocks = [["content-002", "The developer"], ["content-003", "The designer"], ["content-004", "The tinkerer"]];
+  const [f, setF] = useState("All");
   return (
     <>
-      {blocks.map(([id, eyebrow]) => {
+      <div className="subchips">
+        {["All", ...ABOUT.map((a) => a[1])].map((t) => (
+          <button key={t} type="button" className="chip" aria-pressed={f === t} onClick={() => setF(t)}>{t}</button>
+        ))}
+      </div>
+      {ABOUT.filter((a) => f === "All" || a[1] === f).map(([id, chip, eyebrow]) => {
         const c = find(id);
         return (
           <div className="about-block" key={id}>
-            <div className="eyebrow" style={{ fontSize: 12, letterSpacing: ".16em", color: "var(--muted)" }}>{eyebrow}</div>
-            <h2 className="h2">{c.title}</h2>
+            <div className="sec-h">{chip}</div>
+            <h2 className="h2" style={{ fontSize: 20 }}>{c.title}</h2>
             <p className="quote" style={{ color: real(c.description) ? undefined : "var(--muted)" }}>{real(c.description) || "[Your paragraph goes here]"}</p>
           </div>
         );
@@ -139,7 +167,7 @@ function Contact() {
   return (
     <>
       <h2 className="h2" style={{ fontSize: 30 }}>Send a raven</h2>
-      <p className="cg" style={{ margin: "8px 0 0", fontStyle: "italic", fontSize: 22, color: "var(--text-2)", maxWidth: 620 }}>{find("content-006").description}</p>
+      <p className="cg" style={{ margin: "8px 0 0", fontSize: 16, color: "var(--text-2)", maxWidth: 620 }}>{find("content-006").description}</p>
       <form className="form" onSubmit={submit}>
         <div className="field"><label htmlFor="n">Name</label><input id="n" required maxLength={100} placeholder="Your name" value={form.name} onChange={set("name")} /></div>
         <div className="field"><label htmlFor="e">Email</label><input id="e" type="email" required maxLength={200} placeholder="you@example.com" value={form.email} onChange={set("email")} /></div>
@@ -167,9 +195,7 @@ export default function MainTabs() {
         {TABS.map(([id, label]) => (
           <button key={id} type="button" role="tab" className="tab" aria-selected={tab === id} onClick={() => setTab(id)}>{label}</button>
         ))}
-        {LINKS.linkedin && (
-          <a className="thin linkedin" href={LINKS.linkedin} target="_blank" rel="noopener noreferrer"><FaLinkedin size={14} />LinkedIn</a>
-        )}
+        <a className="thin linkedin" href={LINKS.linkedin || "https://www.linkedin.com/search/results/people/?keywords=Gaby%20Norris%20Open%20Window"} target="_blank" rel="noopener noreferrer"><FaLinkedin size={14} />LinkedIn</a>
       </div>
       <div className="tab-body" role="tabpanel">
         {tab === "overview" && <Overview go={setTab} />}

@@ -25,7 +25,7 @@ export default function Home() {
         </div>
         <div className="right"><MainTabs /></div>
       </main>
-      <footer className="footer">
+      <footer className="site-foot">
         © {new Date().getFullYear()} <span onClick={() => navigate("/auth")}>Gaby Norris</span> · Open Window Institute · Designed &amp; built with care
       </footer>
     </>
