@@ -1,0 +1,37 @@
+rules_version = '2';
+
+// Permanent rules: nothing here expires (unlike Firebase's "test mode", which
+// locks the database after 30 days). Everything not listed is denied.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Only the owner's verified Google account counts as admin.
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'gabynorris616@gmail.com'
+        && request.auth.token.email_verified == true;
+    }
+
+    // Portfolio projects: anyone can read, only the admin can change.
+    match /projects/{projectId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Contact form: anyone can CREATE a well-formed message; only the admin
+    // can read, edit or delete them. Visitors can never read other messages.
+    match /messages/{messageId} {
+      allow create: if request.resource.data.keys().hasOnly(['name', 'email', 'reason', 'message', 'createdAt'])
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100
+        && request.resource.data.email is string
+        && request.resource.data.email.matches('.+@.+\\..+')
+        && request.resource.data.email.size() <= 200
+        && request.resource.data.reason in ['Freelance work', 'Job opportunity', 'Feedback']
+        && request.resource.data.message is string
+        && request.resource.data.message.size() > 0 && request.resource.data.message.size() <= 2000
+        && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}
