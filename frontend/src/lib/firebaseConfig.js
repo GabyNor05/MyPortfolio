@@ -11,7 +11,9 @@ export const firebaseConfig = {
   appId: "1:1028443130119:web:be8ca2ef2c64c83e741da2",
 };
 
-export const ADMIN_EMAIL = "gabynorris616@gmail.com";
+// Accounts allowed to manage the site (must also be listed in firestore.rules).
+export const ADMIN_EMAILS = ["gabynorris616@gmail.com", "gmmnorris@gmail.com", "gabriellenor05@gmail.com"];
+export const ADMIN_EMAIL = ADMIN_EMAILS[0]; // shown as the contact fallback
 
 // Paste your LinkedIn profile URL here and a LinkedIn button appears in the About section.
 export const LINKEDIN_URL = "";

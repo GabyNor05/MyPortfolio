@@ -4,7 +4,7 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, getDocs, orderBy, query, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { Plus, Pencil, Trash2, Download, UploadCloud, Eye, EyeOff, LogOut, ArrowLeft, LayoutDashboard, FolderKanban, Inbox, HelpCircle } from "lucide-react";
 import { auth, db, isFirebaseConfigured } from "../../../lib/firebase";
-import { ADMIN_EMAIL } from "../../../lib/firebaseConfig";
+import { ADMIN_EMAILS } from "../../../lib/firebaseConfig";
 import { projectData } from "../../../data/portfolioData";
 
 const TYPES = ["UX Design", "Interactive Development", "Personal Project", "Hackathon"];
@@ -78,7 +78,7 @@ export default function Dashboard() {
   const [note, setNote] = useState("");
 
   useEffect(() => { if (isFirebaseConfigured) return onAuthStateChanged(auth, setUser); }, []);
-  const isAdmin = !isFirebaseConfigured || user?.email === ADMIN_EMAIL;
+  const isAdmin = !isFirebaseConfigured || ADMIN_EMAILS.includes((user?.email || "").toLowerCase());
 
   const loadProjects = async () => {
     if (!isFirebaseConfigured) return;

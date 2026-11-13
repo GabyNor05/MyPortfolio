@@ -5,11 +5,14 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Only the owner's verified Google account counts as admin.
+    // Only the owner's accounts count as admin (email + password users, created in the Firebase console).
     function isAdmin() {
       return request.auth != null
-        && request.auth.token.email == 'gabynorris616@gmail.com'
-        && request.auth.token.email_verified == true;
+        && request.auth.token.email.lower() in [
+          'gabynorris616@gmail.com',
+          'gmmnorris@gmail.com',
+          'gabriellenor05@gmail.com'
+        ];
     }
 
     // Portfolio projects: anyone can read, only the admin can change.
