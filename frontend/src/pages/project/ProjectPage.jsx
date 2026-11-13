@@ -35,14 +35,23 @@ export default function ProjectPage() {
   return (
     <div className="pp">
       <Link to="/" className="thin" style={{ display: "inline-flex" }}><ArrowLeft size={14} />Back to the sheet</Link>
-      <div className="eyebrow" style={{ marginTop: 22 }}>{p.type} · {p.solution} · {p.year}</div>
+      <div className="eyebrow" style={{ marginTop: 22 }}>{p.type} · {p.solution} · {p.year}{p.status ? ` · ${p.status}` : ""}</div>
       <h1 className="h1">{p.title}</h1>
       {real(p.tagline) && <div className="sub">{p.tagline}</div>}
       <div className="media" style={{ margin: "20px 0" }}>{p.title} · media coming soon</div>
       <div style={{ display: "grid", gap: 16 }}>
-        <Block title="The scenario"><p className="lede" style={{ margin: 0 }}>{real(p.scenario) || "Details coming soon."}</p></Block>
+        {real(p.scenario) && p.scenario !== "Module brief" && <Block title="The scenario"><p className="lede" style={{ margin: 0 }}>{p.scenario}</p></Block>}
         <Block title="The quest"><p className="lede" style={{ margin: 0 }}>{real(p.fullDescription) || real(p.shortDescription) || "Details coming soon."}</p></Block>
         {tools.length > 0 && <Block title="Tools"><div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>{tools.map((t) => <span className="pill" key={t}>{t}</span>)}</div></Block>}
+        {(real(p.role) || (p.team || []).length > 0) && (
+          <Block title="Party">
+            {real(p.role) && <p className="lede" style={{ margin: 0 }}><b>My role:</b> {p.role}</p>}
+            {(p.team || []).length > 0 && <ul className="quote" style={{ margin: "8px 0 0", paddingLeft: 18 }}>{p.team.map((t) => <li key={t}>{t}</li>)}</ul>}
+          </Block>
+        )}
+        {(p.highlights || []).length > 0 && (
+          <Block title="Highlights"><ul className="quote" style={{ margin: 0, paddingLeft: 18 }}>{p.highlights.map((h) => <li key={h} style={{ marginBottom: 4 }}>{h}</li>)}</ul></Block>
+        )}
         {real(p.reflection) && <Block title="Reflection"><p className="lede" style={{ margin: 0 }}>{p.reflection}</p></Block>}
         {links.length > 0 && (
           <Block title="Links"><div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>

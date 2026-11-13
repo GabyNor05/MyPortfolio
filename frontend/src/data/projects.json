@@ -1,0 +1,688 @@
+[
+  {
+    "id": "proj-001",
+    "title": "ForageScan",
+    "type": "UX Design",
+    "solution": "Mobile App",
+    "year": 2025,
+    "logo": "forageScan",
+    "thumbnail": "",
+    "scenario": "Module brief",
+    "tagline": "Empowering safe foraging through technology.",
+    "shortDescription": "Identify edible mushrooms and avoid toxic lookalikes with image recognition.",
+    "fullDescription": "A mobile app that uses image recognition to identify edible mushrooms and flag toxic lookalikes. Offline mode, an in-app journal and community review support safe, educated foraging.",
+    "actions": [
+      {
+        "label": "Figma file",
+        "icon": "figma",
+        "url": "https://www.figma.com/design/MFGQH2Qm0DhFOHmjGzZeB4/Gaby-Norris---Design-System-Template?node-id=5498-15"
+      }
+    ],
+    "reflection": "The Forage Scan project demonstrated how design can bridge safety, education, and community in nature-based activities. By offering dependable image identification, professional input, and offline accessibility, the system immediately addressed the problem of safe foraging. Future improvements will include community features to promote knowledge-sharing, and adding seasonal identification recommendations to improve user experience. The project proved the importance of making design decisions based on research when creating practical, user-centred digital solutions.",
+    "tools": [
+      "Figma",
+      "Design system"
+    ],
+    "category": "ux",
+    "figma": 1,
+    "role": "",
+    "team": [],
+    "highlights": [],
+    "status": ""
+  },
+  {
+    "id": "proj-002",
+    "title": "TutorAid",
+    "type": "Interactive Development",
+    "solution": "React Web App",
+    "year": 2026,
+    "thumbnail": "",
+    "scenario": "Module brief",
+    "tagline": "Connecting students with reliable tutors for academic success.",
+    "shortDescription": "Connects students with reliable tutors for academic support.",
+    "fullDescription": "A React web app where students search for tutors by subject, availability and rating, then message and book sessions. Tutors build profiles that show their expertise and teaching style.",
+    "actions": [
+      {
+        "label": "GitHub repo",
+        "icon": "github",
+        "url": "https://github.com/GabyNorris/TutorAid",
+        "fallbackUrl": "https://github.com/GabyNor05/TutorAid"
+      }
+    ],
+    "Deployement": [
+      {
+        "end": "Frontend",
+        "platform": "Vercel",
+        "url": "disabled"
+      },
+      {
+        "end": "Backend",
+        "platform": "Render",
+        "url": "https://tutor-aid.onrender.com/"
+      }
+    ],
+    "reflection": "This project was a full journey for me, not just in building a product, but in learning how to think like a full-stack developer. One of the biggest learning curves was setting up and maintaining the SQL database and ensuring secure communication between the frontend and backend. I also had to learn how to deploy both sides of the app separately, which required research, patience, and LOTS of trial-and-error. Through this, I really improved my debugging skills, my understanding of server-client communication, and how to optimise code for performance and loading speed.",
+    "tools": [
+      "React",
+      "Node.js",
+      "MySQL",
+      "REST API"
+    ],
+    "category": "dev",
+    "role": "Solo: chose the theme, designed UX, UI and API, built the full-stack system",
+    "highlights": [
+      "Based on real tutor challenges: booking and time management",
+      "Secure, usable full-stack build with brand and deployment",
+      "Frontend, backend and database all delivered"
+    ],
+    "team": [],
+    "status": ""
+  },
+  {
+    "id": "proj-003",
+    "title": "Disney+ Finder",
+    "type": "Interactive Development",
+    "solution": "React Web App",
+    "year": 2025,
+    "thumbnail": "",
+    "scenario": "Module brief",
+    "tagline": "Discover the best of Disney+ with ease.",
+    "shortDescription": "Discover high-quality Disney+ titles by rating, not endless scrolling.",
+    "fullDescription": "A React app that combines a curated Disney+ dataset with OMDb ratings and metadata. Users filter, sort and compare titles to quickly choose what to watch.",
+    "actions": [
+      {
+        "label": "GitHub repo",
+        "icon": "github",
+        "url": "https://github.com/GabyNor05/Disney_Finder"
+      }
+    ],
+    "reflection": "This project was a masterclass in frontend adaptability and problem-solving. When faced with a highly restrictive and poorly documented Disney Plus API that bottlenecked development, I strategically pivoted to the OMDB API, instantly restoring data reliability and fetch consistency. Alongside this backend migration, I overcame several UI/UX hurdles—refining CSS for optimal dropdown legibility, engineering a custom JavaScript alert system, and meticulously mapping data fields into Chart.js to create a highly responsive, visually engaging comparison tool.",
+    "tools": [
+      "React",
+      "Chart.js",
+      "Axios",
+      "React Router",
+      "OMDb API"
+    ],
+    "category": "dev",
+    "role": "Solo",
+    "highlights": [
+      "Pivoted from a restrictive Disney+ API to OMDb to keep data reliable",
+      "Chart.js comparison charts and a custom alert system",
+      "Multi-page navigation with React Router"
+    ],
+    "team": [],
+    "status": ""
+  },
+  {
+    "id": "proj-004",
+    "title": "Psychedelic Pixels",
+    "type": "Interactive Development",
+    "solution": "React Web App",
+    "year": 2025,
+    "thumbnail": "",
+    "scenario": "Module brief",
+    "tagline": "Celebrating the bizarre and extraordinary in art.",
+    "shortDescription": "An e-commerce site for unconventional, surreal and imaginative art.",
+    "fullDescription": "An online gallery and store for bold, offbeat artwork. It connects eccentric artists with collectors who want something unlike a traditional gallery.",
+    "actions": [],
+    "collaborators": [
+      {
+        "name": "Keabetswe Olifant",
+        "url": "https://github.com/KBOlifant"
+      },
+      {
+        "name": "Andre van Heerden",
+        "url": "https://github.com/andrevanheerden"
+      }
+    ],
+    "wireframes": [
+      "./images/wireframes/psychPixels/home",
+      "./images/wireframes/psychPixels/history"
+    ],
+    "reflection": "This project was a deep dive into the world of e-commerce development, and it taught me a lot about the complexities of building a platform that can handle product listings, user accounts, and secure transactions. One of the biggest challenges was integrating a payment gateway, which required me to learn about security best practices and how to handle sensitive user data. I also had to learn how to manage state effectively in a React application with multiple components and user interactions. Overall, this project was a great learning experience that helped me develop my skills in both frontend and backend development.",
+    "tools": [
+      "MongoDB",
+      "Express",
+      "React",
+      "Node.js"
+    ],
+    "category": "dev",
+    "role": "Team of three: admin pages and checkout",
+    "team": [
+      "André van Heerden: login and authentication",
+      "Keabetswe Olifant: customer pages",
+      "Gaby Norris: admin pages and checkout"
+    ],
+    "highlights": [
+      "MERN-stack e-commerce build with a strong brand identity",
+      "Extra features beyond the standard brief"
+    ],
+    "status": ""
+  },
+  {
+    "id": "proj-005",
+    "title": "Spoonful",
+    "type": "UX Design",
+    "solution": "Design System",
+    "year": 2025,
+    "thumbnail": "",
+    "scenario": "Module brief",
+    "tagline": "",
+    "shortDescription": "A design system for a Broadway-inspired cuisine festival.",
+    "fullDescription": "A design system that unifies the festival's identity across digital and print, with an earthy, vintage tone that blends food, music and theatre.",
+    "actions": [
+      {
+        "label": "Figma file",
+        "icon": "figma",
+        "url": "https://www.figma.com/design/MFGQH2Qm0DhFOHmjGzZeB4/Gaby-Norris---Design-System-Template?node-id=5498-15"
+      }
+    ],
+    "reflection": "A consistent and welcoming visual identity that connected digital and physical interactions was created with the Spoonful design system. The system effectively captured the cosiness and theatrical quality of the festival through the use of earthy tones, retro-inspired font, and modular elements. The study showed how using consistent design principles may improve user engagement across several touchpoints and build brand identification. Expanding accessibility rules, including motion design to enhance interactivity, and evaluating the scalability of system components across printed goods and social media campaigns are some of the upcoming enhancements.",
+    "tools": [
+      "Figma",
+      "Design tokens"
+    ],
+    "category": "ux",
+    "role": "",
+    "team": [],
+    "highlights": [],
+    "status": ""
+  },
+  {
+    "id": "proj-006",
+    "title": "BudgGo",
+    "type": "Personal Project",
+    "solution": "React Native App",
+    "year": 2026,
+    "thumbnail": "",
+    "scenario": "Personal project",
+    "shortDescription": "Details coming soon.",
+    "fullDescription": "Details coming soon.",
+    "actions": [],
+    "collaborators": [
+      {
+        "name": "Keabetswe Olifant",
+        "url": "https://github.com/KBOlifant"
+      }
+    ],
+    "wireframes": [
+      "./images/wireframes/budgGo/home",
+      "./images/wireframes/budgGo/history"
+    ],
+    "reflection": "...",
+    "tools": [],
+    "category": "dev",
+    "role": "",
+    "team": [],
+    "highlights": [],
+    "status": ""
+  },
+  {
+    "id": "proj-007",
+    "title": "Whelmer",
+    "type": "Interactive Development",
+    "solution": "React Native App",
+    "year": 2026,
+    "thumbnail": "",
+    "scenario": "Personal project",
+    "shortDescription": "A calm, ADHD-friendly focus and task app with an AI companion named Milo.",
+    "fullDescription": "Whelmer turns big goals into tiny steps. Milo, a Groq-powered AI friend, breaks tasks down, a personalised plan shapes replies and deadlines, and a vinyl-style Focus Zone timer adds soundscapes and gentle reminders.",
+    "actions": [
+      {
+        "label": "Figma file",
+        "icon": "figma",
+        "url": "https://www.figma.com/design/abDigYTVFUhQw7PPjyMaqO/Personal-Projects?node-id=402-112"
+      },
+      {
+        "label": "GitHub repo",
+        "icon": "github",
+        "url": "https://github.com/GabyNor05/Whelmer"
+      }
+    ],
+    "wireframes": [
+      "./images/wireframes/whelmer/home",
+      "./images/wireframes/whelmer/history"
+    ],
+    "reflection": "...",
+    "tools": [
+      "Expo SDK 57",
+      "React Native",
+      "TypeScript",
+      "Expo Router",
+      "Firebase Auth + Firestore",
+      "Groq API"
+    ],
+    "category": "dev",
+    "role": "Solo: design and development",
+    "tagline": "Less overwhelm. More doing.",
+    "highlights": [
+      "No red urgency cues, 48dp touch targets, light-only low-sensory palette",
+      "Shipped as an installable Android APK via EAS Build",
+      "Firestore rules: users only touch their own data",
+      "Debugging story: fixed a blank start screen on fresh installs by redirecting to Login or Home"
+    ],
+    "team": [],
+    "status": ""
+  },
+  {
+    "id": "proj-008",
+    "title": "SheIsDesign",
+    "type": "Interactive Development",
+    "solution": "Electron App",
+    "year": 2026,
+    "thumbnail": "",
+    "scenario": "Module brief",
+    "shortDescription": "A mentorship and events desktop app connecting South African women in design with mentors and sponsors.",
+    "fullDescription": "An NGO platform built as a React + Electron desktop app on a .NET 10 API with PostgreSQL. I led the team, built the admin dashboard, auth and judge flows, and helped normalise the database.",
+    "actions": [
+      {
+        "label": "GitHub repo",
+        "icon": "github",
+        "url": "https://github.com/GabyNor05/SheIsDesign"
+      }
+    ],
+    "collaborators": [
+      {
+        "name": "Anika de Beer",
+        "url": "https://github.com/OpenWindow231312"
+      },
+      {
+        "name": "Keabetswe Olifant",
+        "url": "https://github.com/KBOlifant"
+      },
+      {
+        "name": "Keagan Boucher",
+        "url": ""
+      }
+    ],
+    "wireframes": [
+      "./images/wireframes/sheIsDesign/home",
+      "./images/wireframes/sheIsDesign/history"
+    ],
+    "reflection": "...",
+    "tools": [
+      "React",
+      "Electron",
+      ".NET 10",
+      "PostgreSQL",
+      "Tailwind + DaisyUI",
+      "GitHub Actions"
+    ],
+    "category": "dev",
+    "role": "Project manager, frontend developer and client liaison",
+    "team": [
+      "Team of four"
+    ],
+    "highlights": [
+      "Repo owner: 80+ of 366 commits, 20 branches managed",
+      "66 tests passing, 80.4% line coverage, CI on every push",
+      "Four roles: Admin, Student, Pro, Judge",
+      "Recovered a broken main branch by reverting bad merges and rebuilding clean history"
+    ],
+    "status": ""
+  },
+  {
+    "id": "proj-009",
+    "title": "MedicalHQ",
+    "type": "Personal Project",
+    "solution": "Electron App",
+    "year": 2026,
+    "thumbnail": "",
+    "scenario": "Personal project",
+    "shortDescription": "...",
+    "fullDescription": "...",
+    "actions": [],
+    "collaborators": [
+      {
+        "name": "Keabetswe Olifant",
+        "url": "https://github.com/KBOlifant"
+      },
+      {
+        "name": "Tiana Kumm",
+        "url": ""
+      }
+    ],
+    "wireframes": [
+      "./images/wireframes/medHQ/home",
+      "./images/wireframes/medHQ/website",
+      "./images/wireframes/medHQ/mobile/history",
+      "./images/wireframes/medHQ/desktop/history"
+    ],
+    "reflection": "...",
+    "hidden": true,
+    "tools": [],
+    "category": "dev",
+    "role": "",
+    "team": [],
+    "highlights": [],
+    "status": ""
+  },
+  {
+    "id": "proj-010",
+    "title": "Amadea Safehouse",
+    "type": "UX Design",
+    "solution": "Website",
+    "year": 2025,
+    "thumbnail": "",
+    "scenario": "Module brief",
+    "shortDescription": "...",
+    "fullDescription": "...",
+    "actions": [
+      {
+        "label": "Figma file",
+        "icon": "figma",
+        "url": "https://www.figma.com/design/mxub4SDMQx8DkFhLZH0tGo/Amadea-Wireframes?node-id=0-1"
+      }
+    ],
+    "collaborators": [
+      {
+        "name": "Tiana Kumm",
+        "url": ""
+      },
+      {
+        "name": "Amané van den Heever",
+        "url": ""
+      },
+      {
+        "name": "Anushka Boshoff",
+        "url": ""
+      }
+    ],
+    "wireframes": [
+      "./images/wireframes/amadea/mobile/home",
+      "./images/wireframes/amadea/desktop/home"
+    ],
+    "reflection": "...",
+    "tools": [
+      "Figma",
+      "Wireframing"
+    ],
+    "category": "ux",
+    "role": "",
+    "team": [],
+    "highlights": [],
+    "status": ""
+  },
+  {
+    "id": "proj-011",
+    "title": "StoryWeave",
+    "type": "UX Design",
+    "solution": "Tablet App",
+    "year": 2026,
+    "thumbnail": "",
+    "scenario": "Module brief",
+    "shortDescription": "...",
+    "fullDescription": "...",
+    "actions": [
+      {
+        "label": "Figma file",
+        "icon": "figma",
+        "url": "https://www.figma.com/design/JgGpE1CPDKr3nMxVIDEh52/Story-Weave?node-id=310-101"
+      }
+    ],
+    "wireframes": [
+      "./images/wireframes/storyWeave/splash"
+    ],
+    "reflection": "...",
+    "tools": [
+      "Figma",
+      "Prototyping"
+    ],
+    "category": "ux",
+    "role": "",
+    "team": [],
+    "highlights": [],
+    "status": ""
+  },
+  {
+    "id": "proj-012",
+    "title": "Nia",
+    "type": "UX Design",
+    "solution": "AI-assisted Wearable Ecosystem",
+    "year": 2026,
+    "thumbnail": "",
+    "scenario": "Module brief",
+    "tagline": "Your Local AI Companion",
+    "shortDescription": "Nia: an AI-assisted wearable ecosystem for focus and productivity.",
+    "fullDescription": "Nia (Swahili for purpose) is a wearable AI assistant with biometric tracking. It helps users capture thoughts, self-regulate workflows and drop into deep focus.",
+    "actions": [
+      {
+        "label": "Figma file",
+        "icon": "figma",
+        "url": "https://www.figma.com/design/X2TuJacy9HjFsjW0z4jMmh/Nia?node-id=450-8"
+      }
+    ],
+    "wireframes": [
+      "./nia/wireframes/app/splash",
+      "./nia/wireframes/app/onboarding1",
+      "./nia/wireframes/app/onboarding2",
+      "./nia/wireframes/app/onboarding3",
+      "./nia/wireframes/app/onboarding4",
+      "./nia/wireframes/app/home",
+      "./nia/wireframes/app/notebook",
+      "./nia/wireframes/app/calendar",
+      "./nia/wireframes/watch/splash",
+      "./nia/wireframes/watch/home",
+      "./nia/wireframes/watch/brainDump",
+      "./nia/wireframes/watch/breakReminder"
+    ],
+    "reflection": "How do we stop professional burnout without driving users crazy? By pairing wearable heart rate tracking with desktop app monitoring, the ecosystem catches the exact moment deep focus turns into stressful frustration. Instead of forcing interruptions, it sends a gentle wrist buzz for a break and offers a quick voice brain dump to clear your head. The biggest lesson was finding the line between helpful tracking and feeling spied on. Our research showed that monitoring biometrics and screens feels like surveillance without strict boundaries. We solved this by building absolute user control directly into the interface, allowing anyone to manually set their focus baseline, choose tracked apps, or completely turn off break prompts.",
+    "tools": [
+      "Figma",
+      "Prototyping"
+    ],
+    "category": "ux",
+    "role": "",
+    "team": [],
+    "highlights": [],
+    "status": ""
+  },
+  {
+    "id": "proj-013",
+    "title": "MasterChef Broadway",
+    "type": "UX Design",
+    "solution": "Responsive Brand Activation Website",
+    "year": 2025,
+    "thumbnail": "",
+    "scenario": "Module brief",
+    "tagline": "A responsive website that brings the excitement of a Broadway-inspired culinary festival to life.",
+    "shortDescription": "A responsive website for a Broadway-inspired culinary festival.",
+    "fullDescription": "The festival's digital hub, covering event info, participating chefs and performers, and interactive features. Its design blends theatre and gastronomy.",
+    "actions": [
+      {
+        "label": "Figma file",
+        "icon": "figma",
+        "url": "https://www.figma.com/design/qFKRQ6PGmi5dpGjKfBgTiW/RD---Wireframes?node-id=58-469"
+      }
+    ],
+    "wireframes": [
+      "./masterChef/wireframes/desktop/before",
+      "./masterChef/wireframes/desktop/during",
+      "./masterChef/wireframes/desktop/after",
+      "./masterChef/wireframes/tablet/before",
+      "./masterChef/wireframes/tablet/during",
+      "./masterChef/wireframes/tablet/after",
+      "./masterChef/wireframes/mobile/before",
+      "./masterChef/wireframes/desktop/during",
+      "./masterChef/wireframes/mobile/after"
+    ],
+    "reflection": "Spoonful's brand activation, MasterChef Broadway and responsive website successfully combined culinary performance with theatrical spectacle.  The three phases of the activation (before, during, and after the event), provided viewers with continuous opportunities to interact with the brand.  Future improvements include expanding accessibility features, adding VR or live streaming for remote participation, and turning the website into a year-round engagement hub that sustains community interest outside of the festival.",
+    "tools": [
+      "Figma",
+      "Wireframing",
+      "Responsive design"
+    ],
+    "category": "ux",
+    "role": "",
+    "team": [],
+    "highlights": [],
+    "status": ""
+  },
+  {
+    "id": "proj-014",
+    "thumbnail": "",
+    "scenario": "Module brief",
+    "tagline": "A geolocation habit breaker.",
+    "reflection": "",
+    "tools": [
+      "Expo SDK 54",
+      "Expo Router",
+      "NativeWind",
+      "Firebase Firestore",
+      "GitHub Actions",
+      "EAS Build"
+    ],
+    "actions": [
+      {
+        "label": "Figma file",
+        "icon": "figma",
+        "url": "https://www.figma.com/design/abDigYTVFUhQw7PPjyMaqO/Personal-Projects?node-id=402-112"
+      },
+      {
+        "label": "Web portal",
+        "icon": "link",
+        "url": "https://gabynor05.github.io/get-up-and-go/"
+      },
+      {
+        "label": "GitHub repo",
+        "icon": "github",
+        "url": "https://github.com/GabyNor05/get-up-and-go"
+      }
+    ],
+    "title": "Get Up & Go",
+    "type": "Interactive Development",
+    "solution": "Mobile App + Web Portal",
+    "year": 2026,
+    "category": "dev",
+    "shortDescription": "A social activity app that gets people off the couch and into real-world plans with friends.",
+    "fullDescription": "Goers find nearby Happenings, form Circles, and earn Go-Points by scanning a venue QR. Partners and admins use a web portal with a printable QR poster, all on shared Firestore data.",
+    "role": "Solo: design and development",
+    "highlights": [
+      "Monorepo shipped as two deployments: Android APK and GitHub Pages portal",
+      "Tuned Metro watch folders to fix shared-package bundling",
+      "Scoped an 8-week idea to a 4-week brief by triaging core flows first",
+      "Dark mode and font scaling; indigo, celery and beige palette"
+    ],
+    "team": [],
+    "status": ""
+  },
+  {
+    "id": "proj-015",
+    "thumbnail": "",
+    "scenario": "Module brief",
+    "tagline": "",
+    "reflection": "",
+    "tools": [
+      "Figma",
+      "Service design"
+    ],
+    "actions": [
+      {
+        "label": "Figma file",
+        "icon": "figma",
+        "url": "https://www.figma.com/design/ZqO3qFy1fpA8sOxnYuBZKp/Service-Design-G8?node-id=1176-3597"
+      }
+    ],
+    "title": "MakerSpace",
+    "type": "UX Design",
+    "solution": "Service Design",
+    "year": 2026,
+    "category": "ux",
+    "shortDescription": "A service design project for a makerspace system.",
+    "fullDescription": "Details coming soon.",
+    "role": "",
+    "team": [],
+    "highlights": [],
+    "status": ""
+  },
+  {
+    "id": "proj-016",
+    "thumbnail": "",
+    "scenario": "Module brief",
+    "tagline": "",
+    "reflection": "",
+    "tools": [
+      "Figma"
+    ],
+    "actions": [
+      {
+        "label": "Figma file",
+        "icon": "figma",
+        "url": "https://www.figma.com/design/v4z97EeOhVzp0bkVzubTHP/Uplifters?node-id=62-169"
+      }
+    ],
+    "title": "Uplifters",
+    "type": "UX Design",
+    "solution": "Details coming soon",
+    "year": 2026,
+    "category": "ux",
+    "shortDescription": "Details coming soon.",
+    "fullDescription": "Details coming soon.",
+    "role": "",
+    "team": [],
+    "highlights": [],
+    "status": ""
+  },
+  {
+    "id": "proj-017",
+    "thumbnail": "",
+    "scenario": "Module brief",
+    "tagline": "",
+    "reflection": "",
+    "tools": [
+      "Figma"
+    ],
+    "actions": [
+      {
+        "label": "Figma file",
+        "icon": "figma",
+        "url": "https://www.figma.com/design/u1Ieuy4qXE2EmqVi5XZgbE/Hackathon-26?node-id=0-1"
+      }
+    ],
+    "title": "Creative Technologies Hackathon",
+    "type": "Hackathon",
+    "solution": "Details coming soon",
+    "year": 2026,
+    "category": "ux",
+    "shortDescription": "Details coming soon.",
+    "fullDescription": "Details coming soon.",
+    "role": "",
+    "team": [],
+    "highlights": [],
+    "status": ""
+  },
+  {
+    "id": "proj-018",
+    "thumbnail": "",
+    "scenario": "Module brief",
+    "tagline": "",
+    "reflection": "",
+    "tools": [
+      "Figma"
+    ],
+    "actions": [
+      {
+        "label": "Figma file",
+        "icon": "figma",
+        "url": "https://www.figma.com/design/29YeBdzaJQGa9UBPIJXofO/DV-Work?node-id=0-1"
+      },
+      {
+        "label": "GitHub repo",
+        "icon": "github",
+        "url": "https://github.com/GabyNor05/StageVote"
+      }
+    ],
+    "title": "StageVote",
+    "type": "Personal Project",
+    "solution": "Voting Platform",
+    "year": 2025,
+    "category": "dev",
+    "status": "Incomplete",
+    "shortDescription": "A voting platform for MasterChef Broadway (work in progress).",
+    "fullDescription": "A voting platform built for the MasterChef Broadway festival. It is still incomplete.",
+    "role": "",
+    "team": [],
+    "highlights": []
+  }
+]
