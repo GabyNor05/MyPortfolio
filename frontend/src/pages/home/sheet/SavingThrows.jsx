@@ -1,4 +1,5 @@
 import React from "react";
+import { Plus } from "lucide-react";
 import { sheet } from "../../../data/portfolioData";
 import { useDice, signed } from "../../../lib/dice";
 
@@ -19,7 +20,7 @@ export default function SavingThrows() {
       </div>
       <div className="notes">
         {sheet.saveNotes.map((n, i) => (
-          <div className="note" key={n.text}><span className={`hex ${i ? "alt" : ""}`} aria-hidden="true">{n.kind}</span><span>{n.text}</span></div>
+          <div className="note" key={n.text}><span className={`hex ${i ? "alt" : ""}`} aria-hidden="true">{n.kind === "+" ? <Plus size={13} strokeWidth={3.5} /> : n.kind}</span><span>{n.text}</span></div>
         ))}
       </div>
       <div className="panel-title">Saving throws</div>

@@ -54,10 +54,28 @@ function Overview({ go }) {
   );
 }
 
+function HoverCard({ p, rect }) {
+  const W = 340;
+  const left = Math.max(12, Math.min(rect.left + rect.width * 0.3, window.innerWidth - W - 12));
+  const below = rect.bottom + 340 < window.innerHeight;
+  const style = below ? { left, top: rect.bottom + 6 } : { left, bottom: window.innerHeight - rect.top + 6 };
+  return (
+    <div className="hover-card" style={{ ...style, width: W }} role="tooltip">
+      <div className="car-thumb" style={{ aspectRatio: "16/8" }}>{p.title.charAt(0)}</div>
+      <div style={{ padding: "10px 14px 14px" }}>
+        <div className="proj-title" style={{ fontSize: 18 }}>{p.title}</div>
+        <div className="rc" style={{ fontSize: 12, color: "var(--muted)", margin: "2px 0 8px" }}>{p.type} · {p.solution} · {p.year}</div>
+        <div style={{ fontSize: 14, lineHeight: 1.55, color: "var(--text-2)" }}>{real(p.fullDescription) || blurb(p)}</div>
+      </div>
+    </div>
+  );
+}
+
 function Projects() {
   const { projects } = useProjects();
   const [type, setType] = useState("All");
   const [year, setYear] = useState("All");
+  const [hover, setHover] = useState(null);
   const types = useMemo(() => ["All", ...new Set(projects.map((p) => p.type))], [projects]);
   const years = useMemo(() => {
     const ys = new Set(projects.map((p) => p.year));
@@ -90,7 +108,16 @@ function Projects() {
         </div>
       )}
       {shown.map((p) => (
-        <div className="proj-row" key={p.id}>
+        <Link
+          to={`/project/${p.id}`}
+          className="proj-row"
+          key={p.id}
+          aria-label={`View quest: ${p.title}`}
+          onMouseEnter={(e) => setHover({ p, rect: e.currentTarget.getBoundingClientRect() })}
+          onMouseLeave={() => setHover(null)}
+          onFocus={(e) => setHover({ p, rect: e.currentTarget.getBoundingClientRect() })}
+          onBlur={() => setHover(null)}
+        >
           <div className="proj-ico">{p.title.charAt(0)}</div>
           <div style={{ flex: "2 1 180px", minWidth: 0 }}>
             <div className="proj-title">{p.title}</div>
@@ -99,11 +126,10 @@ function Projects() {
           <div className="proj-cell" style={{ flex: "1 1 120px" }}>{p.type}</div>
           <div className="proj-cell" style={{ flex: "0 0 44px" }}>{p.year}</div>
           <div className="proj-cell" style={{ flex: "1 1 110px" }}>{p.solution}</div>
-          <Link to={`/project/${p.id}`} className="thin" style={{ flex: "0 0 110px", justifyContent: "center", gap: 6, fontSize: 11, letterSpacing: ".1em" }} aria-label={`View quest: ${p.title}`}>
-            View quest <ChevronRight size={12} />
-          </Link>
-        </div>
+          <span className="thin view-quest">View quest <ChevronRight size={12} /></span>
+        </Link>
       ))}
+      {hover && <HoverCard {...hover} />}
       {shown.length === 0 && (
         <div className="empty">
           <D20 size={34} stroke="var(--accent)" />

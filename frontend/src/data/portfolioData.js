@@ -499,8 +499,24 @@ export const sheet = {
     { name: "[Add a skill]", level: 5 },
   ],
   training: [
-    { title: "Platforms & hosting", items: "Firebase, GitHub Pages, Render, Vercel, MongoDB" },
     { title: "Tools", items: "Figma, Visual Studio Code, GitHub, Canva, [add more]" },
+    { title: "Platforms & hosting", items: "Firebase, GitHub Pages, Render, Vercel, MongoDB" },
     { title: "AI assistants", items: "Claude, Gemini, Copilot, ChatGPT, Skywork AI, [one more]" },
   ],
 };
+
+// ---- Brief summaries (portfolio shows summaries, not full write-ups) ----
+const BRIEF = {
+  "proj-001": ["Identify edible mushrooms and avoid toxic lookalikes with image recognition.", "A mobile app that uses image recognition to identify edible mushrooms and flag toxic lookalikes. Offline mode, an in-app journal and community review support safe, educated foraging."],
+  "proj-002": ["Connects students with reliable tutors for academic support.", "A React web app where students search for tutors by subject, availability and rating, then message and book sessions. Tutors build profiles that show their expertise and teaching style."],
+  "proj-003": ["Discover high-quality Disney+ titles by rating, not endless scrolling.", "A React app that combines a curated Disney+ dataset with OMDb ratings and metadata. Users filter, sort and compare titles to quickly choose what to watch."],
+  "proj-004": ["An e-commerce site for unconventional, surreal and imaginative art.", "An online gallery and store for bold, offbeat artwork. It connects eccentric artists with collectors who want something unlike a traditional gallery."],
+  "proj-005": ["A design system for a Broadway-inspired cuisine festival.", "A design system that unifies the festival's identity across digital and print, with an earthy, vintage tone that blends food, music and theatre."],
+  "proj-012": ["Nia: an AI-assisted wearable ecosystem for focus and productivity.", "Nia (Swahili for purpose) is a wearable AI assistant with biometric tracking. It helps users capture thoughts, self-regulate workflows and drop into deep focus."],
+  "proj-013": ["A responsive website for a Broadway-inspired culinary festival.", "The festival's digital hub, covering event info, participating chefs and performers, and interactive features. Its design blends theatre and gastronomy."],
+};
+projectData.forEach((p) => {
+  if (BRIEF[p.id]) { p.shortDescription = BRIEF[p.id][0]; p.fullDescription = BRIEF[p.id][1]; }
+  if (p.id === "proj-007") p.type = "Interactive Development"; // Whelmer is a school project
+  if (p.id === "proj-009") p.hidden = true;                    // MedicalHQ: hidden until there is content
+});

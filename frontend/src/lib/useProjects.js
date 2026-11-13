@@ -3,9 +3,11 @@ import { collection, getDocs } from "firebase/firestore";
 import { db, isFirebaseConfigured } from "./firebase";
 import { projectData } from "../data/portfolioData";
 
+const visible = (p) => p.hidden !== true;
+
 // Shows local data instantly, then swaps in Firestore data if the collection has any.
 export function useProjects() {
-  const [projects, setProjects] = useState(projectData);
+  const [projects, setProjects] = useState(() => projectData.filter(visible));
   const [source, setSource] = useState("local");
 
   useEffect(() => {
@@ -14,7 +16,7 @@ export function useProjects() {
     getDocs(collection(db, "projects"))
       .then((snap) => {
         if (cancelled || snap.empty) return;
-        setProjects(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        setProjects(snap.docs.map((d) => ({ id: d.id, ...d.data() })).filter(visible));
         setSource("firestore");
       })
       .catch((err) => console.warn("Firestore unavailable, using local data:", err.message));
