@@ -180,7 +180,6 @@ export const sheet = {
     { name: "C#", level: 4 },
     { name: "Java", level: 3 },
   ],
-  languagesNote: "Currently learning: [your next language]",
   // Soft skills and "get to know me" skills. level 7+ = filled dot.
   skills: [
     { name: "Music", level: 8 },

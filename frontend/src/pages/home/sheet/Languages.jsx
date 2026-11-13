@@ -12,7 +12,6 @@ export default function Languages() {
           <button type="button" className="circle roll" aria-label={`Roll ${l.name}, d20 +${l.level}`} onClick={() => roll(l.name, l.level, 20)}>{l.level}</button>
         </div>
       ))}
-      <div className="lang-note">{sheet.languagesNote}</div>
       <div className="panel-title" style={{ paddingTop: 0 }}>Languages</div>
     </section>
   );
