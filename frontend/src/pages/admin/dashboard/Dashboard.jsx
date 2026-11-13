@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, getDocs, orderBy, query, doc, setDoc, deleteDoc } from "firebase/firestore";
-import { Plus, Pencil, Trash2, Download, UploadCloud, Eye, EyeOff, LogOut, ArrowLeft } from "lucide-react";
+import { Plus, Pencil, Trash2, Download, UploadCloud, Eye, EyeOff, LogOut, ArrowLeft, LayoutDashboard, FolderKanban, Inbox, HelpCircle } from "lucide-react";
 import { auth, db, isFirebaseConfigured } from "../../../lib/firebase";
 import { ADMIN_EMAIL } from "../../../lib/firebaseConfig";
 import { projectData } from "../../../data/portfolioData";
@@ -133,23 +133,45 @@ export default function Dashboard() {
   if (user === undefined) return <main className="page"><p className="lede">Loading…</p></main>;
   if (!isAdmin) return <main className="page"><div className="panel adm-card"><h1 className="h2">Not authorised</h1><p className="lede">Please <Link to="/auth" style={{ color: "var(--accent)" }}>sign in</Link> with the owner account.</p></div></main>;
 
+  const NAV = [["overview", "Overview", LayoutDashboard], ["projects", "Projects", FolderKanban], ["messages", "Messages", Inbox], ["help", "How to publish", HelpCircle]];
+  const hiddenCount = projects.filter((p) => p.hidden).length;
   return (
-    <main className="page">
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10 }}>
-        <div><div className="eyebrow">Manage</div><h1 className="h1" style={{ fontSize: 34 }}>Dashboard</h1></div>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          <Link to="/" className="thin"><ArrowLeft size={14} />View site</Link>
-          {isFirebaseConfigured && <button className="thin" onClick={() => signOut(auth)}><LogOut size={14} />Sign out</button>}
+    <div className="adm-shell">
+      <aside className="adm-side">
+        <div className="adm-brand"><span className="hdr-logo" style={{ width: 40, height: 40, fontSize: 18 }}>GN</span><div><b>Portfolio</b><div style={{ fontSize: 12, color: "var(--muted)" }}>Admin</div></div></div>
+        <nav aria-label="Admin sections">
+          {NAV.map(([id, label, Icon]) => (
+            <button key={id} type="button" className="adm-link" aria-current={tab === id ? "page" : undefined} onClick={() => { setTab(id); setEditing(null); }}>
+              <Icon size={16} />{label}{id === "messages" && messages.length > 0 && <span className="adm-badge">{messages.length}</span>}
+            </button>
+          ))}
+        </nav>
+        <div className="adm-side-foot">
+          <Link to="/" className="adm-link"><ArrowLeft size={16} />View site</Link>
+          {isFirebaseConfigured && <button type="button" className="adm-link" onClick={() => signOut(auth)}><LogOut size={16} />Sign out</button>}
         </div>
-      </div>
-
+      </aside>
+      <main className="adm-main">
+      <h1 className="h1" style={{ fontSize: 30, marginTop: 0 }}>{NAV.find((n) => n[0] === tab)[1]}</h1>
       {!isFirebaseConfigured && <div className="panel adm-card" style={{ borderColor: "var(--accent)" }}>Firebase isn't set up yet, so edits stay on this page. Use <b>Download JSON</b> and replace <code>src/data/projects.json</code> to publish them.</div>}
       {note && <div className="panel adm-card" role="status">{note}</div>}
 
-      <div className="tabs" style={{ border: 0, padding: 0 }}>
-        <button className="tab" aria-selected={tab === "projects"} onClick={() => setTab("projects")}>Projects ({projects.length})</button>
-        <button className="tab" aria-selected={tab === "messages"} onClick={() => setTab("messages")}>Messages ({messages.length})</button>
-      </div>
+      {tab === "overview" && (
+        <>
+          <div className="adm-stats">
+            {[["Projects", projects.length], ["Live on site", projects.length - hiddenCount], ["Hidden", hiddenCount], ["Messages", messages.length]].map(([l, n]) => (
+              <div className="panel adm-card" key={l}><div className="eyebrow" style={{ fontSize: 11 }}>{l}</div><div className="h1" style={{ fontSize: 36, margin: 0 }}>{n}</div></div>
+            ))}
+          </div>
+          <div className="btn-row"><button className="solid" onClick={() => { setTab("projects"); setEditing(blank()); }}><Plus size={15} />New project</button><button className="thin" onClick={() => setTab("projects")}>Manage projects</button></div>
+        </>
+      )}
+      {tab === "help" && (
+        <section className="panel adm-card">
+          <p className="quote">Edits you save here go live on the site straight away (when Firebase is connected). Use the eye icon to hide a project without deleting it. "Download JSON" gives you a backup copy of all projects.</p>
+          <p className="quote">Contact-form messages arrive under Messages. Sign in is limited to the owner's Google account.</p>
+        </section>
+      )}
 
       {tab === "projects" && (editing ? (
         <Editor project={editing} onSave={save} onCancel={() => setEditing(null)} saving={saving} />
@@ -190,6 +212,7 @@ export default function Dashboard() {
           ))}
         </section>
       )}
-    </main>
+      </main>
+    </div>
   );
 }
