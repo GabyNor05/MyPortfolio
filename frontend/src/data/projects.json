@@ -28,7 +28,8 @@
     "role": "",
     "team": [],
     "highlights": [],
-    "status": ""
+    "status": "",
+    "gallery": []
   },
   {
     "id": "proj-002",
@@ -36,7 +37,7 @@
     "type": "Interactive Development",
     "solution": "React Web App",
     "year": 2025,
-    "thumbnail": "",
+    "thumbnail": "projects/tutoraid/cover.jpg",
     "scenario": "Module brief",
     "tagline": "Connecting students with reliable tutors for academic success.",
     "shortDescription": "Connects students with reliable tutors for academic support.",
@@ -76,7 +77,10 @@
       "Frontend, backend and database all delivered"
     ],
     "team": [],
-    "status": ""
+    "status": "",
+    "gallery": [
+      "projects/tutoraid/g1.jpg"
+    ]
   },
   {
     "id": "proj-003",
@@ -84,7 +88,7 @@
     "type": "Interactive Development",
     "solution": "React Web App",
     "year": 2025,
-    "thumbnail": "",
+    "thumbnail": "projects/disney-finder/cover.jpg",
     "scenario": "Module brief",
     "tagline": "Discover the best of Disney+ with ease.",
     "shortDescription": "Discover high-quality Disney+ titles by rating, not endless scrolling.",
@@ -112,7 +116,10 @@
       "Multi-page navigation with React Router"
     ],
     "team": [],
-    "status": ""
+    "status": "",
+    "gallery": [
+      "projects/disney-finder/g1.jpg"
+    ]
   },
   {
     "id": "proj-004",
@@ -120,7 +127,7 @@
     "type": "Interactive Development",
     "solution": "React Web App",
     "year": 2025,
-    "thumbnail": "",
+    "thumbnail": "projects/psychedelic-pixels/cover.jpg",
     "scenario": "Module brief",
     "tagline": "Celebrating the bizarre and extraordinary in art.",
     "shortDescription": "An e-commerce site for unconventional, surreal and imaginative art.",
@@ -158,7 +165,11 @@
       "MERN-stack e-commerce build with a strong brand identity",
       "Extra features beyond the standard brief"
     ],
-    "status": ""
+    "status": "",
+    "gallery": [
+      "projects/psychedelic-pixels/g1.jpg",
+      "projects/psychedelic-pixels/g2.jpg"
+    ]
   },
   {
     "id": "proj-005",
@@ -192,7 +203,8 @@
       "Tone of voice: enthusiastic, welcoming, witty and trustworthy",
       "Full system: brand strategy, atoms, molecules, organisms and wireframes"
     ],
-    "status": ""
+    "status": "",
+    "gallery": []
   },
   {
     "id": "proj-006",
@@ -221,7 +233,8 @@
     "role": "",
     "team": [],
     "highlights": [],
-    "status": ""
+    "status": "",
+    "gallery": []
   },
   {
     "id": "proj-007",
@@ -229,7 +242,7 @@
     "type": "Interactive Development",
     "solution": "React Native App",
     "year": 2026,
-    "thumbnail": "",
+    "thumbnail": "projects/whelmer/cover.jpg",
     "scenario": "Personal project",
     "shortDescription": "A calm, ADHD-friendly focus and task app with an AI companion named Milo.",
     "fullDescription": "Whelmer turns big goals into tiny steps. Milo, a Groq-powered AI friend, breaks tasks down, a personalised plan shapes replies and deadlines, and a vinyl-style Focus Zone timer adds soundscapes and gentle reminders.",
@@ -268,7 +281,12 @@
       "Debugging story: fixed a blank start screen on fresh installs by redirecting to Login or Home"
     ],
     "team": [],
-    "status": ""
+    "status": "",
+    "gallery": [
+      "projects/whelmer/g1.jpg",
+      "projects/whelmer/g2.jpg",
+      "projects/whelmer/g3.jpg"
+    ]
   },
   {
     "id": "proj-008",
@@ -276,7 +294,7 @@
     "type": "Interactive Development",
     "solution": "Electron App",
     "year": 2026,
-    "thumbnail": "",
+    "thumbnail": "projects/sheisdesign/cover.jpg",
     "scenario": "Module brief",
     "shortDescription": "A mentorship and events desktop app connecting South African women in design with mentors and sponsors.",
     "fullDescription": "An NGO platform built as a React + Electron desktop app on a .NET 10 API with PostgreSQL. I led the team, built the admin dashboard, auth and judge flows, and helped normalise the database.",
@@ -325,7 +343,12 @@
       "Four roles: Admin, Student, Pro, Judge",
       "Recovered a broken main branch by reverting bad merges and rebuilding clean history"
     ],
-    "status": ""
+    "status": "",
+    "gallery": [
+      "projects/sheisdesign/g1.jpg",
+      "projects/sheisdesign/g2.jpg",
+      "projects/sheisdesign/g3.jpg"
+    ]
   },
   {
     "id": "proj-009",
@@ -361,7 +384,8 @@
     "role": "",
     "team": [],
     "highlights": [],
-    "status": ""
+    "status": "",
+    "gallery": []
   },
   {
     "id": "proj-010",
@@ -415,7 +439,8 @@
       "Persona-led wireframes became the foundation for layout and feel"
     ],
     "status": "",
-    "tagline": "Making it easy to help."
+    "tagline": "Making it easy to help.",
+    "gallery": []
   },
   {
     "id": "proj-011",
@@ -450,7 +475,8 @@
       "Journey mapping pinpointed friction moments that shaped each feature",
       "Sketches, wireframes, style guide, then high-fidelity UI"
     ],
-    "status": ""
+    "status": "",
+    "gallery": []
   },
   {
     "id": "proj-012",
@@ -499,7 +525,8 @@
       "Usability testing fixed loops in onboarding, missing device pairing and information overload",
       "Zero-cloud approach and per-app tracking controls to protect privacy"
     ],
-    "status": ""
+    "status": "",
+    "gallery": []
   },
   {
     "id": "proj-013",
@@ -544,11 +571,12 @@
       "Winner announcement and visitor reviews built into the experience",
       "Theatre and gastronomy blended into one brand"
     ],
-    "status": ""
+    "status": "",
+    "gallery": []
   },
   {
     "id": "proj-014",
-    "thumbnail": "",
+    "thumbnail": "projects/get-up-and-go/cover.jpg",
     "scenario": "Module brief",
     "tagline": "A geolocation habit breaker.",
     "reflection": "",
@@ -592,7 +620,12 @@
       "Dark mode and font scaling; indigo, celery and beige palette"
     ],
     "team": [],
-    "status": ""
+    "status": "",
+    "gallery": [
+      "projects/get-up-and-go/g1.jpg",
+      "projects/get-up-and-go/g2.jpg",
+      "projects/get-up-and-go/g3.jpg"
+    ]
   },
   {
     "id": "proj-015",
@@ -626,7 +659,8 @@
       "Staff pain: job requests, cost lists and payments live in separate sheets",
       "Mapped the full journey from Google Form to Yoco invoice to production"
     ],
-    "status": ""
+    "status": "",
+    "gallery": []
   },
   {
     "id": "proj-016",
@@ -659,7 +693,8 @@
       "Every organisation verified twice: by AI document checks and by a person",
       "Tiered badges show exactly what was verified"
     ],
-    "status": ""
+    "status": "",
+    "gallery": []
   },
   {
     "id": "proj-017",
@@ -687,7 +722,8 @@
     "role": "",
     "team": [],
     "highlights": [],
-    "status": ""
+    "status": "",
+    "gallery": []
   },
   {
     "id": "proj-018",
@@ -724,6 +760,7 @@
       "Voting feed with search, filter and sort",
       "Submission form and a My Votes dashboard",
       "Brand: Spotlight Gold, Stage Black and Curtain Red with Montserrat and Open Sans"
-    ]
+    ],
+    "gallery": []
   }
 ]

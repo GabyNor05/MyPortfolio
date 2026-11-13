@@ -1,14 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ExternalLink } from "lucide-react";
 import { useProjects, isRealUrl } from "../../lib/useProjects";
+import { img } from "../../lib/assets";
 
 const real = (t) => (t && t !== "..." ? t : null);
 
 export default function ProjectPage() {
   const { id } = useParams();
   const { projects } = useProjects();
-  useEffect(() => { window.scrollTo(0, 0); }, [id]);
+  const [shot, setShot] = useState(0);
+  useEffect(() => { window.scrollTo(0, 0); setShot(0); }, [id]);
 
   const sorted = [...projects].sort((a, b) => b.year - a.year || a.title.localeCompare(b.title));
   const i = sorted.findIndex((p) => p.id === id);
@@ -38,7 +40,20 @@ export default function ProjectPage() {
       <div className="eyebrow" style={{ marginTop: 22 }}>{p.type} · {p.solution} · {p.year}{p.status ? ` · ${p.status}` : ""}</div>
       <h1 className="h1">{p.title}</h1>
       {real(p.tagline) && <div className="sub">{p.tagline}</div>}
-      <div className="media" style={{ margin: "20px 0" }}>{p.title} · media coming soon</div>
+      {(() => {
+        const shots = [p.thumbnail, ...(p.gallery || [])].filter(Boolean);
+        if (!shots.length) return <div className="media" style={{ margin: "20px 0" }}>{p.title} · images coming soon</div>;
+        return (
+          <div style={{ margin: "20px 0" }}>
+            <div className="media" style={{ padding: 0, overflow: "hidden" }}><img src={img(shots[Math.min(shot, shots.length - 1)])} alt={`${p.title} screenshot ${shot + 1}`} style={{ width: "100%", display: "block" }} /></div>
+            {shots.length > 1 && (
+              <div className="shots">{shots.map((s, k) => (
+                <button key={s} type="button" className="shot" aria-pressed={shot === k} aria-label={`Show image ${k + 1}`} onClick={() => setShot(k)}><img src={img(s)} alt="" /></button>
+              ))}</div>
+            )}
+          </div>
+        );
+      })()}
       <div style={{ display: "grid", gap: 16 }}>
         {real(p.scenario) && p.scenario !== "Module brief" && <Block title="The scenario"><p className="lede" style={{ margin: 0 }}>{p.scenario}</p></Block>}
         <Block title="The quest"><p className="lede" style={{ margin: 0 }}>{real(p.fullDescription) || real(p.shortDescription) || "Details coming soon."}</p></Block>

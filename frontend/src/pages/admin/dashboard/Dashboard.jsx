@@ -6,15 +6,16 @@ import { Plus, Pencil, Trash2, Download, UploadCloud, Eye, EyeOff, LogOut, Arrow
 import { auth, db, isFirebaseConfigured } from "../../../lib/firebase";
 import { ADMIN_EMAILS } from "../../../lib/firebaseConfig";
 import { projectData } from "../../../data/portfolioData";
+import headshot from "../../../assets/home/headshot.jpg";
 
 const TYPES = ["UX Design", "Interactive Development", "Personal Project", "Hackathon"];
 const lines = (v) => v.split("\n").map((x) => x.trim()).filter(Boolean);
 const slug = (t) => "proj-" + (t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || Date.now());
 
-const blank = () => ({ id: "", title: "", type: TYPES[0], solution: "", year: new Date().getFullYear(), shortDescription: "", fullDescription: "", tagline: "", role: "", status: "", hidden: false, tools: [], team: [], highlights: [], actions: [], thumbnail: "", reflection: "" });
+const blank = () => ({ id: "", title: "", type: TYPES[0], solution: "", year: new Date().getFullYear(), shortDescription: "", fullDescription: "", tagline: "", role: "", status: "", hidden: false, tools: [], team: [], highlights: [], actions: [], thumbnail: "", gallery: [], reflection: "" });
 
 // form <-> project conversion (arrays become editable text)
-const toForm = (p) => ({ ...blank(), ...p, tools: (p.tools || []).join(", "), team: (p.team || []).join("\n"), highlights: (p.highlights || []).join("\n"), actions: (p.actions || []).map((a) => `${a.label} | ${a.url}`).join("\n") });
+const toForm = (p) => ({ ...blank(), ...p, tools: (p.tools || []).join(", "), team: (p.team || []).join("\n"), highlights: (p.highlights || []).join("\n"), actions: (p.actions || []).map((a) => `${a.label} | ${a.url}`).join("\n"), gallery: (p.gallery || []).join("\n") });
 const fromForm = (f) => ({
   ...f,
   id: f.id || slug(f.title),
@@ -23,6 +24,7 @@ const fromForm = (f) => ({
   tools: f.tools.split(",").map((x) => x.trim()).filter(Boolean),
   team: lines(f.team),
   highlights: lines(f.highlights),
+  gallery: lines(f.gallery),
   actions: lines(f.actions).map((l) => {
     const [label, ...rest] = l.split("|");
     const url = rest.join("|").trim();
@@ -56,7 +58,8 @@ function Editor({ project, onSave, onCancel, saving }) {
         <Field label="Highlights (one per line)"><textarea style={{ minHeight: 80 }} value={f.highlights} onChange={set("highlights")} /></Field>
         <Field label="Links (one per line: Label | https://url)" wide><textarea style={{ minHeight: 80 }} value={f.actions} onChange={set("actions")} placeholder={"Figma file | https://figma.com/...\nGitHub repo | https://github.com/..."} /></Field>
         <Field label="Reflection" wide><textarea value={f.reflection} onChange={set("reflection")} /></Field>
-        <Field label="Thumbnail image URL"><input value={f.thumbnail} onChange={set("thumbnail")} /></Field>
+        <Field label="Cover image (URL or path like projects/nia/cover.jpg)"><input value={f.thumbnail} onChange={set("thumbnail")} /></Field>
+        <Field label="More images (one URL or path per line)"><textarea style={{ minHeight: 80 }} value={f.gallery} onChange={set("gallery")} /></Field>
         <Field label="Visibility"><label style={{ display: "flex", gap: 8, alignItems: "center", textTransform: "none", letterSpacing: 0, fontSize: 15, color: "var(--text)" }}><input type="checkbox" checked={f.hidden} onChange={set("hidden")} /> Hide this project from the site</label></Field>
       </div>
       <div className="btn-row">
@@ -138,7 +141,7 @@ export default function Dashboard() {
   return (
     <div className="adm-shell">
       <aside className="adm-side">
-        <div className="adm-brand"><span className="hdr-logo" style={{ width: 40, height: 40, fontSize: 18 }}>GN</span><div><b>Portfolio</b><div style={{ fontSize: 12, color: "var(--muted)" }}>Admin</div></div></div>
+        <div className="adm-brand"><img src={headshot} alt="" className="adm-avatar" /><div><b>Portfolio</b><div style={{ fontSize: 12, color: "var(--muted)" }}>Admin</div></div></div>
         <nav aria-label="Admin sections">
           {NAV.map(([id, label, Icon]) => (
             <button key={id} type="button" className="adm-link" aria-current={tab === id ? "page" : undefined} onClick={() => { setTab(id); setEditing(null); }}>

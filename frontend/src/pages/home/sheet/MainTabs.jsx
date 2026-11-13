@@ -6,6 +6,7 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useProjects } from "../../../lib/useProjects";
 import { db, isFirebaseConfigured } from "../../../lib/firebase";
 import { ADMIN_EMAIL } from "../../../lib/firebaseConfig";
+import { img } from "../../../lib/assets";
 import { LINKS } from "../../../lib/siteConfig";
 import { useDice } from "../../../lib/dice";
 import { pageContent } from "../../../data/portfolioData";
@@ -26,7 +27,7 @@ function HoverCard({ p, rect }) {
   const style = below ? { left, top: rect.bottom + 6 } : { left, bottom: window.innerHeight - rect.top + 6 };
   return (
     <div className="hover-card" style={{ ...style, width: W }} role="tooltip">
-      <div className="car-thumb" style={{ aspectRatio: "16/8" }}>{p.title.charAt(0)}</div>
+      <div className="car-thumb" style={{ aspectRatio: "16/9" }}>{p.thumbnail ? <img src={img(p.thumbnail)} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : p.title.charAt(0)}</div>
       <div style={{ padding: "10px 14px 14px" }}>
         <div className="proj-title" style={{ fontSize: 18 }}>{p.title}</div>
         <div className="rc" style={{ fontSize: 12, color: "var(--muted)", margin: "2px 0 8px" }}>{p.type} · {p.solution} · {p.year}</div>
@@ -83,7 +84,7 @@ function Projects() {
           onFocus={(e) => setHover({ p, rect: e.currentTarget.getBoundingClientRect() })}
           onBlur={() => setHover(null)}
         >
-          <div className="proj-ico">{p.title.charAt(0)}</div>
+          <div className="proj-ico">{p.thumbnail ? <img src={img(p.thumbnail)} alt="" loading="lazy" /> : p.title.charAt(0)}</div>
           <div style={{ flex: "2 1 180px", minWidth: 0 }}>
             <div className="proj-title">{p.title}</div>
             <div className="proj-blurb">{blurb(p)}</div>
