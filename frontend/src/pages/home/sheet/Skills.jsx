@@ -4,10 +4,10 @@ import { useDice, signed } from "../../../lib/dice";
 
 const label = (lvl) => (lvl >= 7 ? "Highly proficient" : lvl >= 4 ? "Proficient" : "Learning");
 
-export default function Skills() {
+export default function Skills({ embedded = false }) {
   const { roll } = useDice();
   return (
-    <section className="panel colB" aria-label="Skills">
+    <section className={embedded ? "sk-embed" : "panel colB"} aria-label="Skills">
       <div className="sk-head"><span style={{ width: 26 }}>Prof</span><span style={{ flexGrow: 1 }}>Skill</span><span style={{ width: 48, textAlign: "right" }}>Bonus</span></div>
       {sheet.skills.map((s) => (
         <div className="sk-row" key={s.name}>
@@ -16,7 +16,7 @@ export default function Skills() {
           <button type="button" className="sk-bonus roll" aria-label={`Roll ${s.name}, d20 ${signed(s.level)}`} onClick={() => roll(s.name, s.level, 20)}>{signed(s.level)}</button>
         </div>
       ))}
-      <div className="panel-title">Skills</div>
+      {!embedded && <div className="panel-title">Skills</div>}
     </section>
   );
 }

@@ -11,48 +11,13 @@ import { useDice } from "../../../lib/dice";
 import { pageContent } from "../../../data/portfolioData";
 import { TAB_EVENT } from "../tabBus";
 import D20 from "../../../components/sheet/D20";
+import Skills from "./Skills";
 
-const TABS = [["overview", "Overview"], ["projects", "Projects"], ["about", "About"], ["contact", "Contact"]];
+const TABS = [["projects", "Projects"], ["about", "About"], ["contact", "Contact"]];
 const find = (id) => pageContent.find((c) => c.id === id);
 const real = (t) => (t && t !== "..." ? t : null);
 
 export const blurb = (p) => real(p.shortDescription) || real(p.fullDescription) || "Details coming soon.";
-
-function Overview({ go }) {
-  const { projects } = useProjects();
-  const ref = useRef(null);
-  const list = useMemo(() => [...projects].sort((a, b) => b.year - a.year || a.title.localeCompare(b.title)), [projects]);
-  const scroll = (d) => ref.current && ref.current.scrollBy({ left: d * 420, behavior: "smooth" });
-  return (
-    <>
-      <div className="eyebrow">Hi, I'm</div>
-      <h1 className="h1">Gaby Norris</h1>
-      <div className="sub">Interactive Developer &amp; UX Designer</div>
-      <p className="lede">{find("content-001").description}</p>
-
-      <div className="car-head">
-        <div className="sec-h" style={{ flex: 1, marginBottom: 0, marginRight: 14 }}>Recent quests</div>
-        <div className="car-arrows">
-          <button type="button" className="thin icon-btn" aria-label="Scroll projects left" onClick={() => scroll(-1)}><ChevronLeft size={14} /></button>
-          <button type="button" className="thin icon-btn" aria-label="Scroll projects right" onClick={() => scroll(1)}><ChevronRight size={14} /></button>
-        </div>
-      </div>
-      <div className="car" ref={ref} tabIndex={0} aria-label="Project thumbnails">
-        {list.map((p) => (
-          <Link key={p.id} to={`/project/${p.id}`} className="car-card">
-            <div className="car-thumb">{p.title.charAt(0)}</div>
-            <div className="car-meta"><b>{p.title}</b><span>{p.type} · {p.year}</span></div>
-          </Link>
-        ))}
-      </div>
-
-      <div className="btn-row">
-        <button type="button" className="solid" onClick={() => go("projects")}>Open the quest log</button>
-        <button type="button" className="thin" style={{ minHeight: 36, padding: "0 18px", fontSize: 13 }} onClick={() => go("contact")}>Send a raven</button>
-      </div>
-    </>
-  );
-}
 
 function HoverCard({ p, rect }) {
   const W = 340;
@@ -148,7 +113,7 @@ function About() {
   return (
     <>
       <div className="subchips">
-        {["All", ...ABOUT.map((a) => a[1])].map((t) => (
+        {["All", ...ABOUT.map((a) => a[1]), "Skills"].map((t) => (
           <button key={t} type="button" className="chip" aria-pressed={f === t} onClick={() => setF(t)}>{t}</button>
         ))}
       </div>
@@ -162,6 +127,12 @@ function About() {
           </div>
         );
       })}
+      {(f === "All" || f === "Skills") && (
+        <div className="about-block">
+          <div className="sec-h">Skills</div>
+          <Skills embedded />
+        </div>
+      )}
     </>
   );
 }
@@ -208,15 +179,16 @@ function Contact() {
 }
 
 export default function MainTabs() {
-  const [tab, setTab] = useState("overview");
+  const panelRef = useRef(null);
+  const [tab, setTab] = useState("projects");
   useEffect(() => {
-    const on = (e) => setTab(e.detail);
+    const on = (e) => { setTab(e.detail); setTimeout(() => panelRef.current && panelRef.current.scrollIntoView({ behavior: "smooth", block: "start" }), 30); };
     window.addEventListener(TAB_EVENT, on);
     return () => window.removeEventListener(TAB_EVENT, on);
   }, []);
 
   return (
-    <section className="panel right-in" aria-label="Portfolio">
+    <section className="panel tabs-panel" aria-label="Portfolio" ref={panelRef}>
       <div className="tabs" role="tablist" aria-label="Portfolio sections">
         {TABS.map(([id, label]) => (
           <button key={id} type="button" role="tab" className="tab" aria-selected={tab === id} onClick={() => setTab(id)}>{label}</button>
@@ -224,7 +196,6 @@ export default function MainTabs() {
         <a className="thin linkedin" href={LINKS.linkedin || "https://www.linkedin.com/search/results/people/?keywords=Gaby%20Norris%20Open%20Window"} target="_blank" rel="noopener noreferrer"><FaLinkedin size={14} />LinkedIn</a>
       </div>
       <div className="tab-body" role="tabpanel">
-        {tab === "overview" && <Overview go={setTab} />}
         {tab === "projects" && <Projects />}
         {tab === "about" && <About />}
         {tab === "contact" && <Contact />}

@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaGithub, FaBehance } from "react-icons/fa";
 import { Volume2, Pause, Play, List, Sun, Moon } from "lucide-react";
-import headshot from "../../assets/home/headshot.jpg";
 import voiceover from "../../assets/home/converted_V1.mp3";
 import { LINKS, CAMPAIGN } from "../../lib/siteConfig";
 import { useDice } from "../../lib/dice";
@@ -28,14 +27,14 @@ export default function Header() {
     <header className="hdr">
       <div className="hdr-in">
         <div className="hdr-id">
-          <img src={headshot} alt="Portrait of Gaby Norris" />
+          <Link to="/" className="hdr-logo" aria-label="Gaby Norris home">GN</Link>
           <div className="hdr-text">
             <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
               <Link to="/" className="hdr-name">Gaby Norris</Link>
               <Link to="/auth" className="manage">Manage</Link>
             </div>
-            <div className="rc" style={{ fontSize: 15, color: "var(--text-2)", marginTop: 4 }}>Interactive Developer / UX Designer</div>
-            <div className="rc" style={{ fontSize: 13, color: "var(--text)", fontWeight: 700 }}>Level 3</div>
+            <div className="rc" style={{ fontSize: 15, color: "var(--text-2)", marginTop: 4 }}>Developer / User Experience Designer</div>
+            <div className="rc" style={{ fontSize: 13, color: "var(--muted)" }}>Final year · Bachelor of Creative Technologies</div>
           </div>
         </div>
 

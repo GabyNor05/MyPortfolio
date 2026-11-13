@@ -1,13 +1,11 @@
-// Small site-wide settings you may want to change without touching components.
+// Edit these to update links, background and campaign name across the site.
 export const LINKS = {
   github: "https://github.com/GabyNor05",
   behance: "https://www.behance.net/gabynorris1",
-  // Paste your LinkedIn profile URL here and a LinkedIn button appears in the tab row.
-  linkedin: "",
+  linkedin: "https://www.linkedin.com/in/gaby-norris",
 };
 
-// Paste an image URL (or an imported asset path) to fill the page background.
+// Optional page background image (a URL or an imported asset). Leave "" for none.
 export const BACKGROUND_IMAGE = "";
 
-// Shown in the header campaign box.
 export const CAMPAIGN = "Open Window Institute";

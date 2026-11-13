@@ -153,12 +153,12 @@ export const techStack = [
 // ---------------------------------------------------------------------------
 export const sheet = {
   abilities: [
-    { name: "React", score: 17 },
-    { name: "UX design", score: 18 },
-    { name: "React Native", score: 16 },
-    { name: "Databases", score: 15 },
-    { name: "Debugging", score: 14 },
-    { name: "[Your pick]", score: 10 },
+    { name: "Planning", score: 16 },
+    { name: "Analysis", score: 16 },
+    { name: "Design", score: 17 },
+    { name: "Implementation", score: 18 },
+    { name: "Testing", score: 10 },
+    { name: "Maintenance", score: null }, // not rated yet: shows "--"
   ],
   saves: [
     { name: "Bugs", bonus: 4, proficient: true },

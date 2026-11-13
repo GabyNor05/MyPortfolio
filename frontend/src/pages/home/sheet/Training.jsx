@@ -10,7 +10,7 @@ export default function Training() {
           <div className="tr-items">{g.items}</div>
         </div>
       ))}
-      <div className="panel-title" style={{ paddingTop: 12 }}>Proficiencies &amp; training</div>
+      <div className="panel-title" style={{ paddingTop: 12 }}>Tools</div>
     </aside>
   );
 }
