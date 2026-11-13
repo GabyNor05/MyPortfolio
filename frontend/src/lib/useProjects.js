@@ -16,7 +16,16 @@ export function useProjects() {
     getDocs(collection(db, "projects"))
       .then((snap) => {
         if (cancelled || snap.empty) return;
-        setProjects(snap.docs.map((d) => ({ id: d.id, ...d.data() })).filter(visible));
+        const local = Object.fromEntries(projectData.map((p) => [p.id, p]));
+        setProjects(snap.docs.map((d) => {
+          const data = d.data(), base = local[d.id] || {};
+          // Keep images from the code version when the saved copy has none.
+          return {
+            id: d.id, ...data,
+            thumbnail: data.thumbnail || base.thumbnail || "",
+            gallery: data.gallery && data.gallery.length ? data.gallery : base.gallery || [],
+          };
+        }).filter(visible));
         setSource("firestore");
       })
       .catch((err) => console.warn("Firestore unavailable, using local data:", err.message));

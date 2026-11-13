@@ -161,16 +161,16 @@ export const sheet = {
     { name: "Maintenance", score: null }, // not rated yet: shows "--"
   ],
   saves: [
-    { name: "Bugs", bonus: 4, proficient: true },
-    { name: "Due", bonus: 2, proficient: false },
+    { name: "React", bonus: 4, proficient: true },
+    { name: "State", bonus: 3, proficient: true },
     { name: "Merge", bonus: 3, proficient: false },
-    { name: "Review", bonus: 4, proficient: true },
+    { name: "Deploy", bonus: 2, proficient: false },
+    { name: "Due", bonus: 2, proficient: false },
     { name: "Scope", bonus: 1, proficient: false },
-    { name: "Rest", bonus: 2, proficient: false },
   ],
   saveNotes: [
     { kind: "A", text: "advantage when normalising databases" },
-    { kind: "+", text: "+1 on saves [add your own perk]" },
+    { kind: "+", text: "+1 on Deploy saves when the pipeline is green" },
   ],
   languages: [
     { name: "JavaScript", level: 7 },
@@ -183,22 +183,15 @@ export const sheet = {
   languagesNote: "Currently learning: [your next language]",
   // Soft skills and "get to know me" skills. level 7+ = filled dot.
   skills: [
+    { name: "Music", level: 8 },
+    { name: "Adaptability", level: 8 },
+    { name: "Customer service", level: 8 },
     { name: "Problem solving", level: 8 },
     { name: "Creativity", level: 8 },
-    { name: "Music", level: 8 },
-    { name: "Communication", level: 7 },
-    { name: "Teamwork", level: 7 },
-    { name: "Tutoring", level: 7 },
-    { name: "Attention to detail", level: 7 },
-    { name: "Adaptability", level: 7 },
-    { name: "Empathy", level: 7 },
-    { name: "Time management", level: 6 },
-    { name: "Customer service", level: 6 },
-    { name: "[Add a skill]", level: 5 },
   ],
   training: [
-    { title: "Tools", items: "Figma, Visual Studio Code, GitHub, Canva, [add more]" },
+    { title: "Tools", items: "Figma, Visual Studio Code, GitHub, Canva" },
     { title: "Platforms & hosting", items: "Firebase, GitHub Pages, Render, Vercel, MongoDB" },
-    { title: "AI assistants", items: "Claude, Gemini, Copilot, ChatGPT, Skywork AI, [one more]" },
+    { title: "AI assistants", items: "Claude, Gemini, Copilot, ChatGPT, Skywork AI" },
   ],
 };

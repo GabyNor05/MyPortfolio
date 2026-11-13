@@ -1,13 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { FaLinkedin } from "react-icons/fa";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { useProjects } from "../../../lib/useProjects";
 import { db, isFirebaseConfigured } from "../../../lib/firebase";
 import { ADMIN_EMAIL } from "../../../lib/firebaseConfig";
 import { img } from "../../../lib/assets";
-import { LINKS } from "../../../lib/siteConfig";
 import { useDice } from "../../../lib/dice";
 import { pageContent } from "../../../data/portfolioData";
 import { TAB_EVENT } from "../tabBus";
@@ -114,7 +112,7 @@ function About() {
   return (
     <>
       <div className="subchips">
-        {["All", ...ABOUT.map((a) => a[1]), "Skills"].map((t) => (
+        {["All", ...ABOUT.map((a) => a[1]), "Technology", "Skills"].map((t) => (
           <button key={t} type="button" className="chip" aria-pressed={f === t} onClick={() => setF(t)}>{t}</button>
         ))}
       </div>
@@ -128,6 +126,13 @@ function About() {
           </div>
         );
       })}
+      {(f === "All" || f === "Technology") && (
+        <div className="about-block">
+          <div className="sec-h">Technology</div>
+          <h2 className="h2" style={{ fontSize: 20 }}>Why I love tech</h2>
+          <p className="quote">I really think technology is cool. It has its risks and its dangers, but what it has done for the world is amazing, and above all impactful. Then there's the feeling of unboxing something new. It doesn't have to be the latest thing, just new to me, like a power bank or anything that's going to make my life easier. Unboxing is one of my favourite things. I also love watching how fast it moves. The moment I decide I want a phone, it's already outdated, and by the time it reaches the store there's a newer model. That's just how technology works, and it fascinates me how much the industry has grown and how much is possible with it.</p>
+        </div>
+      )}
       {(f === "All" || f === "Skills") && (
         <div className="about-block">
           <div className="sec-h">Skills</div>
@@ -194,7 +199,6 @@ export default function MainTabs() {
         {TABS.map(([id, label]) => (
           <button key={id} type="button" role="tab" className="tab" aria-selected={tab === id} onClick={() => setTab(id)}>{label}</button>
         ))}
-        <a className="thin linkedin" href={LINKS.linkedin || "https://www.linkedin.com/search/results/people/?keywords=Gaby%20Norris%20Open%20Window"} target="_blank" rel="noopener noreferrer"><FaLinkedin size={14} />LinkedIn</a>
       </div>
       <div className="tab-body" role="tabpanel">
         {tab === "projects" && <Projects />}
