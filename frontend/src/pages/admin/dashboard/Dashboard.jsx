@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { collection, getDocs, orderBy, query, doc, setDoc, deleteDoc } from "firebase/firestore";
-import { Plus, Pencil, Trash2, Download, UploadCloud, Eye, EyeOff, LogOut, ArrowLeft, LayoutDashboard, FolderKanban, Inbox, HelpCircle } from "lucide-react";
+import { collection, getDocs, orderBy, query, doc, setDoc, deleteDoc, updateDoc } from "firebase/firestore";
+import { sendEmail, emailReady, EMAILJS } from "../../../lib/emailConfig";
+import { Plus, Pencil, Trash2, Download, UploadCloud, Eye, EyeOff, LogOut, ArrowLeft, LayoutDashboard, FolderKanban, Inbox, HelpCircle, FileText, Check } from "lucide-react";
 import { auth, db, isFirebaseConfigured } from "../../../lib/firebase";
 import { ADMIN_EMAILS } from "../../../lib/firebaseConfig";
 import { projectData } from "../../../data/portfolioData";
@@ -76,6 +77,8 @@ export default function Dashboard() {
   const [projects, setProjects] = useState(projectData);
   const [source, setSource] = useState("local");
   const [messages, setMessages] = useState([]);
+  const [cvReqs, setCvReqs] = useState([]);
+  const [cvLink, setCvLink] = useState(() => { try { return localStorage.getItem("cvLink") || ""; } catch { return ""; } });
   const [editing, setEditing] = useState(null);
   const [saving, setSaving] = useState(false);
   const [note, setNote] = useState("");
@@ -94,10 +97,17 @@ export default function Dashboard() {
     if (!isFirebaseConfigured) return;
     try {
       const snap = await getDocs(query(collection(db, "messages"), orderBy("createdAt", "desc")));
-      setMessages(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+      const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+      setMessages(list);
+      return list;
     } catch (e) { setNote(e.message); }
   };
-  useEffect(() => { if (isAdmin) { loadProjects(); loadMessages(); } }, [isAdmin]);
+  const syncCount = async (list) => { try { await setDoc(doc(db, "meta", "unresolved"), { count: list.filter((m) => !m.resolved).length }); } catch (e) { console.warn(e.message); } };
+  const loadCv = async () => {
+    if (!isFirebaseConfigured) return;
+    try { const snap = await getDocs(query(collection(db, "cvRequests"), orderBy("createdAt", "desc"))); setCvReqs(snap.docs.map((d) => ({ id: d.id, ...d.data() }))); } catch (e) { console.warn(e.message); }
+  };
+  useEffect(() => { if (isAdmin) { loadProjects(); loadMessages().then((l) => l && syncCount(l)); loadCv(); } }, [isAdmin]);
 
   const sorted = useMemo(() => [...projects].sort((a, b) => b.year - a.year || a.title.localeCompare(b.title)), [projects]);
   const upsert = (p) => setProjects((list) => (list.some((x) => x.id === p.id) ? list.map((x) => (x.id === p.id ? p : x)) : [...list, p]));
@@ -131,12 +141,25 @@ export default function Dashboard() {
     const url = URL.createObjectURL(new Blob([JSON.stringify(sorted, null, 2)], { type: "application/json" }));
     const a = document.createElement("a"); a.href = url; a.download = "projects.json"; a.click(); URL.revokeObjectURL(url);
   };
-  const removeMessage = async (id) => { await deleteDoc(doc(db, "messages", id)); loadMessages(); };
+  const removeMessage = async (id) => { await deleteDoc(doc(db, "messages", id)); const l = await loadMessages(); l && syncCount(l); };
+  const toggleResolved = async (m) => { await updateDoc(doc(db, "messages", m.id), { resolved: !m.resolved }); const l = await loadMessages(); l && syncCount(l); };
+  const saveCvLink = (v) => { setCvLink(v); try { localStorage.setItem("cvLink", v); } catch { /* ignore */ } };
+  const sendCv = async (r) => {
+    if (!cvLink) { setNote("Paste your CV link first (the box at the top of this page)."); return; }
+    const ok = await sendEmail(EMAILJS.cvTemplate, { to_email: r.email, to_name: r.name, cv_link: cvLink });
+    if (!ok) { window.location.href = `mailto:${r.email}?subject=${encodeURIComponent("My CV")}&body=${encodeURIComponent(`Hi ${r.name},\n\nThanks for your interest. Here is my CV: ${cvLink}\n\nGaby`)}`; }
+    await updateDoc(doc(db, "cvRequests", r.id), { status: "sent" });
+    setNote(ok ? `CV sent to ${r.email}.` : "EmailJS isn't set up yet, so I opened your email app instead.");
+    loadCv();
+  };
+  const removeCv = async (id) => { await deleteDoc(doc(db, "cvRequests", id)); loadCv(); };
+  const unresolved = messages.filter((m) => !m.resolved).length;
+  const pendingCv = cvReqs.filter((r) => r.status !== "sent").length;
 
   if (user === undefined) return <main className="page"><p className="lede">Loading…</p></main>;
   if (!isAdmin) return <main className="page"><div className="panel adm-card"><h1 className="h2">Not authorised</h1><p className="lede">Please <Link to="/auth" style={{ color: "var(--accent)" }}>sign in</Link> with the owner account.</p></div></main>;
 
-  const NAV = [["overview", "Overview", LayoutDashboard], ["projects", "Projects", FolderKanban], ["messages", "Messages", Inbox], ["help", "How to publish", HelpCircle]];
+  const NAV = [["overview", "Overview", LayoutDashboard], ["projects", "Projects", FolderKanban], ["messages", "Messages", Inbox], ["cv", "CV requests", FileText], ["help", "How to publish", HelpCircle]];
   const hiddenCount = projects.filter((p) => p.hidden).length;
   return (
     <div className="adm-shell">
@@ -145,7 +168,7 @@ export default function Dashboard() {
         <nav aria-label="Admin sections">
           {NAV.map(([id, label, Icon]) => (
             <button key={id} type="button" className="adm-link" aria-current={tab === id ? "page" : undefined} onClick={() => { setTab(id); setEditing(null); }}>
-              <Icon size={16} />{label}{id === "messages" && messages.length > 0 && <span className="adm-badge">{messages.length}</span>}
+              <Icon size={16} />{label}{id === "messages" && unresolved > 0 && <span className="adm-badge">{unresolved}</span>}{id === "cv" && pendingCv > 0 && <span className="adm-badge">{pendingCv}</span>}
             </button>
           ))}
         </nav>
@@ -162,7 +185,7 @@ export default function Dashboard() {
       {tab === "overview" && (
         <>
           <div className="adm-stats">
-            {[["Projects", projects.length], ["Live on site", projects.length - hiddenCount], ["Hidden", hiddenCount], ["Messages", messages.length]].map(([l, n]) => (
+            {[["Projects", projects.length], ["Live on site", projects.length - hiddenCount], ["Hidden", hiddenCount], ["Unresolved messages", unresolved], ["CV requests", pendingCv]].map(([l, n]) => (
               <div className="panel adm-card" key={l}><div className="eyebrow" style={{ fontSize: 11 }}>{l}</div><div className="h1" style={{ fontSize: 36, margin: 0 }}>{n}</div></div>
             ))}
           </div>
@@ -200,6 +223,25 @@ export default function Dashboard() {
         </section>
       ))}
 
+      {tab === "cv" && (
+        <section className="panel adm-card">
+          <div className="field"><label htmlFor="cvl">Your CV link (e.g. Google Drive, "anyone with the link"). It's only stored in this browser.</label><input id="cvl" placeholder="https://drive.google.com/…" value={cvLink} onChange={(e) => saveCvLink(e.target.value)} /></div>
+          {!emailReady() && <p className="quote">EmailJS isn't set up yet, so "Send CV" will open your email app instead.</p>}
+          {cvReqs.length === 0 && <p className="quote">No CV requests yet.</p>}
+          {cvReqs.map((r) => (
+            <div key={r.id} className="proj-row" style={{ alignItems: "flex-start" }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div className="proj-title">{r.name} <span style={{ color: "var(--muted)", fontSize: 13 }}>· {r.company}{r.status === "sent" ? " · sent" : ""}</span></div>
+                <a href={`mailto:${r.email}`} style={{ color: "var(--accent)", fontSize: 14 }}>{r.email}</a>
+                <p className="quote" style={{ whiteSpace: "pre-wrap" }}>{r.reason}</p>
+              </div>
+              <button className="solid" onClick={() => sendCv(r)}>{r.status === "sent" ? "Send again" : "Send CV"}</button>
+              <button className="thin icon-btn" aria-label="Delete request" onClick={() => removeCv(r.id)}><Trash2 size={14} /></button>
+            </div>
+          ))}
+        </section>
+      )}
+
       {tab === "messages" && (
         <section className="panel adm-card">
           {messages.length === 0 && <p className="quote">No messages yet.</p>}
@@ -210,6 +252,7 @@ export default function Dashboard() {
                 <a href={`mailto:${m.email}`} style={{ color: "var(--accent)", fontSize: 14 }}>{m.email}</a>
                 <p className="quote" style={{ whiteSpace: "pre-wrap" }}>{m.message}</p>
               </div>
+              <button className="thin" onClick={() => toggleResolved(m)}><Check size={14} />{m.resolved ? "Resolved" : "Mark resolved"}</button>
               <button className="thin icon-btn" aria-label="Delete message" onClick={() => removeMessage(m.id)}><Trash2 size={14} /></button>
             </div>
           ))}

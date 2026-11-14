@@ -172,6 +172,11 @@ export const sheet = {
     { kind: "A", text: "advantage when normalising databases" },
     { kind: "+", text: "+1 on Deploy saves when the pipeline is green" },
   ],
+  experience: [
+    { role: "Bachelor of Creative Technologies", org: "Open Window Institute", when: "2024 – 2026", text: "Interactive Development and UX Design: building React and React Native products and designing high-fidelity mobile experiences." },
+    { role: "Part-time receptionist", org: "The Pod Practice", when: "[add dates]", text: "Front-of-house and client communication while studying. [Add what you're proudest of]" },
+    { role: "English tutor", org: "Private tutoring", when: "[add dates]", text: "Planned lessons and worksheets for primary-school learners. [Add detail]" },
+  ],
   languages: [
     { name: "JavaScript", level: 7 },
     { name: "TypeScript", level: 5 },

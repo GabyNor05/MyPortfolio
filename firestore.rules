@@ -36,5 +36,25 @@ service cloud.firestore {
         && request.resource.data.createdAt == request.time;
       allow read, update, delete: if isAdmin();
     }
+
+    // CV requests: anyone can submit one; only the admin can read, update or delete.
+    match /cvRequests/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['name', 'company', 'email', 'reason', 'createdAt'])
+        && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100
+        && request.resource.data.company is string && request.resource.data.company.size() > 0 && request.resource.data.company.size() <= 100
+        && request.resource.data.email is string && request.resource.data.email.matches('.+@.+\\..+') && request.resource.data.email.size() <= 200
+        && request.resource.data.reason is string && request.resource.data.reason.size() > 0 && request.resource.data.reason.size() <= 1000
+        && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Counter of unresolved messages (so the site can send a reminder at 5, 10, 15...).
+    // Visitors may only add exactly 1; the admin sets it.
+    match /meta/unresolved {
+      allow read: if true;
+      allow write: if isAdmin();
+      allow update: if request.resource.data.keys().hasOnly(['count'])
+        && request.resource.data.count == resource.data.count + 1;
+    }
   }
 }

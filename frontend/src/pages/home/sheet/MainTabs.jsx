@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp, doc, updateDoc, getDoc, increment } from "firebase/firestore";
+import { notifyOwner, REMINDER_EVERY } from "../../../lib/emailConfig";
 import { useProjects } from "../../../lib/useProjects";
 import { db, isFirebaseConfigured } from "../../../lib/firebase";
 import { ADMIN_EMAIL } from "../../../lib/firebaseConfig";
 import { img } from "../../../lib/assets";
 import { useDice } from "../../../lib/dice";
-import { pageContent } from "../../../data/portfolioData";
+import { pageContent, sheet } from "../../../data/portfolioData";
 import { TAB_EVENT } from "../tabBus";
 import D20 from "../../../components/sheet/D20";
 import Skills from "./Skills";
@@ -105,6 +106,53 @@ function Projects() {
   );
 }
 
+function CvRequest() {
+  const [open, setOpen] = useState(false);
+  const [form, setForm] = useState({ name: "", company: "", email: "", reason: "" });
+  const [status, setStatus] = useState("idle");
+  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
+  const submit = async (e) => {
+    e.preventDefault();
+    if (!isFirebaseConfigured) {
+      window.location.href = `mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent("CV request")}&body=${encodeURIComponent(`${form.reason}\n\nFrom: ${form.name}, ${form.company} (${form.email})`)}`;
+      return;
+    }
+    setStatus("sending");
+    try {
+      await addDoc(collection(db, "cvRequests"), { ...form, createdAt: serverTimestamp() });
+      notifyOwner(`CV request from ${form.name}`, `${form.name} (${form.company}, ${form.email}) asked for your CV`, form.reason);
+      setStatus("sent");
+      setForm({ name: "", company: "", email: "", reason: "" });
+    } catch (err) { console.error(err); setStatus("error"); }
+  };
+  return (
+    <>
+      <button type="button" className="solid" style={{ marginTop: 14 }} onClick={() => { setOpen(true); setStatus("idle"); }}>Request my CV</button>
+      {open && (
+        <div className="cv-back" role="dialog" aria-modal="true" aria-label="Request CV" onClick={(e) => e.target === e.currentTarget && setOpen(false)}>
+          <form className="cv-modal form" onSubmit={submit}>
+            <h2 className="h2" style={{ fontSize: 22, margin: 0 }}>Request my CV</h2>
+            <p className="quote" style={{ margin: 0 }}>Tell me a little about who you are and I'll email it to you.</p>
+            {status === "sent" ? <p className="status-ok" role="status">Thank you! I'll send it to your email shortly.</p> : (
+              <>
+                <div className="field"><label htmlFor="cn">Your name</label><input id="cn" required maxLength={100} value={form.name} onChange={set("name")} /></div>
+                <div className="field"><label htmlFor="cc">Company / organisation</label><input id="cc" required maxLength={100} value={form.company} onChange={set("company")} /></div>
+                <div className="field"><label htmlFor="ce">Email</label><input id="ce" type="email" required maxLength={200} value={form.email} onChange={set("email")} /></div>
+                <div className="field"><label htmlFor="cr">Reason for requesting</label><textarea id="cr" required maxLength={1000} value={form.reason} onChange={set("reason")} /></div>
+                {status === "error" && <p className="status-err" role="alert">Sorry, that didn't send. Please email {ADMIN_EMAIL}.</p>}
+              </>
+            )}
+            <div style={{ display: "flex", gap: 8 }}>
+              {status !== "sent" && <button className="solid" disabled={status === "sending"}>{status === "sending" ? "Sending…" : "Send request"}</button>}
+              <button type="button" className="thin" onClick={() => setOpen(false)}>{status === "sent" ? "Close" : "Cancel"}</button>
+            </div>
+          </form>
+        </div>
+      )}
+    </>
+  );
+}
+
 const ABOUT = [["content-002", "Developer", "The developer"], ["content-003", "Designer", "The designer"], ["content-004", "Tinkerer", "The tinkerer"]];
 
 function About() {
@@ -112,7 +160,7 @@ function About() {
   return (
     <>
       <div className="subchips">
-        {["All", ...ABOUT.map((a) => a[1]), "Technology", "Skills"].map((t) => (
+        {["All", ...ABOUT.map((a) => a[1]), "Technology", "Experience", "Skills"].map((t) => (
           <button key={t} type="button" className="chip" aria-pressed={f === t} onClick={() => setF(t)}>{t}</button>
         ))}
       </div>
@@ -131,6 +179,19 @@ function About() {
           <div className="sec-h">Technology</div>
           <h2 className="h2" style={{ fontSize: 20 }}>Why I love tech</h2>
           <p className="quote">I really think technology is cool. It has its risks and its dangers, but what it has done for the world is amazing, and above all impactful. Then there's the feeling of unboxing something new. It doesn't have to be the latest thing, just new to me, like a power bank or anything that's going to make my life easier. Unboxing is one of my favourite things. I also love watching how fast it moves. The moment I decide I want a phone, it's already outdated, and by the time it reaches the store there's a newer model. That's just how technology works, and it fascinates me how much the industry has grown and how much is possible with it.</p>
+        </div>
+      )}
+      {(f === "All" || f === "Experience") && (
+        <div className="about-block">
+          <div className="sec-h">Experience</div>
+          {sheet.experience.map((x) => (
+            <div className="exp" key={x.role}>
+              <div className="exp-top"><b>{x.role}</b><span>{x.when}</span></div>
+              <div className="exp-org">{x.org}</div>
+              <p className="quote" style={{ margin: "4px 0 0" }}>{x.text}</p>
+            </div>
+          ))}
+          <CvRequest />
         </div>
       )}
       {(f === "All" || f === "Skills") && (
@@ -161,6 +222,13 @@ function Contact() {
     setStatus("sending");
     try {
       await addDoc(collection(db, "messages"), { ...form, createdAt: serverTimestamp() });
+      notifyOwner(`New message from ${form.name}`, `${form.name} (${form.email}) wrote about: ${form.reason}`, form.message);
+      try {
+        const ref = doc(db, "meta", "unresolved");
+        await updateDoc(ref, { count: increment(1) });
+        const n = (await getDoc(ref)).data().count;
+        if (n >= REMINDER_EVERY && n % REMINDER_EVERY === 0) notifyOwner(`Reminder: ${n} unresolved messages`, `You have ${n} messages waiting`, "Open your admin dashboard → Messages and mark the ones you've dealt with as resolved.");
+      } catch (e) { console.warn("Unresolved counter skipped:", e.message); }
       setStatus("sent");
       roll("Raven sent", 0, 20);
       setForm({ name: "", email: "", reason: REASONS[0], message: "" });
