@@ -1,9 +1,9 @@
 // EmailJS settings (all of these are safe to be public; see EMAILJS_SETUP.md in the repo root).
 export const EMAILJS = {
-  serviceId: "",   // e.g. "service_abc123"
-  publicKey: "",   // Account → API keys → Public key
-  ownerTemplate: "", // template that emails YOU (new message / CV request / reminder)
-  cvTemplate: "",    // template that emails the person who requested your CV
+  serviceId: "service_isv6ltn",
+  publicKey: "T-dGJiMgLi1WeYl5G",
+  ownerTemplate: "template_cdojo8o", // emails YOU (new message / CV request / reminder)
+  cvTemplate: "template_fd9ehsj",    // emails the person who requested your CV
 };
 
 export const emailReady = () => !!(EMAILJS.serviceId && EMAILJS.publicKey);

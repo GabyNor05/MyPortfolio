@@ -16,7 +16,9 @@ export default function Skills({ embedded = false }) {
           <button type="button" className="sk-bonus roll" aria-label={`Roll ${s.name}, d20 ${signed(s.level)}`} onClick={() => roll(s.name, s.level, 20)}>{signed(s.level)}</button>
         </div>
       ))}
-      {embedded && <div className="extra-skills" aria-label="More skills">{sheet.extraSkills.map((x) => <span key={x}>{x}</span>)}</div>}
+      {embedded && sheet.extraSkills.map((x) => (
+        <div className="sk-row" key={x}><span className="sk-prof none" aria-hidden="true"><span className="dot" /></span><span className="sk-name">{x}</span></div>
+      ))}
       {!embedded && <div className="panel-title">Skills</div>}
     </section>
   );

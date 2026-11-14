@@ -146,12 +146,13 @@ export default function Dashboard() {
   const removeMessage = async (id) => { await deleteDoc(doc(db, "messages", id)); const l = await loadMessages(); l && syncCount(l); };
   const toggleResolved = async (m) => { await updateDoc(doc(db, "messages", m.id), { resolved: !m.resolved }); const l = await loadMessages(); l && syncCount(l); };
   const saveLs = (k, set) => (v) => { set(v); try { localStorage.setItem(k, v); } catch { /* ignore */ } };
-  const linkFor = (r) => (r.interest === "UX design" ? cvUx : cvDev);
+  const linkFor = (r) => (r.interest === "Software development" ? cvDev : cvUx);
+  const [personal, setPersonal] = useState({});
   const sendCv = async (r) => {
     const cvLink = linkFor(r);
-    if (!cvLink) { setNote(`Paste your ${r.interest === "UX design" ? "UX / hybrid" : "development"} CV link first (boxes at the top of this page).`); return; }
-    const ok = await sendEmail(EMAILJS.cvTemplate, { to_email: r.email, to_name: r.name, cv_link: cvLink });
-    if (!ok) { window.location.href = `mailto:${r.email}?subject=${encodeURIComponent("My CV")}&body=${encodeURIComponent(`Hi ${r.name},\n\nThanks for your interest. Here is my CV: ${cvLink}\n\nGaby`)}`; }
+    if (!cvLink) { setNote(`Paste your ${r.interest === "Software development" ? "development" : "UX / hybrid"} CV link first (boxes at the top of this page).`); return; }
+    const ok = await sendEmail(EMAILJS.cvTemplate, { to_email: r.email, to_name: r.name, cv_link: cvLink, personal_message: personal[r.id] || "", interest: r.interest || "" });
+    if (!ok) { window.location.href = `mailto:${r.email}?subject=${encodeURIComponent("My CV")}&body=${encodeURIComponent(`Hi ${r.name},\n\n${personal[r.id] ? personal[r.id] + "\n\n" : "Thanks for your interest. "}Here is my CV: ${cvLink}\n\nGaby`)}`; }
     await updateDoc(doc(db, "cvRequests", r.id), { status: "sent" });
     setNote(ok ? `CV sent to ${r.email}.` : "EmailJS isn't set up yet, so I opened your email app instead.");
     loadCv();
@@ -239,6 +240,9 @@ export default function Dashboard() {
                 <div className="proj-title">{r.name} <span style={{ color: "var(--muted)", fontSize: 13 }}>· {r.company} · {r.interest || "no interest given"}{r.status === "sent" ? " · sent" : ""}</span></div>
                 <a href={`mailto:${r.email}`} style={{ color: "var(--accent)", fontSize: 14 }}>{r.email}</a>
                 <p className="quote" style={{ whiteSpace: "pre-wrap" }}>{r.reason}</p>
+              </div>
+              <div className="cv-send">
+                <textarea placeholder="Personal note for the email (optional, makes it feel personal)" value={personal[r.id] || ""} onChange={(e) => setPersonal({ ...personal, [r.id]: e.target.value })} />
               </div>
               <button className="solid" onClick={() => sendCv(r)}>{r.status === "sent" ? "Send again" : "Send CV"}</button>
               <button className="thin icon-btn" aria-label="Delete request" onClick={() => removeCv(r.id)}><Trash2 size={14} /></button>

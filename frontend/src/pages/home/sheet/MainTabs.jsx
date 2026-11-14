@@ -11,6 +11,7 @@ import { useDice } from "../../../lib/dice";
 import { pageContent, sheet } from "../../../data/portfolioData";
 import { TAB_EVENT } from "../tabBus";
 import D20 from "../../../components/sheet/D20";
+import Logo from "../../../components/sheet/Logo";
 import Skills from "./Skills";
 
 const TABS = [["projects", "Projects"], ["about", "About"], ["contact", "Contact"]];
@@ -106,7 +107,7 @@ function Projects() {
   );
 }
 
-const INTERESTS = ["Software development", "Software engineering", "UX design"];
+const INTERESTS = ["Software development", "User experience design", "A combination of both"];
 
 function CvRequest() {
   const [open, setOpen] = useState(false);
@@ -122,7 +123,7 @@ function CvRequest() {
     setStatus("sending");
     try {
       await addDoc(collection(db, "cvRequests"), { ...form, createdAt: serverTimestamp() });
-      notifyOwner(`CV request from ${form.name}`, `${form.name} (${form.company}, ${form.email}) asked for your CV, interested in: ${form.interest}`, form.reason);
+      notifyOwner(`CV request from ${form.name}`, `${form.name} (${form.company}, ${form.email}) asked for your CV, looking for: ${form.interest}`, form.reason);
       setStatus("sent");
       setForm({ name: "", company: "", email: "", interest: INTERESTS[0], reason: "" });
     } catch (err) { console.error(err); setStatus("error"); }
@@ -140,7 +141,7 @@ function CvRequest() {
                 <div className="field"><label htmlFor="cn">Your name</label><input id="cn" required maxLength={100} value={form.name} onChange={set("name")} /></div>
                 <div className="field"><label htmlFor="cc">Company / organisation</label><input id="cc" required maxLength={100} value={form.company} onChange={set("company")} /></div>
                 <div className="field"><label htmlFor="ce">Email</label><input id="ce" type="email" required maxLength={200} value={form.email} onChange={set("email")} /></div>
-                <div className="field"><label>I'm interested in</label><div className="int-pills" role="group" aria-label="Interest">{INTERESTS.map((i) => <button key={i} type="button" className="chip" aria-pressed={form.interest === i} onClick={() => setForm({ ...form, interest: i })}>{i}</button>)}</div></div>
+                <div className="field"><label>I'm looking for…</label><div className="int-pills" role="group" aria-label="Interest">{INTERESTS.map((i) => <button key={i} type="button" className="chip" aria-pressed={form.interest === i} onClick={() => setForm({ ...form, interest: i })}>{i}</button>)}</div></div>
                 <div className="field"><label htmlFor="cr">Reason for requesting</label><textarea id="cr" required maxLength={1000} value={form.reason} onChange={set("reason")} /></div>
                 {status === "error" && <p className="status-err" role="alert">Sorry, that didn't send. Please email {ADMIN_EMAIL}.</p>}
               </>
@@ -163,7 +164,7 @@ function About() {
   return (
     <>
       <div className="subchips">
-        {["All", ...ABOUT.map((a) => a[1]), "Technology", "Experience", "Skills"].map((t) => (
+        {["All", ...ABOUT.map((a) => a[1]), "Experience", "Skills"].map((t) => (
           <button key={t} type="button" className="chip" aria-pressed={f === t} onClick={() => setF(t)}>{t}</button>
         ))}
         <CvRequest />
@@ -175,16 +176,15 @@ function About() {
             <div className="sec-h">{chip}</div>
             <h2 className="h2" style={{ fontSize: 20 }}>{c.title}</h2>
             <p className="quote" style={{ color: real(c.description) ? undefined : "var(--muted)" }}>{real(c.description) || "[Your paragraph goes here]"}</p>
+            {chip === "Tinkerer" && (
+              <>
+                <h3 className="h2" style={{ fontSize: 17, marginTop: 16 }}>I really love technology</h3>
+                <p className="quote">I really think technology is cool. It has its risks and its dangers, but what it has done for the world is amazing, and above all impactful. Then there's the feeling of unboxing something new. It doesn't have to be the latest thing, just new to me, like a power bank or anything that's going to make my life easier. Unboxing is one of my favourite things. I also love watching how fast it moves. The moment I decide I want a phone, it's already outdated, and by the time it reaches the store there's a newer model. That's just how technology works, and it fascinates me how much the industry has grown and how much is possible with it.</p>
+              </>
+            )}
           </div>
         );
       })}
-      {(f === "All" || f === "Technology") && (
-        <div className="about-block">
-          <div className="sec-h">Technology</div>
-          <h2 className="h2" style={{ fontSize: 20 }}>Why I love tech</h2>
-          <p className="quote">I really think technology is cool. It has its risks and its dangers, but what it has done for the world is amazing, and above all impactful. Then there's the feeling of unboxing something new. It doesn't have to be the latest thing, just new to me, like a power bank or anything that's going to make my life easier. Unboxing is one of my favourite things. I also love watching how fast it moves. The moment I decide I want a phone, it's already outdated, and by the time it reaches the store there's a newer model. That's just how technology works, and it fascinates me how much the industry has grown and how much is possible with it.</p>
-        </div>
-      )}
       {(f === "All" || f === "Experience") && (
         <div className="about-block">
           <div className="sec-h">Experience</div>
@@ -242,7 +242,8 @@ function Contact() {
     <>
       <h2 className="h2" style={{ fontSize: 30 }}>Send a raven</h2>
       <p className="cg" style={{ margin: "8px 0 0", fontSize: 16, color: "var(--text-2)", maxWidth: 620 }}>{find("content-006").description}</p>
-      <form className="form" onSubmit={submit}>
+      <div className="contact-grid">
+      <form className="form" style={{ maxWidth: "none" }} onSubmit={submit}>
         <div className="field"><label htmlFor="n">Name</label><input id="n" required maxLength={100} placeholder="Your name" value={form.name} onChange={set("name")} /></div>
         <div className="field"><label htmlFor="e">Email</label><input id="e" type="email" required maxLength={200} placeholder="you@example.com" value={form.email} onChange={set("email")} /></div>
         <div className="field"><label htmlFor="r">Reason for the quest</label><select id="r" value={form.reason} onChange={set("reason")}>{REASONS.map((r) => <option key={r}>{r}</option>)}</select></div>
@@ -251,6 +252,8 @@ function Contact() {
         {status === "sent" && <p className="status-ok" role="status">Thank you! Your message was sent.</p>}
         {status === "error" && <p className="status-err" role="alert">Sorry, that didn't send. Please email {ADMIN_EMAIL} directly.</p>}
       </form>
+      <div className="contact-art" aria-hidden="true"><Logo size={220} /><small>Let's build something</small></div>
+      </div>
     </>
   );
 }
