@@ -8,6 +8,7 @@ import { useDice } from "../../lib/dice";
 import { useTheme } from "../../lib/useTheme";
 import { useIsAdmin } from "../../lib/useAdmin";
 import { scrollToTab } from "../../pages/home/tabBus";
+import Logo from "./Logo";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ export default function Header() {
     <header className="hdr">
       <div className="hdr-in">
         <div className="hdr-id">
-          <Link to="/" className="hdr-logo" aria-label="Gaby Norris home">GN</Link>
+          <Link to="/" className="hdr-logo" aria-label="Gaby Norris home"><Logo size={84} /></Link>
           <div className="hdr-text">
             <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
               <Link to="/" className="hdr-name">Gaby Norris</Link>

@@ -78,7 +78,9 @@ export default function Dashboard() {
   const [source, setSource] = useState("local");
   const [messages, setMessages] = useState([]);
   const [cvReqs, setCvReqs] = useState([]);
-  const [cvLink, setCvLink] = useState(() => { try { return localStorage.getItem("cvLink") || ""; } catch { return ""; } });
+  const readLs = (k) => { try { return localStorage.getItem(k) || ""; } catch { return ""; } };
+  const [cvDev, setCvDev] = useState(() => readLs("cvDev") || readLs("cvLink"));
+  const [cvUx, setCvUx] = useState(() => readLs("cvUx"));
   const [editing, setEditing] = useState(null);
   const [saving, setSaving] = useState(false);
   const [note, setNote] = useState("");
@@ -143,9 +145,11 @@ export default function Dashboard() {
   };
   const removeMessage = async (id) => { await deleteDoc(doc(db, "messages", id)); const l = await loadMessages(); l && syncCount(l); };
   const toggleResolved = async (m) => { await updateDoc(doc(db, "messages", m.id), { resolved: !m.resolved }); const l = await loadMessages(); l && syncCount(l); };
-  const saveCvLink = (v) => { setCvLink(v); try { localStorage.setItem("cvLink", v); } catch { /* ignore */ } };
+  const saveLs = (k, set) => (v) => { set(v); try { localStorage.setItem(k, v); } catch { /* ignore */ } };
+  const linkFor = (r) => (r.interest === "UX design" ? cvUx : cvDev);
   const sendCv = async (r) => {
-    if (!cvLink) { setNote("Paste your CV link first (the box at the top of this page)."); return; }
+    const cvLink = linkFor(r);
+    if (!cvLink) { setNote(`Paste your ${r.interest === "UX design" ? "UX / hybrid" : "development"} CV link first (boxes at the top of this page).`); return; }
     const ok = await sendEmail(EMAILJS.cvTemplate, { to_email: r.email, to_name: r.name, cv_link: cvLink });
     if (!ok) { window.location.href = `mailto:${r.email}?subject=${encodeURIComponent("My CV")}&body=${encodeURIComponent(`Hi ${r.name},\n\nThanks for your interest. Here is my CV: ${cvLink}\n\nGaby`)}`; }
     await updateDoc(doc(db, "cvRequests", r.id), { status: "sent" });
@@ -225,13 +229,14 @@ export default function Dashboard() {
 
       {tab === "cv" && (
         <section className="panel adm-card">
-          <div className="field"><label htmlFor="cvl">Your CV link (e.g. Google Drive, "anyone with the link"). It's only stored in this browser.</label><input id="cvl" placeholder="https://drive.google.com/…" value={cvLink} onChange={(e) => saveCvLink(e.target.value)} /></div>
+          <div className="field"><label htmlFor="cvd">Development CV link (sent for software development / engineering). Stored only in this browser.</label><input id="cvd" placeholder="https://drive.google.com/…" value={cvDev} onChange={(e) => saveLs("cvDev", setCvDev)(e.target.value)} /></div>
+          <div className="field"><label htmlFor="cvu">UX / hybrid CV link (sent for UX design)</label><input id="cvu" placeholder="https://drive.google.com/…" value={cvUx} onChange={(e) => saveLs("cvUx", setCvUx)(e.target.value)} /></div>
           {!emailReady() && <p className="quote">EmailJS isn't set up yet, so "Send CV" will open your email app instead.</p>}
           {cvReqs.length === 0 && <p className="quote">No CV requests yet.</p>}
           {cvReqs.map((r) => (
             <div key={r.id} className="proj-row" style={{ alignItems: "flex-start" }}>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div className="proj-title">{r.name} <span style={{ color: "var(--muted)", fontSize: 13 }}>· {r.company}{r.status === "sent" ? " · sent" : ""}</span></div>
+                <div className="proj-title">{r.name} <span style={{ color: "var(--muted)", fontSize: 13 }}>· {r.company} · {r.interest || "no interest given"}{r.status === "sent" ? " · sent" : ""}</span></div>
                 <a href={`mailto:${r.email}`} style={{ color: "var(--accent)", fontSize: 14 }}>{r.email}</a>
                 <p className="quote" style={{ whiteSpace: "pre-wrap" }}>{r.reason}</p>
               </div>

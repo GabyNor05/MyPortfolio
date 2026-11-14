@@ -39,10 +39,11 @@ service cloud.firestore {
 
     // CV requests: anyone can submit one; only the admin can read, update or delete.
     match /cvRequests/{id} {
-      allow create: if request.resource.data.keys().hasOnly(['name', 'company', 'email', 'reason', 'createdAt'])
+      allow create: if request.resource.data.keys().hasOnly(['name', 'company', 'email', 'interest', 'reason', 'createdAt'])
         && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100
         && request.resource.data.company is string && request.resource.data.company.size() > 0 && request.resource.data.company.size() <= 100
         && request.resource.data.email is string && request.resource.data.email.matches('.+@.+\\..+') && request.resource.data.email.size() <= 200
+        && request.resource.data.interest in ['Software development', 'Software engineering', 'UX design']
         && request.resource.data.reason is string && request.resource.data.reason.size() > 0 && request.resource.data.reason.size() <= 1000
         && request.resource.data.createdAt == request.time;
       allow read, update, delete: if isAdmin();

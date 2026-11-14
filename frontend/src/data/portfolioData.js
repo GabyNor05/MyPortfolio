@@ -173,10 +173,11 @@ export const sheet = {
     { kind: "+", text: "+1 on Deploy saves when the pipeline is green" },
   ],
   experience: [
-    { role: "Bachelor of Creative Technologies", org: "Open Window Institute", when: "2024 – 2026", text: "Interactive Development and UX Design: building React and React Native products and designing high-fidelity mobile experiences." },
-    { role: "Part-time receptionist", org: "The Pod Practice", when: "[add dates]", text: "Front-of-house and client communication while studying. [Add what you're proudest of]" },
-    { role: "English tutor", org: "Private tutoring", when: "[add dates]", text: "Planned lessons and worksheets for primary-school learners. [Add detail]" },
+    { role: "Bachelor of Creative Technologies", org: "Open Window Institute", when: "2024 – Nov 2026", text: "Interactive Development and UX Design: building full-stack React and React Native apps and designing high-fidelity mobile experiences. Coursework in HCI, Web Development, Software Engineering, Data Structures & Algorithms and UX Research." },
+    { role: "Receptionist (part-time)", org: "The Pod Practice", when: "Jan 2024 – Dec 2026", text: "Run the front desk of a busy podiatry practice: patient communication, scheduling and records admin, keeping things organised under time pressure." },
+    { role: "Tutor (part-time)", org: "Educare", when: "Jan 2024 – Present", text: "Tutor primary and high-school learners across the IEB and CAPS curricula, adapting explanations to how each learner thinks." },
   ],
+  extraSkills: ["Teamwork", "Communication", "Tutoring", "Attention to detail", "Empathy", "Time management"],
   languages: [
     { name: "JavaScript", level: 7 },
     { name: "TypeScript", level: 5 },

@@ -195,7 +195,7 @@ body { margin:0; background:var(--bg); color:var(--text-2); font-family:'DM Sans
 *::-webkit-scrollbar-thumb:hover { background:var(--text); }
 
 /* ---- single-page portrait layout ---- */
-.hdr-logo { flex:none; width:96px; height:96px; display:flex; align-items:center; justify-content:center; border:2px solid var(--accent); border-radius:6px; font-family:'Roboto Condensed',sans-serif; font-weight:700; font-size:40px; letter-spacing:.02em; color:var(--text); background:var(--inset); }
+.hdr-logo { flex:none; width:96px; height:96px; display:flex; align-items:center; justify-content:center; border:2px solid var(--accent); border-radius:6px; color:var(--accent); background:var(--inset); }
 .page { max-width:1100px; margin:0 auto; padding:24px 16px 110px; display:flex; flex-direction:column; gap:24px; }
 .hero-wrap { position:relative; }
 .hero { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:28px; padding:36px 40px 92px; }
@@ -253,3 +253,8 @@ body { margin:0; background:var(--bg); color:var(--text-2); font-family:'DM Sans
 .cv-back { position:fixed; inset:0; background:rgba(0,0,0,.6); display:grid; place-items:center; z-index:100; padding:16px; }
 .cv-modal { background: var(--panel-solid); margin:0; max-width:480px; border:1px solid var(--accent); border-radius:12px; padding:22px; width:min(480px,100%); max-height:92vh; overflow:auto; display:flex; flex-direction:column; gap:12px; }
 .adm-badge.warn { background: #e0a030; color:#000; }
+
+.subchips .cv-btn { margin-left:auto; }
+.extra-skills { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.extra-skills span { border:1px solid var(--line-soft); border-radius:999px; padding:4px 12px; font-size:14px; color:var(--text-2); }
+.int-pills { display:flex; flex-wrap:wrap; gap:8px; }

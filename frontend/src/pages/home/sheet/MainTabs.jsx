@@ -106,9 +106,11 @@ function Projects() {
   );
 }
 
+const INTERESTS = ["Software development", "Software engineering", "UX design"];
+
 function CvRequest() {
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState({ name: "", company: "", email: "", reason: "" });
+  const [form, setForm] = useState({ name: "", company: "", email: "", interest: INTERESTS[0], reason: "" });
   const [status, setStatus] = useState("idle");
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
   const submit = async (e) => {
@@ -120,14 +122,14 @@ function CvRequest() {
     setStatus("sending");
     try {
       await addDoc(collection(db, "cvRequests"), { ...form, createdAt: serverTimestamp() });
-      notifyOwner(`CV request from ${form.name}`, `${form.name} (${form.company}, ${form.email}) asked for your CV`, form.reason);
+      notifyOwner(`CV request from ${form.name}`, `${form.name} (${form.company}, ${form.email}) asked for your CV, interested in: ${form.interest}`, form.reason);
       setStatus("sent");
-      setForm({ name: "", company: "", email: "", reason: "" });
+      setForm({ name: "", company: "", email: "", interest: INTERESTS[0], reason: "" });
     } catch (err) { console.error(err); setStatus("error"); }
   };
   return (
     <>
-      <button type="button" className="solid" style={{ marginTop: 14 }} onClick={() => { setOpen(true); setStatus("idle"); }}>Request my CV</button>
+      <button type="button" className="solid cv-btn" onClick={() => { setOpen(true); setStatus("idle"); }}>Request my CV</button>
       {open && (
         <div className="cv-back" role="dialog" aria-modal="true" aria-label="Request CV" onClick={(e) => e.target === e.currentTarget && setOpen(false)}>
           <form className="cv-modal form" onSubmit={submit}>
@@ -138,6 +140,7 @@ function CvRequest() {
                 <div className="field"><label htmlFor="cn">Your name</label><input id="cn" required maxLength={100} value={form.name} onChange={set("name")} /></div>
                 <div className="field"><label htmlFor="cc">Company / organisation</label><input id="cc" required maxLength={100} value={form.company} onChange={set("company")} /></div>
                 <div className="field"><label htmlFor="ce">Email</label><input id="ce" type="email" required maxLength={200} value={form.email} onChange={set("email")} /></div>
+                <div className="field"><label>I'm interested in</label><div className="int-pills" role="group" aria-label="Interest">{INTERESTS.map((i) => <button key={i} type="button" className="chip" aria-pressed={form.interest === i} onClick={() => setForm({ ...form, interest: i })}>{i}</button>)}</div></div>
                 <div className="field"><label htmlFor="cr">Reason for requesting</label><textarea id="cr" required maxLength={1000} value={form.reason} onChange={set("reason")} /></div>
                 {status === "error" && <p className="status-err" role="alert">Sorry, that didn't send. Please email {ADMIN_EMAIL}.</p>}
               </>
@@ -163,6 +166,7 @@ function About() {
         {["All", ...ABOUT.map((a) => a[1]), "Technology", "Experience", "Skills"].map((t) => (
           <button key={t} type="button" className="chip" aria-pressed={f === t} onClick={() => setF(t)}>{t}</button>
         ))}
+        <CvRequest />
       </div>
       {ABOUT.filter((a) => f === "All" || a[1] === f).map(([id, chip, eyebrow]) => {
         const c = find(id);
@@ -191,7 +195,6 @@ function About() {
               <p className="quote" style={{ margin: "4px 0 0" }}>{x.text}</p>
             </div>
           ))}
-          <CvRequest />
         </div>
       )}
       {(f === "All" || f === "Skills") && (
