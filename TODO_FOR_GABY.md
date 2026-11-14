@@ -1,7 +1,9 @@
 # Gaby's to-do list (Sat 14 Nov 2026)
 
-## A. EmailJS (10 min)  -> unlocks alerts, reminders, "Send CV"
-- [ ] Send Claude: Service ID, Public key, Owner template ID, CV template ID (templates in EMAILJS_SETUP.md)
+## A. EmailJS  -> keys are in the site (done)
+- [ ] Paste the two HTML templates from EMAILJS_TEMPLATES.md into EmailJS (Code editor) so emails match the site
+- [ ] Pick: logo cross option A or B; palette (subtle / bold / stream); project layout (1-8)
+- [ ] Signature: copy frontend/public/brand/signature.html into Gmail (or open https://gabynor05.github.io/MyPortfolio/brand/signature.html, select all, copy, paste into Gmail signature)
 
 ## B. Firebase (10 min)
 - [ ] Paste the NEW firestore.rules into Firebase console and Publish (adds CV requests, interest field, unresolved counter)

@@ -1,4 +1,6 @@
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, { createContext, lazy, Suspense, useCallback, useContext, useEffect, useRef, useState } from "react";
+
+const Dice3D = lazy(() => import("../components/sheet/Dice3D"));
 
 const DiceContext = createContext(null);
 
@@ -7,6 +9,7 @@ export function DiceProvider({ children }) {
   const [trayOpen, setTrayOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [log, setLog] = useState([]);
+  const [stage, setStage] = useState(null);
   const timer = useRef(null);
   const busy = useRef(false);
 
@@ -17,9 +20,9 @@ export function DiceProvider({ children }) {
     if (busy.current) return;
     busy.current = true;
     setRolling(true);
-    timer.current = setTimeout(() => {
-      const d = 1 + Math.floor(Math.random() * sides);
-      const total = d + mod;
+    const d = 1 + Math.floor(Math.random() * sides);
+    const total = d + mod;
+    const complete = () => {
       let text = mod === 0 && /^d\d+$/.test(label)
         ? `${label}: ${d}`
         : `${label}: d${sides} (${d}) ${mod >= 0 ? "+" : "-"} ${Math.abs(mod)} = ${total}`;
@@ -29,7 +32,14 @@ export function DiceProvider({ children }) {
       setRolling(false);
       setTrayOpen(true);
       busy.current = false;
-    }, 650);
+    };
+    const reduced = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (sides === 20 && !reduced) {
+      // 3D d20: the dice lands on the number, then the result is logged
+      setStage({ id: Date.now() + Math.random(), value: d, onSettled: complete });
+    } else {
+      timer.current = setTimeout(complete, 650);
+    }
   }, []);
 
   const value = {
@@ -37,7 +47,16 @@ export function DiceProvider({ children }) {
     trayOpen, toggleTray: () => setTrayOpen((v) => !v),
     drawerOpen, toggleDrawer: () => setDrawerOpen((v) => !v), closeDrawer: () => setDrawerOpen(false),
   };
-  return <DiceContext.Provider value={value}>{children}</DiceContext.Provider>;
+  return (
+    <DiceContext.Provider value={value}>
+      {children}
+      {stage && (
+        <Suspense fallback={null}>
+          <Dice3D key={stage.id} value={stage.value} onSettled={stage.onSettled} onDone={() => setStage((cur) => (cur && cur.id === stage.id ? null : cur))} />
+        </Suspense>
+      )}
+    </DiceContext.Provider>
+  );
 }
 
 export const useDice = () => useContext(DiceContext);
