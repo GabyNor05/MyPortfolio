@@ -79,6 +79,7 @@ export default function Dashboard() {
   const [source, setSource] = useState("local");
   const [messages, setMessages] = useState([]);
   const [cvReqs, setCvReqs] = useState([]);
+  const [chat, setChat] = useState([]);
   const readLs = (k) => { try { return localStorage.getItem(k) || ""; } catch { return ""; } };
   const [cvDev, setCvDev] = useState(() => readLs("cvDev") || readLs("cvLink"));
   const [cvUx, setCvUx] = useState(() => readLs("cvUx"));
@@ -110,7 +111,7 @@ export default function Dashboard() {
     if (!isFirebaseConfigured) return;
     try { const snap = await getDocs(query(collection(db, "cvRequests"), orderBy("createdAt", "desc"))); setCvReqs(snap.docs.map((d) => ({ id: d.id, ...d.data() }))); } catch (e) { console.warn(e.message); }
   };
-  useEffect(() => { if (isAdmin) { loadProjects(); loadMessages().then((l) => l && syncCount(l)); loadCv(); } }, [isAdmin]);
+  useEffect(() => { if (isAdmin) { loadProjects(); loadMessages().then((l) => l && syncCount(l)); loadCv(); loadChat(); } }, [isAdmin]);
 
   const sorted = useMemo(() => [...projects].sort((a, b) => b.year - a.year || a.title.localeCompare(b.title)), [projects]);
   const upsert = (p) => setProjects((list) => (list.some((x) => x.id === p.id) ? list.map((x) => (x.id === p.id ? p : x)) : [...list, p]));
@@ -144,6 +145,11 @@ export default function Dashboard() {
     const url = URL.createObjectURL(new Blob([JSON.stringify(sorted, null, 2)], { type: "application/json" }));
     const a = document.createElement("a"); a.href = url; a.download = "projects.json"; a.click(); URL.revokeObjectURL(url);
   };
+  const loadChat = async () => {
+    if (!isFirebaseConfigured) return;
+    try { const snap = await getDocs(query(collection(db, "chat"), orderBy("createdAt", "desc"))); setChat(snap.docs.map((d) => ({ id: d.id, ...d.data() }))); } catch (e) { console.warn(e.message); }
+  };
+  const removeChat = async (id) => { await deleteDoc(doc(db, "chat", id)); loadChat(); };
   const removeMessage = async (id) => { await deleteDoc(doc(db, "messages", id)); const l = await loadMessages(); l && syncCount(l); };
   const toggleResolved = async (m) => { await updateDoc(doc(db, "messages", m.id), { resolved: !m.resolved }); const l = await loadMessages(); l && syncCount(l); };
   const saveLs = (k, set) => (v) => { set(v); try { localStorage.setItem(k, v); } catch { /* ignore */ } };
@@ -265,6 +271,17 @@ export default function Dashboard() {
               </div>
               <button className="thin" onClick={() => toggleResolved(m)}><Check size={14} />{m.resolved ? "Resolved" : "Mark resolved"}</button>
               <button className="thin icon-btn" aria-label="Delete message" onClick={() => removeMessage(m.id)}><Trash2 size={14} /></button>
+            </div>
+          ))}
+          <div className="sec-h" style={{ marginTop: 22 }}>Game-log chat ({chat.length})</div>
+          {chat.length === 0 && <p className="quote">No chat messages yet.</p>}
+          {chat.map((c) => (
+            <div key={c.id} className="proj-row" style={{ alignItems: "flex-start" }}>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div className="proj-title">{c.name || "Anonymous"} {c.email && <a href={`mailto:${c.email}`} style={{ color: "var(--accent)", fontSize: 14 }}>· {c.email}</a>}</div>
+                <p className="quote" style={{ whiteSpace: "pre-wrap" }}>{c.text}</p>
+              </div>
+              <button className="thin icon-btn" aria-label="Delete chat message" onClick={() => removeChat(c.id)}><Trash2 size={14} /></button>
             </div>
           ))}
         </section>

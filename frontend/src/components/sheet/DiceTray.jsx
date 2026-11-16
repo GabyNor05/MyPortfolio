@@ -24,7 +24,7 @@ export default function DiceTray() {
             ))}
           </div>
           <div style={{ marginTop: 12, borderTop: "1px solid var(--line-soft)", paddingTop: 8 }}>
-            {log.slice(1, 5).map((l) => <div key={l.id} className="rc" style={{ fontSize: 13, lineHeight: 1.6, color: "var(--muted)" }}>{l.text}</div>)}
+            {log.filter((l) => l.kind === "roll").slice(1, 5).map((l) => <div key={l.id} className="rc" style={{ fontSize: 13, lineHeight: 1.6, color: "var(--muted)" }}>{l.text}</div>)}
           </div>
         </div>
       )}

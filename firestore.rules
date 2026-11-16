@@ -49,6 +49,18 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    // Game-log chat: anyone can send one short message; only the admin can read or delete.
+    match /chat/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['name', 'email', 'text', 'createdAt'])
+        && request.resource.data.name is string && request.resource.data.name.size() <= 60
+        && request.resource.data.email is string && request.resource.data.email.size() <= 200
+        && (request.resource.data.email == '' || request.resource.data.email.matches('.+@.+\\..+'))
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 500
+        && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if isAdmin();
+    }
+
     // Editable site content (About text, skills, links, logo...). Public read, admin write.
     match /settings/{id} {
       allow read: if true;

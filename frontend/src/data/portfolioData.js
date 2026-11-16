@@ -7,7 +7,7 @@ export const pageContent = [
   {
     id: "content-001",
     title: "Hero Section",
-    description: "Third-year student at Open Window Institute, crafting digital experiences that live at the intersection of code and design. I build things that feel as intentional as they look.",
+    description: "Final-year student at Open Window Institute, crafting digital experiences that live at the intersection of code and design. I build things that feel as intentional as they look.",
     media: { type: "image", url: "/images/hero.jpg" },
   },
   {

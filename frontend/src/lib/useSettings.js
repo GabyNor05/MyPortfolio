@@ -25,6 +25,16 @@ export const DEFAULTS = {
   experience: sheet.experience,
   skills: sheet.skills.map((s) => ({ name: s.name, bonus: s.level, proficient: s.level >= 7 })),
   extraSkills: sheet.extraSkills,
+  facts: [
+    "Her cat has strong opinions about her keyboard, usually during a Merge.",
+    "Unboxing something new is one of her favourite things. The box is half the fun.",
+    "She tutors, so she will explain something until it actually clicks.",
+    "She designs in Figma first, then builds it in React.",
+    "Music is one of her proficient skills.",
+    "Whenever she decides she wants a new phone, a newer model is already out.",
+    "She studies Interactive Development and UX Design at Open Window Institute.",
+    "She believes the best design solves a problem before it looks good.",
+  ],
 };
 
 let cache = DEFAULTS;

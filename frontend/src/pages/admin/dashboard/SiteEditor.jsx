@@ -75,8 +75,8 @@ export default function SiteEditor({ section }) {
     if (!isFirebaseConfigured) { setMsg("Firebase isn't set up, so nothing can be saved live."); return; }
     setSaving(true); setMsg("");
     try {
-      const { about, experience, skills, extraSkills, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData } = d;
-      await setDoc(doc(db, "settings", "site"), { about, experience, skills, extraSkills, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData }, { merge: true });
+      const { about, experience, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData } = d;
+      await setDoc(doc(db, "settings", "site"), { about, experience, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData }, { merge: true });
       setMsg("Saved. The live site updates straight away.");
     } catch (e) { setMsg("Could not save: " + e.message); }
     setSaving(false);
@@ -135,6 +135,10 @@ export default function SiteEditor({ section }) {
             </Field>
           </div>
           <p style={{ fontSize: 12, color: "var(--muted)" }}>To use your own voiceover, put the mp3 in the site's <code>public</code> folder (then the link is <code>./yourfile.mp3</code>) or any public link, such as Google Drive set to "Anyone with the link" in direct-download form.</p>
+        </div>
+        <div className="panel adm-card">
+          <div className="sec-h">"Roll for Insight" facts (game log)</div>
+          <Field label="One fun fact about you per line. Visitors roll a d20 and get one."><textarea style={{ minHeight: 160 }} value={d.facts.join("\n")} onChange={(e) => set("facts", e.target.value.split("\n").map((x) => x.trim()).filter(Boolean))} /></Field>
         </div>
         {footer}
       </>

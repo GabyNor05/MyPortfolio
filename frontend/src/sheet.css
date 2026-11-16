@@ -283,3 +283,14 @@ body { margin:0; background:var(--bg); color:var(--text-2); font-family:'DM Sans
 
 .dice3d { position:fixed; inset:0; z-index:150; pointer-events:none; }
 .dice3d canvas { display:block; }
+
+/* game log: wider, with chat */
+.drawer { width:440px; }
+.log-list { border-top:1px solid var(--line-soft); flex:1 1 auto; min-height:120px; overflow-y:auto; }
+.log-chat { color:var(--text); border-left:3px solid var(--accent); padding-left:10px; }
+.log-fact { color:var(--text); background:var(--accent-soft, rgba(186,159,225,.12)); padding-left:10px; border-radius:4px; }
+.log-sys { color:var(--muted); font-style:italic; }
+.chat { border-top:1px solid var(--line-soft); padding-top:12px; display:flex; flex-direction:column; gap:8px; }
+.chat-row { display:flex; gap:8px; }
+.chat-row input { flex:1; min-width:0; min-height:40px; box-sizing:border-box; padding:0 10px; border:1.5px solid var(--line); border-radius:8px; background:var(--panel-solid); color:var(--text); font:inherit; font-size:14px; }
+@media (max-width:520px) { .chat-row { flex-wrap:wrap; } }
