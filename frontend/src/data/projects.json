@@ -6,7 +6,7 @@
     "solution": "Mobile App",
     "year": 2025,
     "logo": "forageScan",
-    "thumbnail": "",
+    "thumbnail": "projects/forage-scan/cover.jpg",
     "scenario": "Module brief",
     "tagline": "Empowering safe foraging through technology.",
     "shortDescription": "Identify edible mushrooms and avoid toxic lookalikes with image recognition.",
@@ -29,7 +29,15 @@
     "team": [],
     "highlights": [],
     "status": "",
-    "gallery": []
+    "gallery": [
+      "projects/forage-scan/phones.jpg",
+      "projects/forage-scan/3.jpg",
+      "projects/forage-scan/4.jpg"
+    ],
+    "wireframes": [
+      "projects/forage-scan/1.jpg",
+      "projects/forage-scan/2.jpg"
+    ]
   },
   {
     "id": "proj-002",
@@ -173,7 +181,7 @@
     "type": "UX Design",
     "solution": "Design System",
     "year": 2025,
-    "thumbnail": "",
+    "thumbnail": "projects/spoonful/cover.jpg",
     "scenario": "Module brief",
     "tagline": "Loud but classy: a brand for Broadway lovers.",
     "shortDescription": "A design system for a Broadway-inspired cuisine festival.",
@@ -200,7 +208,16 @@
       "Full system: brand strategy, atoms, molecules, organisms and wireframes"
     ],
     "status": "",
-    "gallery": []
+    "gallery": [
+      "projects/spoonful/1.jpg",
+      "projects/spoonful/2.jpg",
+      "projects/spoonful/3.jpg",
+      "projects/spoonful/4.jpg",
+      "projects/spoonful/6.jpg"
+    ],
+    "wireframes": [
+      "projects/spoonful/5.jpg"
+    ]
   },
   {
     "id": "proj-006",
@@ -273,7 +290,13 @@
     "gallery": [
       "projects/whelmer/g1.jpg",
       "projects/whelmer/g2.jpg",
-      "projects/whelmer/g3.jpg"
+      "projects/whelmer/g3.jpg",
+      "projects/whelmer/phones.jpg",
+      "projects/whelmer/x1.jpg",
+      "projects/whelmer/x2.jpg",
+      "projects/whelmer/x3.jpg",
+      "projects/whelmer/x4.jpg",
+      "projects/whelmer/x5.jpg"
     ]
   },
   {
@@ -371,7 +394,7 @@
     "type": "UX Design",
     "solution": "Website",
     "year": 2025,
-    "thumbnail": "",
+    "thumbnail": "projects/amadea-safehouse/cover.jpg",
     "scenario": "Module brief",
     "shortDescription": "A website redesign for a Pretoria NPO that shelters vulnerable children.",
     "fullDescription": "A team of four redesigned the online presence of Amadea Safe House, a non-profit in Pretoria. The goal was a clearer, more trustworthy site that makes it easy for supporters to connect and contribute.",
@@ -414,7 +437,15 @@
     ],
     "status": "",
     "tagline": "Making it easy to help.",
-    "gallery": []
+    "gallery": [
+      "projects/amadea-safehouse/2.jpg",
+      "projects/amadea-safehouse/3.jpg",
+      "projects/amadea-safehouse/4.jpg",
+      "projects/amadea-safehouse/5.jpg"
+    ],
+    "wireframes": [
+      "projects/amadea-safehouse/1.jpg"
+    ]
   },
   {
     "id": "proj-011",
@@ -422,7 +453,7 @@
     "type": "UX Design",
     "solution": "Tablet App",
     "year": 2026,
-    "thumbnail": "",
+    "thumbnail": "projects/storyweave/cover.jpg",
     "scenario": "Module brief",
     "shortDescription": "A tablet app that helps early primary learners with moderate dyslexia read and write in class.",
     "fullDescription": "StoryWeave is a tablet app designed so early primary learners with moderate dyslexia can complete reading and writing tasks more easily, confidently and independently. It follows a full UX process from research and persona to sketches, wireframes, style guide and high-fidelity screens.",
@@ -447,7 +478,14 @@
       "Sketches, wireframes, style guide, then high-fidelity UI"
     ],
     "status": "",
-    "gallery": []
+    "gallery": [
+      "projects/storyweave/phones.jpg",
+      "projects/storyweave/1.jpg",
+      "projects/storyweave/2.jpg",
+      "projects/storyweave/3.jpg",
+      "projects/storyweave/4.jpg",
+      "projects/storyweave/5.jpg"
+    ]
   },
   {
     "id": "proj-012",
@@ -455,7 +493,7 @@
     "type": "UX Design",
     "solution": "AI-assisted Wearable Ecosystem",
     "year": 2026,
-    "thumbnail": "",
+    "thumbnail": "projects/nia/cover.jpg",
     "scenario": "Module brief",
     "tagline": "Your cognitive workspace companion.",
     "shortDescription": "Nia: an AI-assisted wearable ecosystem for focus and productivity.",
@@ -483,7 +521,13 @@
       "Zero-cloud approach and per-app tracking controls to protect privacy"
     ],
     "status": "",
-    "gallery": []
+    "gallery": [
+      "projects/nia/phones.jpg",
+      "projects/nia/1.jpg",
+      "projects/nia/2.jpg",
+      "projects/nia/3.jpg",
+      "projects/nia/4.jpg"
+    ]
   },
   {
     "id": "proj-013",
@@ -491,7 +535,7 @@
     "type": "UX Design",
     "solution": "Responsive Brand Activation Website",
     "year": 2025,
-    "thumbnail": "",
+    "thumbnail": "projects/masterchef-broadway/cover.jpg",
     "scenario": "Module brief",
     "tagline": "A responsive website that brings the excitement of a Broadway-inspired culinary festival to life.",
     "shortDescription": "A responsive website for a Broadway-inspired culinary festival.",
@@ -518,7 +562,13 @@
       "Theatre and gastronomy blended into one brand"
     ],
     "status": "",
-    "gallery": []
+    "gallery": [
+      "projects/masterchef-broadway/phones.jpg",
+      "projects/masterchef-broadway/1.jpg",
+      "projects/masterchef-broadway/2.jpg",
+      "projects/masterchef-broadway/3.jpg",
+      "projects/masterchef-broadway/4.jpg"
+    ]
   },
   {
     "id": "proj-014",
@@ -570,12 +620,17 @@
     "gallery": [
       "projects/get-up-and-go/g1.jpg",
       "projects/get-up-and-go/g2.jpg",
-      "projects/get-up-and-go/g3.jpg"
+      "projects/get-up-and-go/g3.jpg",
+      "projects/get-up-and-go/phones.jpg",
+      "projects/get-up-and-go/x1.jpg",
+      "projects/get-up-and-go/x2.jpg",
+      "projects/get-up-and-go/x3.jpg",
+      "projects/get-up-and-go/x4.jpg"
     ]
   },
   {
     "id": "proj-015",
-    "thumbnail": "",
+    "thumbnail": "projects/makerspace/cover.jpg",
     "scenario": "Module brief",
     "tagline": "From request to ready, without the guessing.",
     "reflection": "",
@@ -606,11 +661,17 @@
       "Mapped the full journey from Google Form to Yoco invoice to production"
     ],
     "status": "",
-    "gallery": []
+    "gallery": [
+      "projects/makerspace/1.jpg",
+      "projects/makerspace/2.jpg",
+      "projects/makerspace/3.jpg",
+      "projects/makerspace/4.jpg",
+      "projects/makerspace/5.jpg"
+    ]
   },
   {
     "id": "proj-016",
-    "thumbnail": "",
+    "thumbnail": "projects/uplifters/cover.jpg",
     "scenario": "Module brief",
     "tagline": "See exactly how your giving changes lives.",
     "reflection": "",
@@ -640,11 +701,19 @@
       "Tiered badges show exactly what was verified"
     ],
     "status": "",
-    "gallery": []
+    "gallery": [
+      "projects/uplifters/1.jpg",
+      "projects/uplifters/3.jpg",
+      "projects/uplifters/4.jpg",
+      "projects/uplifters/5.jpg"
+    ],
+    "wireframes": [
+      "projects/uplifters/2.jpg"
+    ]
   },
   {
     "id": "proj-017",
-    "thumbnail": "",
+    "thumbnail": "projects/hackathon/cover.jpg",
     "scenario": "Module brief",
     "tagline": "",
     "reflection": "",
@@ -669,11 +738,17 @@
     "team": [],
     "highlights": [],
     "status": "",
-    "gallery": []
+    "gallery": [
+      "projects/hackathon/1.jpg",
+      "projects/hackathon/2.jpg",
+      "projects/hackathon/3.jpg",
+      "projects/hackathon/4.jpg",
+      "projects/hackathon/5.jpg"
+    ]
   },
   {
     "id": "proj-018",
-    "thumbnail": "",
+    "thumbnail": "projects/stagevote/2.jpg",
     "scenario": "Module brief",
     "tagline": "Every great show deserves an encore.",
     "reflection": "",
@@ -707,6 +782,13 @@
       "Submission form and a My Votes dashboard",
       "Brand: Spotlight Gold, Stage Black and Curtain Red with Montserrat and Open Sans"
     ],
-    "gallery": []
+    "gallery": [
+      "projects/stagevote/3.jpg",
+      "projects/stagevote/4.jpg",
+      "projects/stagevote/5.jpg"
+    ],
+    "wireframes": [
+      "projects/stagevote/1.jpg"
+    ]
   }
 ]
