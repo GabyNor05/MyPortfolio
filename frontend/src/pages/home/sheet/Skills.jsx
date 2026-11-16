@@ -1,22 +1,21 @@
 import React from "react";
-import { sheet } from "../../../data/portfolioData";
+import { useSettings } from "../../../lib/useSettings";
 import { useDice, signed } from "../../../lib/dice";
-
-const label = (lvl) => (lvl >= 7 ? "Highly proficient" : lvl >= 4 ? "Proficient" : "Learning");
 
 export default function Skills({ embedded = false }) {
   const { roll } = useDice();
+  const { skills, extraSkills } = useSettings();
   return (
     <section className={embedded ? "sk-embed" : "panel colB"} aria-label="Skills">
       <div className="sk-head"><span style={{ width: 26 }}>Prof</span><span style={{ flexGrow: 1 }}>Skill</span><span style={{ width: 48, textAlign: "right" }}>Bonus</span></div>
-      {sheet.skills.map((s) => (
+      {skills.map((s) => (
         <div className="sk-row" key={s.name}>
-          <span className="sk-prof" aria-label={label(s.level)}><span className={`dot ${s.level >= 7 ? "on" : ""}`} /></span>
+          <span className="sk-prof" aria-label={s.proficient ? "Proficient" : "Not proficient"}><span className={`dot ${s.proficient ? "on" : ""}`} /></span>
           <span className="sk-name">{s.name}</span>
-          <button type="button" className="sk-bonus roll" aria-label={`Roll ${s.name}, d20 ${signed(s.level)}`} onClick={() => roll(s.name, s.level, 20)}>{signed(s.level)}</button>
+          <button type="button" className="sk-bonus roll" aria-label={`Roll ${s.name}, d20 ${signed(s.bonus)}`} onClick={() => roll(s.name, s.bonus, 20)}>{signed(s.bonus)}</button>
         </div>
       ))}
-      {embedded && sheet.extraSkills.map((x) => (
+      {embedded && extraSkills.map((x) => (
         <div className="sk-row" key={x.name}>
           <span className="sk-prof" aria-label={x.proficient ? "Proficient" : "Not proficient"}><span className={`dot ${x.proficient ? "on" : ""}`} /></span>
           <span className="sk-name">{x.name}</span>

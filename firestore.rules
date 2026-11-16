@@ -49,6 +49,12 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    // Editable site content (About text, skills, links, logo...). Public read, admin write.
+    match /settings/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // Counter of unresolved messages (so the site can send a reminder at 5, 10, 15...).
     // Visitors may only add exactly 1; the admin sets it.
     match /meta/unresolved {

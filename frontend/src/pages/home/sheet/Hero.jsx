@@ -2,20 +2,20 @@ import React from "react";
 import { FaLinkedin } from "react-icons/fa";
 import { MessageSquare, FolderOpen } from "lucide-react";
 import headshot from "../../../assets/home/headshot.jpg";
-import { LINKS } from "../../../lib/siteConfig";
-import { pageContent } from "../../../data/portfolioData";
+import { useSettings } from "../../../lib/useSettings";
 import { scrollToTab } from "../tabBus";
 import AbilityScores from "./AbilityScores";
 
 export default function Hero() {
-  const intro = pageContent.find((c) => c.id === "content-001").description;
+  const cfg = useSettings();
+  const intro = cfg.intro, LINKS = cfg.links;
   return (
     <div className="hero-wrap">
       <section className="panel hero" aria-label="Introduction">
         <div className="hero-text">
           <div className="eyebrow">Hi, I'm</div>
-          <h1 className="h1">Gaby Norris</h1>
-          <div className="sub">Developer / User Experience Designer</div>
+          <h1 className="h1">{cfg.name}</h1>
+          <div className="sub">{cfg.role}</div>
           <p className="lede">{intro}</p>
           <div className="btn-row">
             <button type="button" className="solid" onClick={() => scrollToTab("projects")}><FolderOpen size={15} />View projects</button>

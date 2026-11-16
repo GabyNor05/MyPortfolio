@@ -13,6 +13,7 @@ import { TAB_EVENT } from "../tabBus";
 import D20 from "../../../components/sheet/D20";
 import Logo from "../../../components/sheet/Logo";
 import Skills from "./Skills";
+import { useSettings } from "../../../lib/useSettings";
 
 const TABS = [["projects", "Projects"], ["about", "About"], ["contact", "Contact"]];
 const find = (id) => pageContent.find((c) => c.id === id);
@@ -157,35 +158,29 @@ function CvRequest() {
   );
 }
 
-const ABOUT = [["content-002", "Developer", "The developer"], ["content-003", "Designer", "The designer"], ["content-004", "Tinkerer", "The tinkerer"]];
-
 function About() {
   const [f, setF] = useState("All");
+  const { about, experience } = useSettings();
   return (
     <>
       <div className="subchips">
-        {["All", ...ABOUT.map((a) => a[1]), "Experience", "Skills"].map((t) => (
+        {["All", ...about.map((a) => a.label), "Experience", "Skills"].map((t) => (
           <button key={t} type="button" className="chip" aria-pressed={f === t} onClick={() => setF(t)}>{t}</button>
         ))}
         <CvRequest />
       </div>
-      {ABOUT.filter((a) => f === "All" || a[1] === f).map(([id, chip, eyebrow]) => {
-        const c = find(id);
-        return (
-          <div className="about-block" key={id}>
-            <div className="sec-h">{chip}</div>
-            <h2 className="h2" style={{ fontSize: 20 }}>{c.title}</h2>
-            {chip === "Tinkerer"
-              ? <p className="quote">I really think technology is cool. It has its risks and its dangers, but what it has done for the world is amazing, and above all impactful. Then there's the feeling of unboxing something new. It doesn't have to be the latest thing, just new to me, like a power bank or anything that's going to make my life easier. Unboxing is one of my favourite things. I also love watching how fast it moves. The moment I decide I want a phone, it's already outdated, and by the time it reaches the store there's a newer model. That's just how technology works, and it fascinates me how much the industry has grown and how much is possible with it.</p>
-              : <p className="quote" style={{ color: real(c.description) ? undefined : "var(--muted)" }}>{real(c.description) || "[Your paragraph goes here]"}</p>}
-          </div>
-        );
-      })}
+      {about.filter((a) => f === "All" || a.label === f).map((a) => (
+        <div className="about-block" key={a.id}>
+          <div className="sec-h">{a.label}</div>
+          {a.heading && <h2 className="h2" style={{ fontSize: 20 }}>{a.heading}</h2>}
+          <p className="quote">{a.text}</p>
+        </div>
+      ))}
       {(f === "All" || f === "Experience") && (
         <div className="about-block">
           <div className="sec-h">Experience</div>
-          {sheet.experience.map((x) => (
-            <div className="exp" key={x.role}>
+          {experience.map((x, i) => (
+            <div className="exp" key={x.role + i}>
               <div className="exp-top"><b>{x.role}</b><span>{x.when}</span></div>
               <div className="exp-org">{x.org}</div>
               <p className="quote" style={{ margin: "4px 0 0" }}>{x.text}</p>

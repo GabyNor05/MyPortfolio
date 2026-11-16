@@ -2,8 +2,8 @@ import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaGithub, FaBehance } from "react-icons/fa";
 import { Volume2, Pause, Play, List, Sun, Moon } from "lucide-react";
-import voiceover from "../../assets/home/converted_V1.mp3";
-import { LINKS, CAMPAIGN } from "../../lib/siteConfig";
+import voiceoverDefault from "../../assets/home/converted_V1.mp3";
+import { useSettings } from "../../lib/useSettings";
 import { useDice } from "../../lib/dice";
 import { useTheme } from "../../lib/useTheme";
 import { useIsAdmin } from "../../lib/useAdmin";
@@ -12,6 +12,8 @@ import Logo from "./Logo";
 
 export default function Header() {
   const navigate = useNavigate();
+  const cfg = useSettings();
+  const LINKS = cfg.links, CAMPAIGN = cfg.campaign, voiceover = cfg.voiceUrl || voiceoverDefault;
   const { toggleDrawer, drawerOpen } = useDice();
   const [theme, toggleTheme] = useTheme();
   const isAdmin = useIsAdmin();
@@ -33,11 +35,11 @@ export default function Header() {
           <Link to="/" className="hdr-logo" aria-label="Gaby Norris home"><Logo size={84} /></Link>
           <div className="hdr-text">
             <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-              <Link to="/" className="hdr-name">Gaby Norris</Link>
+              <Link to="/" className="hdr-name">{cfg.name}</Link>
               <Link to="/auth" className="manage">Manage</Link>
             </div>
-            <div className="rc" style={{ fontSize: 15, color: "var(--text-2)", marginTop: 4 }}>Developer / User Experience Designer</div>
-            <div className="rc" style={{ fontSize: 13, color: "var(--muted)" }}>Final year · Bachelor of Creative Technologies</div>
+            <div className="rc" style={{ fontSize: 15, color: "var(--text-2)", marginTop: 4 }}>{cfg.role}</div>
+            <div className="rc" style={{ fontSize: 13, color: "var(--muted)" }}>{cfg.bottomLine}</div>
           </div>
         </div>
 

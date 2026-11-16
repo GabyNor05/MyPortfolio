@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, getDocs, orderBy, query, doc, setDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import { sendEmail, emailReady, EMAILJS } from "../../../lib/emailConfig";
-import { Plus, Pencil, Trash2, Download, UploadCloud, Eye, EyeOff, LogOut, ArrowLeft, LayoutDashboard, FolderKanban, Inbox, HelpCircle, FileText, Check } from "lucide-react";
+import { Plus, Pencil, Trash2, Download, UploadCloud, Eye, EyeOff, LogOut, ArrowLeft, LayoutDashboard, FolderKanban, Inbox, HelpCircle, FileText, Check, Settings } from "lucide-react";
 import { auth, db, isFirebaseConfigured } from "../../../lib/firebase";
 import { ADMIN_EMAILS } from "../../../lib/firebaseConfig";
 import { projectData } from "../../../data/portfolioData";
+import SiteEditor from "./SiteEditor";
 import headshot from "../../../assets/home/headshot.jpg";
 
 const TYPES = ["UX Design", "Interactive Development", "Personal Project", "Hackathon"];
@@ -164,7 +165,7 @@ export default function Dashboard() {
   if (user === undefined) return <main className="page"><p className="lede">Loading…</p></main>;
   if (!isAdmin) return <main className="page"><div className="panel adm-card"><h1 className="h2">Not authorised</h1><p className="lede">Please <Link to="/auth" style={{ color: "var(--accent)" }}>sign in</Link> with the owner account.</p></div></main>;
 
-  const NAV = [["overview", "Overview", LayoutDashboard], ["projects", "Projects", FolderKanban], ["messages", "Messages", Inbox], ["cv", "CV requests", FileText], ["help", "How to publish", HelpCircle]];
+  const NAV = [["overview", "Overview", LayoutDashboard], ["projects", "Projects", FolderKanban], ["messages", "Messages", Inbox], ["cv", "CV requests", FileText], ["about", "About page", Pencil], ["site", "Site settings", Settings], ["help", "How to publish", HelpCircle]];
   const hiddenCount = projects.filter((p) => p.hidden).length;
   return (
     <div className="adm-shell">
@@ -197,6 +198,7 @@ export default function Dashboard() {
           <div className="btn-row"><button className="solid" onClick={() => { setTab("projects"); setEditing(blank()); }}><Plus size={15} />New project</button><button className="thin" onClick={() => setTab("projects")}>Manage projects</button></div>
         </>
       )}
+      {(tab === "about" || tab === "site") && <SiteEditor key={tab} section={tab} />}
       {tab === "help" && (
         <section className="panel adm-card">
           <p className="quote">Edits you save here go live on the site straight away (when Firebase is connected). Use the eye icon to hide a project without deleting it. "Download JSON" gives you a backup copy of all projects.</p>
