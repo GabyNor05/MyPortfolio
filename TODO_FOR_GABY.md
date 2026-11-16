@@ -30,3 +30,12 @@ Export 3-4 PNG frames each (cover, a key flow, final screens), name like nia-1.p
 - [ ] Click every GitHub/Figma link on the live site
 - [ ] Fix typo on CV: github.com/GabyNor05/get-get-up-and-go (should probably be get-up-and-go)
 - [ ] Dev CV: add Whelmer repo name in the hybrid CV where it still says [repo-name]
+
+## NEXT SESSION (noted 16 Nov, late night)
+- [ ] Re-export project images properly (full-quality frames, no shortcuts), then fix covers/galleries and naming
+- [ ] Re-paste latest firestore.rules into Firebase and Publish (includes `views`)
+- [ ] Rewrite the "Roll for Insight" fun facts: half for visitors, half about me (first person). Design is not the priority, I only do it because projects need wireframes
+- [ ] Check saving-throw "proficient" toggle really persists after Save (probably just not saved)
+- [ ] Game log: restyle chat bubbles like the screenshot (name above, avatar, timestamp under); send screenshot again
+- [ ] Dice tray: show a visual die shape per die, like the DDB dice panel screenshot, and maybe a "roll several" count
+- [ ] Hero/Content editor order now: Home intro, Ability scores, Saving throws, Skills, Languages, Tools, About, Education, Experience, Contact (done)
