@@ -1,0 +1,67 @@
+{
+  "slug": "forage-scan",
+  "fileKey": "NDu5zIjWSzORTB8lb0V9nm",
+  "nodeIds": [
+    "328:3213",
+    "144:26774",
+    "144:27364",
+    "35:15",
+    "144:26775",
+    "336:3"
+  ],
+  "images": [
+    {
+      "file": "cover.png",
+      "nodeId": "328:3213",
+      "caption": "ForageScan app overview with key screens",
+      "alt": "ForageScan – ForageScan app overview with key screens"
+    },
+    {
+      "file": "1.png",
+      "nodeId": "144:26774",
+      "caption": "Low-fidelity wireframes",
+      "alt": "ForageScan – Low-fidelity wireframes"
+    },
+    {
+      "file": "2.png",
+      "nodeId": "144:27364",
+      "caption": "Wireflow diagram",
+      "alt": "ForageScan – Wireflow diagram"
+    },
+    {
+      "file": "3.png",
+      "nodeId": "35:15",
+      "caption": "Brand mark and logotype",
+      "alt": "ForageScan – Brand mark and logotype"
+    },
+    {
+      "file": "4.png",
+      "nodeId": "144:26775",
+      "caption": "High-fidelity screens",
+      "alt": "ForageScan – High-fidelity screens"
+    },
+    {
+      "file": "phones.png",
+      "nodeId": "336:3",
+      "caption": "Final screens side by side",
+      "alt": "ForageScan: home, camera scan, scan result and Fungi Codex screens side by side on a dark background",
+      "note": "composite built on the new 'Exports' page"
+    }
+  ],
+  "captions": [
+    "ForageScan app overview with key screens",
+    "Low-fidelity wireframes",
+    "Wireflow diagram",
+    "Brand mark and logotype",
+    "High-fidelity screens",
+    "Final screens side by side"
+  ],
+  "alts": [
+    "ForageScan – ForageScan app overview with key screens",
+    "ForageScan – Low-fidelity wireframes",
+    "ForageScan – Wireflow diagram",
+    "ForageScan – Brand mark and logotype",
+    "ForageScan – High-fidelity screens",
+    "ForageScan: home, camera scan, scan result and Fungi Codex screens side by side on a dark background"
+  ]
+}

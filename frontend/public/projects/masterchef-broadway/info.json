@@ -1,0 +1,67 @@
+{
+  "slug": "masterchef-broadway",
+  "fileKey": "qFKRQ6PGmi5dpGjKfBgTiW",
+  "nodeIds": [
+    "212:23464",
+    "155:21",
+    "215:23551",
+    "215:23537",
+    "86:1162",
+    "320:3"
+  ],
+  "images": [
+    {
+      "file": "cover.png",
+      "nodeId": "212:23464",
+      "caption": "MasterChef Broadway on desktop",
+      "alt": "MasterChef Broadway – MasterChef Broadway on desktop"
+    },
+    {
+      "file": "1.png",
+      "nodeId": "155:21",
+      "caption": "Before: competition-day planning board",
+      "alt": "MasterChef Broadway – Before: competition-day planning board"
+    },
+    {
+      "file": "2.png",
+      "nodeId": "215:23551",
+      "caption": "Tablet layouts",
+      "alt": "MasterChef Broadway – Tablet layouts"
+    },
+    {
+      "file": "3.png",
+      "nodeId": "215:23537",
+      "caption": "Mobile layouts",
+      "alt": "MasterChef Broadway – Mobile layouts"
+    },
+    {
+      "file": "4.png",
+      "nodeId": "86:1162",
+      "caption": "After: final desktop page",
+      "alt": "MasterChef Broadway – After: final desktop page"
+    },
+    {
+      "file": "phones.png",
+      "nodeId": "320:3",
+      "caption": "Final screens side by side",
+      "alt": "MasterChef Broadway: before, during and after mobile pages side by side on a dark background",
+      "note": "composite built on the new 'Exports' page"
+    }
+  ],
+  "captions": [
+    "MasterChef Broadway on desktop",
+    "Before: competition-day planning board",
+    "Tablet layouts",
+    "Mobile layouts",
+    "After: final desktop page",
+    "Final screens side by side"
+  ],
+  "alts": [
+    "MasterChef Broadway – MasterChef Broadway on desktop",
+    "MasterChef Broadway – Before: competition-day planning board",
+    "MasterChef Broadway – Tablet layouts",
+    "MasterChef Broadway – Mobile layouts",
+    "MasterChef Broadway – After: final desktop page",
+    "MasterChef Broadway: before, during and after mobile pages side by side on a dark background"
+  ]
+}

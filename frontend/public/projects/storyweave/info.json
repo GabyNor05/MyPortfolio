@@ -1,0 +1,76 @@
+{
+  "slug": "storyweave",
+  "fileKey": "JgGpE1CPDKr3nMxVIDEh52",
+  "nodeIds": [
+    "189:20",
+    "113:4078",
+    "132:1413",
+    "132:2899",
+    "132:3230",
+    "191:476",
+    "343:3"
+  ],
+  "images": [
+    {
+      "file": "cover.png",
+      "nodeId": "189:20",
+      "caption": "StoryWeave hero",
+      "alt": "StoryWeave – StoryWeave hero"
+    },
+    {
+      "file": "1.png",
+      "nodeId": "113:4078",
+      "caption": "User journey map",
+      "alt": "StoryWeave – User journey map"
+    },
+    {
+      "file": "2.png",
+      "nodeId": "132:1413",
+      "caption": "Avatar chooser",
+      "alt": "StoryWeave – Avatar chooser"
+    },
+    {
+      "file": "3.png",
+      "nodeId": "132:2899",
+      "caption": "Drawing canvas",
+      "alt": "StoryWeave – Drawing canvas"
+    },
+    {
+      "file": "4.png",
+      "nodeId": "132:3230",
+      "caption": "Page editor with a completed page",
+      "alt": "StoryWeave – Page editor with a completed page"
+    },
+    {
+      "file": "5.png",
+      "nodeId": "191:476",
+      "caption": "Speech-to-text feature mockup",
+      "alt": "StoryWeave – Speech-to-text feature mockup"
+    },
+    {
+      "file": "phones.png",
+      "nodeId": "343:3",
+      "caption": "Final screens side by side",
+      "alt": "StoryWeave: welcome, drawing canvas and speech-to-text tablet screens side by side on a dark background",
+      "note": "composite built on the new 'Exports' page"
+    }
+  ],
+  "captions": [
+    "StoryWeave hero",
+    "User journey map",
+    "Avatar chooser",
+    "Drawing canvas",
+    "Page editor with a completed page",
+    "Speech-to-text feature mockup",
+    "Final screens side by side"
+  ],
+  "alts": [
+    "StoryWeave – StoryWeave hero",
+    "StoryWeave – User journey map",
+    "StoryWeave – Avatar chooser",
+    "StoryWeave – Drawing canvas",
+    "StoryWeave – Page editor with a completed page",
+    "StoryWeave – Speech-to-text feature mockup",
+    "StoryWeave: welcome, drawing canvas and speech-to-text tablet screens side by side on a dark background"
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "slug": "hackathon",
+  "fileKey": "u1Ieuy4qXE2EmqVi5XZgbE",
+  "nodeIds": [
+    "459:79",
+    "289:53818",
+    "242:5",
+    "207:16336",
+    "319:2134",
+    "207:32647"
+  ],
+  "images": [
+    {
+      "file": "cover.png",
+      "nodeId": "459:79",
+      "caption": "SpaceDUCKED header",
+      "alt": "SpaceDUCKED – SpaceDUCKED header"
+    },
+    {
+      "file": "1.png",
+      "nodeId": "289:53818",
+      "caption": "Planning and ideation",
+      "alt": "SpaceDUCKED – Planning and ideation"
+    },
+    {
+      "file": "2.png",
+      "nodeId": "242:5",
+      "caption": "Story lore",
+      "alt": "SpaceDUCKED – Story lore"
+    },
+    {
+      "file": "3.png",
+      "nodeId": "207:16336",
+      "caption": "Level 1",
+      "alt": "SpaceDUCKED – Level 1"
+    },
+    {
+      "file": "4.png",
+      "nodeId": "319:2134",
+      "caption": "Side quest interruption",
+      "alt": "SpaceDUCKED – Side quest interruption"
+    },
+    {
+      "file": "5.png",
+      "nodeId": "207:32647",
+      "caption": "Victory screen",
+      "alt": "SpaceDUCKED – Victory screen"
+    }
+  ],
+  "captions": [
+    "SpaceDUCKED header",
+    "Planning and ideation",
+    "Story lore",
+    "Level 1",
+    "Side quest interruption",
+    "Victory screen"
+  ],
+  "alts": [
+    "SpaceDUCKED – SpaceDUCKED header",
+    "SpaceDUCKED – Planning and ideation",
+    "SpaceDUCKED – Story lore",
+    "SpaceDUCKED – Level 1",
+    "SpaceDUCKED – Side quest interruption",
+    "SpaceDUCKED – Victory screen"
+  ]
+}

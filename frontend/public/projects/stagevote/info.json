@@ -1,0 +1,57 @@
+{
+  "slug": "stagevote",
+  "fileKey": "29YeBdzaJQGa9UBPIJXofO",
+  "nodeIds": [
+    "198:21",
+    "14:372",
+    "14:366",
+    "14:368",
+    "4:141"
+  ],
+  "images": [
+    {
+      "file": "1.png",
+      "nodeId": "198:21",
+      "caption": "Storyboard",
+      "alt": "StageVote – Storyboard"
+    },
+    {
+      "file": "2.png",
+      "nodeId": "14:372",
+      "caption": "Login and sign-up",
+      "alt": "StageVote – Login and sign-up"
+    },
+    {
+      "file": "3.png",
+      "nodeId": "14:366",
+      "caption": "Dashboard",
+      "alt": "StageVote – Dashboard"
+    },
+    {
+      "file": "4.png",
+      "nodeId": "14:368",
+      "caption": "Submission",
+      "alt": "StageVote – Submission"
+    },
+    {
+      "file": "5.png",
+      "nodeId": "4:141",
+      "caption": "Home page",
+      "alt": "StageVote – Home page"
+    }
+  ],
+  "captions": [
+    "Storyboard",
+    "Login and sign-up",
+    "Dashboard",
+    "Submission",
+    "Home page"
+  ],
+  "alts": [
+    "StageVote – Storyboard",
+    "StageVote – Login and sign-up",
+    "StageVote – Dashboard",
+    "StageVote – Submission",
+    "StageVote – Home page"
+  ]
+}

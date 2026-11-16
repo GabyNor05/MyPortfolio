@@ -1,0 +1,66 @@
+{
+  "slug": "makerspace",
+  "fileKey": "ZqO3qFy1fpA8sOxnYuBZKp",
+  "nodeIds": [
+    "1087:6353",
+    "1027:7571",
+    "1027:7836",
+    "1027:7961",
+    "646:2721",
+    "1058:6331"
+  ],
+  "images": [
+    {
+      "file": "cover.png",
+      "nodeId": "1087:6353",
+      "caption": "MakerSpace service design cover",
+      "alt": "MakerSpace – MakerSpace service design cover"
+    },
+    {
+      "file": "1.png",
+      "nodeId": "1027:7571",
+      "caption": "Current-state service blueprint",
+      "alt": "MakerSpace – Current-state service blueprint"
+    },
+    {
+      "file": "2.png",
+      "nodeId": "1027:7836",
+      "caption": "User journey",
+      "alt": "MakerSpace – User journey"
+    },
+    {
+      "file": "3.png",
+      "nodeId": "1027:7961",
+      "caption": "Future-state service blueprint",
+      "alt": "MakerSpace – Future-state service blueprint"
+    },
+    {
+      "file": "4.png",
+      "nodeId": "646:2721",
+      "caption": "Staff dashboard",
+      "alt": "MakerSpace – Staff dashboard"
+    },
+    {
+      "file": "5.png",
+      "nodeId": "1058:6331",
+      "caption": "Mockup 02",
+      "alt": "MakerSpace – Mockup 02"
+    }
+  ],
+  "captions": [
+    "MakerSpace service design cover",
+    "Current-state service blueprint",
+    "User journey",
+    "Future-state service blueprint",
+    "Staff dashboard",
+    "Mockup 02"
+  ],
+  "alts": [
+    "MakerSpace – MakerSpace service design cover",
+    "MakerSpace – Current-state service blueprint",
+    "MakerSpace – User journey",
+    "MakerSpace – Future-state service blueprint",
+    "MakerSpace – Staff dashboard",
+    "MakerSpace – Mockup 02"
+  ]
+}

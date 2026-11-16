@@ -1,0 +1,66 @@
+{
+  "slug": "amadea-safehouse",
+  "fileKey": "mxub4SDMQx8DkFhLZH0tGo",
+  "nodeIds": [
+    "1145:4870",
+    "407:763",
+    "1045:9539",
+    "1045:9187",
+    "1045:10076",
+    "1045:8622"
+  ],
+  "images": [
+    {
+      "file": "cover.png",
+      "nodeId": "1145:4870",
+      "caption": "Amadea Safehouse website header",
+      "alt": "Amadea Safehouse – Amadea Safehouse website header"
+    },
+    {
+      "file": "1.png",
+      "nodeId": "407:763",
+      "caption": "Home page desktop wireframe",
+      "alt": "Amadea Safehouse – Home page desktop wireframe"
+    },
+    {
+      "file": "2.png",
+      "nodeId": "1045:9539",
+      "caption": "Home page mockup",
+      "alt": "Amadea Safehouse – Home page mockup"
+    },
+    {
+      "file": "3.png",
+      "nodeId": "1045:9187",
+      "caption": "Events page mockup",
+      "alt": "Amadea Safehouse – Events page mockup"
+    },
+    {
+      "file": "4.png",
+      "nodeId": "1045:10076",
+      "caption": "Donation page mockup",
+      "alt": "Amadea Safehouse – Donation page mockup"
+    },
+    {
+      "file": "5.png",
+      "nodeId": "1045:8622",
+      "caption": "Mobile designs mockup",
+      "alt": "Amadea Safehouse – Mobile designs mockup"
+    }
+  ],
+  "captions": [
+    "Amadea Safehouse website header",
+    "Home page desktop wireframe",
+    "Home page mockup",
+    "Events page mockup",
+    "Donation page mockup",
+    "Mobile designs mockup"
+  ],
+  "alts": [
+    "Amadea Safehouse – Amadea Safehouse website header",
+    "Amadea Safehouse – Home page desktop wireframe",
+    "Amadea Safehouse – Home page mockup",
+    "Amadea Safehouse – Events page mockup",
+    "Amadea Safehouse – Donation page mockup",
+    "Amadea Safehouse – Mobile designs mockup"
+  ]
+}

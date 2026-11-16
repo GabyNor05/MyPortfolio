@@ -1,0 +1,75 @@
+{
+  "slug": "spoonful",
+  "fileKey": "MFGQH2Qm0DhFOHmjGzZeB4",
+  "nodeIds": [
+    "5737:3009",
+    "5687:39202",
+    "5687:39208",
+    "5687:39303",
+    "5687:39407",
+    "1401:12",
+    "5687:39522"
+  ],
+  "images": [
+    {
+      "file": "cover.png",
+      "nodeId": "5737:3009",
+      "caption": "Spoonful design system cover",
+      "alt": "Spoonful – Spoonful design system cover"
+    },
+    {
+      "file": "1.png",
+      "nodeId": "5687:39202",
+      "caption": "Main logo",
+      "alt": "Spoonful – Main logo"
+    },
+    {
+      "file": "2.png",
+      "nodeId": "5687:39208",
+      "caption": "Colour system",
+      "alt": "Spoonful – Colour system"
+    },
+    {
+      "file": "3.png",
+      "nodeId": "5687:39303",
+      "caption": "Typescale",
+      "alt": "Spoonful – Typescale"
+    },
+    {
+      "file": "4.png",
+      "nodeId": "5687:39407",
+      "caption": "Input controls",
+      "alt": "Spoonful – Input controls"
+    },
+    {
+      "file": "5.png",
+      "nodeId": "1401:12",
+      "caption": "Medium-fidelity landing page wireframe",
+      "alt": "Spoonful – Medium-fidelity landing page wireframe"
+    },
+    {
+      "file": "6.png",
+      "nodeId": "5687:39522",
+      "caption": "Final landing page",
+      "alt": "Spoonful – Final landing page"
+    }
+  ],
+  "captions": [
+    "Spoonful design system cover",
+    "Main logo",
+    "Colour system",
+    "Typescale",
+    "Input controls",
+    "Medium-fidelity landing page wireframe",
+    "Final landing page"
+  ],
+  "alts": [
+    "Spoonful – Spoonful design system cover",
+    "Spoonful – Main logo",
+    "Spoonful – Colour system",
+    "Spoonful – Typescale",
+    "Spoonful – Input controls",
+    "Spoonful – Medium-fidelity landing page wireframe",
+    "Spoonful – Final landing page"
+  ]
+}

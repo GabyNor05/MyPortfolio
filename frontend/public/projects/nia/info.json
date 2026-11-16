@@ -1,0 +1,68 @@
+{
+  "slug": "nia",
+  "fileKey": "X2TuJacy9HjFsjW0z4jMmh",
+  "nodeIds": [
+    "465:5933",
+    "151:3114",
+    "187:3723",
+    "465:5947",
+    "465:5961",
+    "494:3"
+  ],
+  "images": [
+    {
+      "file": "cover.jpg",
+      "nodeId": "465:5933",
+      "caption": "Nia mockup",
+      "alt": "Nia – Nia mockup",
+      "note": "photographic mockup, saved as JPG q85"
+    },
+    {
+      "file": "1.png",
+      "nodeId": "151:3114",
+      "caption": "Apple Watch companion screens",
+      "alt": "Nia – Apple Watch companion screens"
+    },
+    {
+      "file": "2.png",
+      "nodeId": "187:3723",
+      "caption": "Computer pairing screen",
+      "alt": "Nia – Computer pairing screen"
+    },
+    {
+      "file": "3.png",
+      "nodeId": "465:5947",
+      "caption": "Mockup 2",
+      "alt": "Nia – Mockup 2"
+    },
+    {
+      "file": "4.png",
+      "nodeId": "465:5961",
+      "caption": "Mockup 3",
+      "alt": "Nia – Mockup 3"
+    },
+    {
+      "file": "phones.png",
+      "nodeId": "494:3",
+      "caption": "Final screens side by side",
+      "alt": "Nia: home, brain dump, calendar and insights screens side by side on a dark background",
+      "note": "composite built on the new 'Exports' page"
+    }
+  ],
+  "captions": [
+    "Nia mockup",
+    "Apple Watch companion screens",
+    "Computer pairing screen",
+    "Mockup 2",
+    "Mockup 3",
+    "Final screens side by side"
+  ],
+  "alts": [
+    "Nia – Nia mockup",
+    "Nia – Apple Watch companion screens",
+    "Nia – Computer pairing screen",
+    "Nia – Mockup 2",
+    "Nia – Mockup 3",
+    "Nia: home, brain dump, calendar and insights screens side by side on a dark background"
+  ]
+}

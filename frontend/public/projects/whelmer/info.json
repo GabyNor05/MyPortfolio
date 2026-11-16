@@ -1,0 +1,76 @@
+{
+  "slug": "whelmer",
+  "fileKey": "abDigYTVFUhQw7PPjyMaqO",
+  "nodeIds": [
+    "407:8",
+    "315:84",
+    "321:170",
+    "407:41",
+    "407:57",
+    "407:85",
+    "479:269"
+  ],
+  "images": [
+    {
+      "file": "cover.png",
+      "nodeId": "407:8",
+      "caption": "Whelmer overview",
+      "alt": "Whelmer – Whelmer overview"
+    },
+    {
+      "file": "1.png",
+      "nodeId": "315:84",
+      "caption": "Features and functions",
+      "alt": "Whelmer – Features and functions"
+    },
+    {
+      "file": "2.png",
+      "nodeId": "321:170",
+      "caption": "Entity relationship diagram",
+      "alt": "Whelmer – Entity relationship diagram"
+    },
+    {
+      "file": "3.png",
+      "nodeId": "407:41",
+      "caption": "From chat to checklist",
+      "alt": "Whelmer – From chat to checklist"
+    },
+    {
+      "file": "4.png",
+      "nodeId": "407:57",
+      "caption": "Focus zone",
+      "alt": "Whelmer – Focus zone"
+    },
+    {
+      "file": "5.png",
+      "nodeId": "407:85",
+      "caption": "Made for you",
+      "alt": "Whelmer – Made for you"
+    },
+    {
+      "file": "phones.png",
+      "nodeId": "479:269",
+      "caption": "Final screens side by side",
+      "alt": "Whelmer: home, Milo chat, tasks and focus zone screens side by side on a dark background",
+      "note": "composite built on the new 'Exports' page"
+    }
+  ],
+  "captions": [
+    "Whelmer overview",
+    "Features and functions",
+    "Entity relationship diagram",
+    "From chat to checklist",
+    "Focus zone",
+    "Made for you",
+    "Final screens side by side"
+  ],
+  "alts": [
+    "Whelmer – Whelmer overview",
+    "Whelmer – Features and functions",
+    "Whelmer – Entity relationship diagram",
+    "Whelmer – From chat to checklist",
+    "Whelmer – Focus zone",
+    "Whelmer – Made for you",
+    "Whelmer: home, Milo chat, tasks and focus zone screens side by side on a dark background"
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "slug": "uplifters",
+  "fileKey": "v4z97EeOhVzp0bkVzubTHP",
+  "nodeIds": [
+    "264:402",
+    "143:2833",
+    "359:5815",
+    "62:169",
+    "266:18500",
+    "266:18693"
+  ],
+  "images": [
+    {
+      "file": "cover.png",
+      "nodeId": "264:402",
+      "caption": "Uplifters mockup",
+      "alt": "Uplifters – Uplifters mockup"
+    },
+    {
+      "file": "1.png",
+      "nodeId": "143:2833",
+      "caption": "Persona: Thandi Mokoena",
+      "alt": "Uplifters – Persona: Thandi Mokoena"
+    },
+    {
+      "file": "2.png",
+      "nodeId": "359:5815",
+      "caption": "Annotated wireframes: checkout",
+      "alt": "Uplifters – Annotated wireframes: checkout"
+    },
+    {
+      "file": "3.png",
+      "nodeId": "62:169",
+      "caption": "Home page",
+      "alt": "Uplifters – Home page"
+    },
+    {
+      "file": "4.png",
+      "nodeId": "266:18500",
+      "caption": "Mockup 02",
+      "alt": "Uplifters – Mockup 02"
+    },
+    {
+      "file": "5.png",
+      "nodeId": "266:18693",
+      "caption": "Mockup 03",
+      "alt": "Uplifters – Mockup 03"
+    }
+  ],
+  "captions": [
+    "Uplifters mockup",
+    "Persona: Thandi Mokoena",
+    "Annotated wireframes: checkout",
+    "Home page",
+    "Mockup 02",
+    "Mockup 03"
+  ],
+  "alts": [
+    "Uplifters – Uplifters mockup",
+    "Uplifters – Persona: Thandi Mokoena",
+    "Uplifters – Annotated wireframes: checkout",
+    "Uplifters – Home page",
+    "Uplifters – Mockup 02",
+    "Uplifters – Mockup 03"
+  ]
+}

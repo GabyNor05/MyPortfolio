@@ -1,0 +1,67 @@
+{
+  "slug": "get-up-and-go",
+  "fileKey": "abDigYTVFUhQw7PPjyMaqO",
+  "nodeIds": [
+    "307:1297",
+    "280:1276",
+    "281:1293",
+    "281:1299",
+    "278:1262",
+    "479:278"
+  ],
+  "images": [
+    {
+      "file": "cover.png",
+      "nodeId": "307:1297",
+      "caption": "Get Up & Go case study header",
+      "alt": "Get Up & Go – Get Up & Go case study header"
+    },
+    {
+      "file": "1.png",
+      "nodeId": "280:1276",
+      "caption": "Mockup 01",
+      "alt": "Get Up & Go – Mockup 01"
+    },
+    {
+      "file": "2.png",
+      "nodeId": "281:1293",
+      "caption": "Mockup 02",
+      "alt": "Get Up & Go – Mockup 02"
+    },
+    {
+      "file": "3.png",
+      "nodeId": "281:1299",
+      "caption": "Mockup 03",
+      "alt": "Get Up & Go – Mockup 03"
+    },
+    {
+      "file": "4.png",
+      "nodeId": "278:1262",
+      "caption": "Mockup 04",
+      "alt": "Get Up & Go – Mockup 04"
+    },
+    {
+      "file": "phones.png",
+      "nodeId": "479:278",
+      "caption": "Final screens side by side",
+      "alt": "Get Up & Go: home, happening nearby, my circles and Go points screens side by side on a dark background",
+      "note": "composite built on the new 'Exports' page"
+    }
+  ],
+  "captions": [
+    "Get Up & Go case study header",
+    "Mockup 01",
+    "Mockup 02",
+    "Mockup 03",
+    "Mockup 04",
+    "Final screens side by side"
+  ],
+  "alts": [
+    "Get Up & Go – Get Up & Go case study header",
+    "Get Up & Go – Mockup 01",
+    "Get Up & Go – Mockup 02",
+    "Get Up & Go – Mockup 03",
+    "Get Up & Go – Mockup 04",
+    "Get Up & Go: home, happening nearby, my circles and Go points screens side by side on a dark background"
+  ]
+}
