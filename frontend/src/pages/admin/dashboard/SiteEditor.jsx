@@ -66,7 +66,7 @@ function SkillList({ title, list, setList }) {
 export default function SiteEditor({ section }) {
   const live = useSettings();
   const [d, setD] = useState(() => JSON.parse(JSON.stringify(live)));
-  const [sub, setSub] = useState("text");
+  const [sub, setSub] = useState("home");
   const [msg, setMsg] = useState("");
   const [saving, setSaving] = useState(false);
   const set = (k, v) => setD({ ...d, [k]: v });
@@ -77,8 +77,8 @@ export default function SiteEditor({ section }) {
     if (!isFirebaseConfigured) { setMsg("Firebase isn't set up, so nothing can be saved live."); return; }
     setSaving(true); setMsg("");
     try {
-      const { about, experience, education, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData, abilities, saves, saveNotes, languages, training, cloudName, uploadPreset } = d;
-      await setDoc(doc(db, "settings", "site"), { about, experience, education, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData, abilities, saves, saveNotes, languages, training, cloudName, uploadPreset }, { merge: true });
+      const { about, experience, education, contactIntro, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData, abilities, saves, saveNotes, languages, training, cloudName, uploadPreset } = d;
+      await setDoc(doc(db, "settings", "site"), { about, experience, education, contactIntro, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData, abilities, saves, saveNotes, languages, training, cloudName, uploadPreset }, { merge: true });
       setMsg("Saved. The live site updates straight away.");
     } catch (e) { setMsg("Could not save: " + e.message); }
     setSaving(false);
@@ -110,11 +110,7 @@ export default function SiteEditor({ section }) {
         <div className="panel adm-card">
           <div className="sec-h">Identity</div>
           <div className="adm-grid">
-            <Field label="Name"><input value={d.name} onChange={(e) => set("name", e.target.value)} /></Field>
-            <Field label="Role title"><input value={d.role} onChange={(e) => set("role", e.target.value)} /></Field>
-            <Field label="Bottom line under the name"><input value={d.bottomLine} onChange={(e) => set("bottomLine", e.target.value)} /></Field>
             <Field label="Campaign / company"><input value={d.campaign} onChange={(e) => set("campaign", e.target.value)} /></Field>
-            <Field label="Intro paragraph (top of the home page)" wide><textarea value={d.intro} onChange={(e) => set("intro", e.target.value)} /></Field>
           </div>
         </div>
         <div className="panel adm-card">
@@ -163,10 +159,27 @@ export default function SiteEditor({ section }) {
   return (
     <>
       <div className="subchips" style={{ marginBottom: 14 }}>
-        {[["text", "About text"], ["edu", "Education"], ["exp", "Experience"], ["skills", "Skills"], ["abil", "Ability scores"], ["saves", "Saving throws"], ["lang", "Languages"], ["tools", "Tools"]].map(([id, l]) => (
+        {[["home", "Home intro"], ["abil", "Ability scores"], ["saves", "Saving throws"], ["skills", "Skills"], ["lang", "Languages"], ["tools", "Tools"], ["text", "About text"], ["edu", "Education"], ["exp", "Experience"], ["contact", "Contact"]].map(([id, l]) => (
           <button key={id} type="button" className="chip" aria-pressed={sub === id} onClick={() => setSub(id)}>{l}</button>
         ))}
       </div>
+      {sub === "home" && (
+        <div className="panel adm-card">
+          <div className="sec-h">Top of the home page</div>
+          <div className="adm-grid">
+            <Field label="Name"><input value={d.name} onChange={(e) => set("name", e.target.value)} /></Field>
+            <Field label="Role title"><input value={d.role} onChange={(e) => set("role", e.target.value)} /></Field>
+            <Field label="Line under the name (header)" wide><input value={d.bottomLine} onChange={(e) => set("bottomLine", e.target.value)} /></Field>
+            <Field label="Intro paragraph (under 'Hi, I'm …')" wide><textarea value={d.intro} onChange={(e) => set("intro", e.target.value)} /></Field>
+          </div>
+        </div>
+      )}
+      {sub === "contact" && (
+        <div className="panel adm-card">
+          <div className="sec-h">Contact tab</div>
+          <Field label="Text above the contact form" wide><textarea value={d.contactIntro} onChange={(e) => set("contactIntro", e.target.value)} /></Field>
+        </div>
+      )}
       {sub === "text" && (
         <>
           {d.about.map((a, i) => (

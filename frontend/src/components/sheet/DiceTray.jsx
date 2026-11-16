@@ -1,5 +1,5 @@
-import React from "react";
-import { FileDown } from "lucide-react";
+import React, { useEffect } from "react";
+import { FileDown, ChevronDown } from "lucide-react";
 import D20 from "./D20";
 import { useDice } from "../../lib/dice";
 
@@ -9,11 +9,17 @@ const CV_FILE = "";
 
 export default function DiceTray() {
   const { rolling, roll, last, log, trayOpen, toggleTray } = useDice();
+  // close by itself after 30 seconds without a roll
+  useEffect(() => {
+    if (!trayOpen) return;
+    const t = setTimeout(toggleTray, 30000);
+    return () => clearTimeout(t);
+  }, [trayOpen, log.length, rolling]);
   return (
     <div className="fab-wrap">
       {trayOpen && (
         <div className="tray" role="region" aria-label="Dice tray">
-          <div className="rc" style={{ fontWeight: 700, fontSize: 12, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--accent)" }}>Dice tray</div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}><span className="rc" style={{ fontWeight: 700, fontSize: 12, letterSpacing: ".14em", textTransform: "uppercase", color: "var(--accent)" }}>Dice tray</span><button type="button" className="thin icon-btn" onClick={toggleTray} aria-label="Collapse the dice tray"><ChevronDown size={16} /></button></div>
           <div aria-live="polite" style={{ marginTop: 8, minHeight: 62 }}>
             <div className="tray-total">{last ? last.total : "–"}</div>
             <div className="rc" style={{ fontSize: 14, color: "var(--text-2)" }}>{last ? last.text : "Click any modifier or die to roll."}</div>

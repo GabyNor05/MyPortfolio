@@ -14,6 +14,7 @@ function ChatBox() {
   const { addLog } = useDice();
   const [name, setName] = useState(() => lsGet("chatName"));
   const [email, setEmail] = useState(() => lsGet("chatEmail"));
+  const [showEmail, setShowEmail] = useState(() => !!lsGet("chatEmail"));
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
@@ -32,7 +33,7 @@ function ChatBox() {
       notifyOwner(`Chat message${name ? " from " + name : ""}`, "Someone left a message in the game log", `${msg}\n\nFrom: ${name || "anonymous"}${email ? " (" + email + ")" : ""}`);
       lsSet("chatLast", String(Date.now()));
       addLog({ kind: "chat", text: `${name.trim() || "You"}: ${msg}` });
-      addLog({ kind: "sys", text: email.trim() ? "Your message reached Gaby. She will reply by email." : "Your message reached Gaby. Add an email next time if you'd like a reply." });
+      addLog({ kind: "sys", text: email.trim() ? "Your message reached me. I will reply by email." : "Your message reached me. Add an email next time if you'd like a reply." });
       sfx.send();
       setText("");
     } catch (er) { console.warn(er); setErr("That didn't send. Try the Contact tab instead."); }
@@ -43,10 +44,10 @@ function ChatBox() {
     <form className="chat" onSubmit={send}>
       <div className="chat-row">
         <input aria-label="Your name" placeholder="Your name (optional)" maxLength={60} value={name} onChange={(e) => setName(e.target.value)} />
-        <input aria-label="Your email" type="email" placeholder="Email, for a reply (optional)" maxLength={200} value={email} onChange={(e) => setEmail(e.target.value)} />
+        {showEmail ? <input aria-label="Your email" type="email" placeholder="Email, for a reply" maxLength={200} value={email} onChange={(e) => setEmail(e.target.value)} /> : <button type="button" className="thin" onClick={() => setShowEmail(true)}>Want a reply?</button>}
       </div>
       <div className="chat-row">
-        <input aria-label="Message to Gaby" placeholder="Say hi to Gaby…" maxLength={500} value={text} onChange={(e) => setText(e.target.value)} />
+        <input aria-label="Message to Gaby" placeholder="Say hi…" maxLength={500} value={text} onChange={(e) => setText(e.target.value)} />
         <button className="solid" style={{ minHeight: 40, padding: "0 14px" }} disabled={busy || !text.trim()} aria-label="Send message"><Send size={15} /></button>
       </div>
       {err && <div className="status-err" role="alert" style={{ fontSize: 13 }}>{err}</div>}
@@ -78,7 +79,7 @@ export default function Drawer() {
             <button type="button" className="thin icon-btn" onClick={closeDrawer} aria-label="Close the drawer"><X size={14} /></button>
           </span>
         </div>
-        <div className="rc" style={{ fontSize: 13, color: "var(--muted)" }}>Every roll appears here. Chat with Gaby below, or roll for a fact about her.</div>
+        <div className="rc" style={{ fontSize: 13, color: "var(--muted)" }}>Every roll appears here. Chat with me below, or roll for a fun fact about me.</div>
         <button type="button" className="thin" style={{ justifyContent: "center" }} onClick={insight}><Sparkles size={14} />Roll for Insight</button>
         <div className="log-list" ref={listRef}>
           <div className="log-spacer" />

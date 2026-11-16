@@ -214,6 +214,7 @@ function About() {
 const REASONS = ["Freelance work", "Job opportunity", "Feedback"];
 
 function Contact() {
+  const { contactIntro } = useSettings();
   const { roll } = useDice();
   const [form, setForm] = useState({ name: "", email: "", reason: REASONS[0], message: "" });
   const [status, setStatus] = useState("idle");
@@ -247,7 +248,7 @@ function Contact() {
   return (
     <>
       <h2 className="h2" style={{ fontSize: 30 }}>Send a raven</h2>
-      <p className="cg" style={{ margin: "8px 0 0", fontSize: 16, color: "var(--text-2)", maxWidth: 620 }}>{find("content-006").description}</p>
+      <p className="cg" style={{ margin: "8px 0 0", fontSize: 16, color: "var(--text-2)", maxWidth: 620 }}>{contactIntro}</p>
       <div className="contact-grid">
       <form className="form" style={{ maxWidth: "none" }} onSubmit={submit}>
         <div className="field"><label htmlFor="n">Name</label><input id="n" required maxLength={100} placeholder="Your name" value={form.name} onChange={set("name")} /></div>
@@ -258,7 +259,7 @@ function Contact() {
         {status === "sent" && <p className="status-ok" role="status">Thank you! Your message was sent.</p>}
         {status === "error" && <p className="status-err" role="alert">Sorry, that didn't send. Please email {ADMIN_EMAIL} directly.</p>}
       </form>
-      {done && <Modal title="Raven sent" onClose={() => setDone(false)} actions={<button type="button" className="solid" onClick={() => setDone(false)}>Lovely</button>}>Thank you! Your message is on its way to Gaby. She will reply to the email you gave her.</Modal>}
+      {done && <Modal title="Raven sent" onClose={() => setDone(false)} actions={<button type="button" className="solid" onClick={() => setDone(false)}>Lovely</button>}>Thank you! Your message is on its way to me. I will reply to the email you gave me.</Modal>}
       <div className="contact-art" aria-hidden="true"><Logo size={220} /><small>Let's build something</small></div>
       </div>
     </>

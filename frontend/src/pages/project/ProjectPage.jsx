@@ -159,7 +159,7 @@ export default function ProjectPage() {
           {quest && <Block title="The quest (the brief)"><p className="lede" style={{ margin: 0 }}>{quest}</p></Block>}
           {showTeam && (
             <Block title="Party">
-              <div className="party">{p.team.map((t) => { const m = member(t); const inner = <><span className="party-av" aria-hidden="true">{initials(m.name)}</span><span>{m.name}</span>{m.url && <span className="party-ic">{memberIcon(m.url)}</span>}</>; return m.url ? <a key={t} className="party-chip link" href={m.url} target="_blank" rel="noopener noreferrer" aria-label={`${m.name}, opens their profile`}>{inner}</a> : <span key={t} className="party-chip">{inner}</span>; })}</div>
+              <div className="party">{p.team.map((t) => { const m = member(t); const inner = <><span className="party-av" aria-hidden="true">{initials(m.name)}</span><span>{m.name}</span></>; return m.url ? <a key={t} className="party-chip link" href={m.url} target="_blank" rel="noopener noreferrer" aria-label={`${m.name}, opens their profile`}>{inner}</a> : <span key={t} className="party-chip">{inner}</span>; })}</div>
             </Block>
           )}
         </aside>
