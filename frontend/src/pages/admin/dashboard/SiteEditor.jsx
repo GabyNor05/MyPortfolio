@@ -211,10 +211,11 @@ export default function SiteEditor({ section }) {
               <Field label="Score"><input type="number" value={a.score ?? ""} placeholder="--" onChange={(e) => AB.upd(i, "score", e.target.value === "" ? null : Number(e.target.value))} /></Field>
               <Field label="Bonus"><input type="number" value={a.bonus ?? ""} placeholder="auto" onChange={(e) => AB.upd(i, "bonus", e.target.value === "" ? null : Number(e.target.value))} /></Field>
               <RowTools i={i} n={d.abilities.length} move={AB.move} remove={AB.remove} />
+              <div style={{ gridColumn: "1 / -1" }}><Field label="Message when clicked and not rated (optional)"><input value={a.note || ""} onChange={(e) => AB.upd(i, "note", e.target.value)} /></Field></div>
             </div>
           ))}
           <p style={{ fontSize: 12, color: "var(--muted)" }}>Leave the bonus empty to work it out from the score (score 16 gives +3). Leave both empty to show "--".</p>
-          <button type="button" className="thin" onClick={() => AB.add({ name: "", score: 10, bonus: null })}><Plus size={14} />Add ability</button>
+          <button type="button" className="thin" onClick={() => AB.add({ name: "", score: 10, bonus: null, note: "" })}><Plus size={14} />Add ability</button>
         </div>
       )}
       {sub === "saves" && (

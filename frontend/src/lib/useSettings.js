@@ -25,7 +25,7 @@ export const DEFAULTS = {
   experience: sheet.experience,
   skills: sheet.skills.map((s) => ({ name: s.name, bonus: s.level, proficient: s.level >= 7 })),
   extraSkills: sheet.extraSkills,
-  abilities: sheet.abilities.map((a) => ({ name: a.name, score: a.score, bonus: null })),
+  abilities: sheet.abilities.map((a) => ({ name: a.name, score: a.score, bonus: null, note: a.name === "Maintenance" ? "Not rated yet. I have not had much experience maintaining projects after launch (only one so far), and I am keen to build it." : "" })),
   saves: sheet.saves,
   saveNotes: sheet.saveNotes,
   languages: sheet.languages,

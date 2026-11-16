@@ -31,7 +31,6 @@
     "status": "",
     "gallery": [
       "projects/forage-scan/phones.jpg",
-      "projects/forage-scan/3.jpg",
       "projects/forage-scan/4.jpg"
     ],
     "wireframes": [
@@ -251,7 +250,7 @@
     "type": "Interactive Development",
     "solution": "React Native App",
     "year": 2026,
-    "thumbnail": "projects/whelmer/cover.jpg",
+    "thumbnail": "projects/whelmer/phones.jpg",
     "scenario": "Personal project",
     "shortDescription": "A calm, ADHD-friendly focus and task app with an AI companion named Milo.",
     "fullDescription": "Whelmer turns big goals into tiny steps. Milo, a Groq-powered AI friend, breaks tasks down, a personalised plan shapes replies and deadlines, and a vinyl-style Focus Zone timer adds soundscapes and gentle reminders.",
@@ -287,17 +286,7 @@
     ],
     "team": [],
     "status": "",
-    "gallery": [
-      "projects/whelmer/g1.jpg",
-      "projects/whelmer/g2.jpg",
-      "projects/whelmer/g3.jpg",
-      "projects/whelmer/phones.jpg",
-      "projects/whelmer/x1.jpg",
-      "projects/whelmer/x2.jpg",
-      "projects/whelmer/x3.jpg",
-      "projects/whelmer/x4.jpg",
-      "projects/whelmer/x5.jpg"
-    ]
+    "gallery": []
   },
   {
     "id": "proj-008",
@@ -480,7 +469,6 @@
     "status": "",
     "gallery": [
       "projects/storyweave/phones.jpg",
-      "projects/storyweave/1.jpg",
       "projects/storyweave/2.jpg",
       "projects/storyweave/3.jpg",
       "projects/storyweave/4.jpg",
@@ -564,7 +552,6 @@
     "status": "",
     "gallery": [
       "projects/masterchef-broadway/phones.jpg",
-      "projects/masterchef-broadway/1.jpg",
       "projects/masterchef-broadway/2.jpg",
       "projects/masterchef-broadway/3.jpg",
       "projects/masterchef-broadway/4.jpg"
@@ -572,7 +559,7 @@
   },
   {
     "id": "proj-014",
-    "thumbnail": "projects/get-up-and-go/cover.jpg",
+    "thumbnail": "projects/get-up-and-go/phones.jpg",
     "scenario": "Module brief",
     "tagline": "A geolocation habit breaker.",
     "reflection": "",
@@ -617,20 +604,11 @@
     ],
     "team": [],
     "status": "",
-    "gallery": [
-      "projects/get-up-and-go/g1.jpg",
-      "projects/get-up-and-go/g2.jpg",
-      "projects/get-up-and-go/g3.jpg",
-      "projects/get-up-and-go/phones.jpg",
-      "projects/get-up-and-go/x1.jpg",
-      "projects/get-up-and-go/x2.jpg",
-      "projects/get-up-and-go/x3.jpg",
-      "projects/get-up-and-go/x4.jpg"
-    ]
+    "gallery": []
   },
   {
     "id": "proj-015",
-    "thumbnail": "projects/makerspace/cover.jpg",
+    "thumbnail": "projects/makerspace/5.jpg",
     "scenario": "Module brief",
     "tagline": "From request to ready, without the guessing.",
     "reflection": "",
@@ -662,11 +640,7 @@
     ],
     "status": "",
     "gallery": [
-      "projects/makerspace/1.jpg",
-      "projects/makerspace/2.jpg",
-      "projects/makerspace/3.jpg",
-      "projects/makerspace/4.jpg",
-      "projects/makerspace/5.jpg"
+      "projects/makerspace/4.jpg"
     ]
   },
   {
@@ -702,7 +676,6 @@
     ],
     "status": "",
     "gallery": [
-      "projects/uplifters/1.jpg",
       "projects/uplifters/3.jpg",
       "projects/uplifters/4.jpg",
       "projects/uplifters/5.jpg"
@@ -713,7 +686,7 @@
   },
   {
     "id": "proj-017",
-    "thumbnail": "projects/hackathon/cover.jpg",
+    "thumbnail": "projects/hackathon/3.jpg",
     "scenario": "Module brief",
     "tagline": "",
     "reflection": "",
@@ -739,9 +712,6 @@
     "highlights": [],
     "status": "",
     "gallery": [
-      "projects/hackathon/1.jpg",
-      "projects/hackathon/2.jpg",
-      "projects/hackathon/3.jpg",
       "projects/hackathon/4.jpg",
       "projects/hackathon/5.jpg"
     ]

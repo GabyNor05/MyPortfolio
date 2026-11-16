@@ -98,6 +98,8 @@ export default function Dashboard() {
   const [linksDraft, setLinksDraft] = useState(null);
   const [cvSub, setCvSub] = useState("pending");
   const [kindFor, setKindFor] = useState({});
+  const [cvOpen, setCvOpen] = useState(null);
+  const [views, setViews] = useState([]);
   const [preview, setPreview] = useState(null);
   const cvLinks = { dev: cfg.cvLinks.dev || readLs("cvDev") || readLs("cvLink"), ux: cfg.cvLinks.ux || readLs("cvUx"), hybrid: cfg.cvLinks.hybrid };
   const [editing, setEditing] = useState(null);
@@ -128,7 +130,7 @@ export default function Dashboard() {
     if (!isFirebaseConfigured) return;
     try { const snap = await getDocs(query(collection(db, "cvRequests"), orderBy("createdAt", "desc"))); setCvReqs(snap.docs.map((d) => ({ id: d.id, ...d.data() }))); } catch (e) { console.warn(e.message); }
   };
-  useEffect(() => { if (isAdmin) { loadProjects(); loadMessages().then((l) => l && syncCount(l)); loadCv(); loadChat(); } }, [isAdmin]);
+  useEffect(() => { if (isAdmin) { loadProjects(); loadMessages().then((l) => l && syncCount(l)); loadCv(); loadChat(); loadViews(); } }, [isAdmin]);
 
   const sorted = useMemo(() => [...projects].sort((a, b) => b.year - a.year || a.title.localeCompare(b.title)), [projects]);
   const upsert = (p) => setProjects((list) => (list.some((x) => x.id === p.id) ? list.map((x) => (x.id === p.id ? p : x)) : [...list, p]));
@@ -161,6 +163,10 @@ export default function Dashboard() {
   const download = () => {
     const url = URL.createObjectURL(new Blob([JSON.stringify(sorted, null, 2)], { type: "application/json" }));
     const a = document.createElement("a"); a.href = url; a.download = "projects.json"; a.click(); URL.revokeObjectURL(url);
+  };
+  const loadViews = async () => {
+    if (!isFirebaseConfigured) return;
+    try { const snap = await getDocs(collection(db, "views")); setViews(snap.docs.map((d) => ({ id: d.id, count: d.data().count || 0 }))); } catch (e) { console.warn(e.message); }
   };
   const loadChat = async () => {
     if (!isFirebaseConfigured) return;
@@ -223,16 +229,30 @@ export default function Dashboard() {
       {note && <div className="panel adm-card" role="status">{note}</div>}
 
       {tab === "overview" && (
-        <>
+        <div className="adm-scroll">
           <div className="adm-stats">
-            {[["Projects", projects.length], ["Live on site", projects.length - hiddenCount], ["Hidden", hiddenCount], ["Unresolved messages", unresolved], ["CV requests", pendingCv]].map(([l, n]) => (
-              <div className="panel adm-card" key={l}><div className="eyebrow" style={{ fontSize: 11 }}>{l}</div><div className="h1" style={{ fontSize: 36, margin: 0 }}>{n}</div></div>
+            {[["Projects", projects.length], ["Live on site", projects.length - hiddenCount], ["Project views", views.reduce((n, v) => n + v.count, 0)], ["Unresolved messages", unresolved], ["Pending CV requests", pendingCv], ["Chat messages", chat.length], ["CVs sent", cvReqs.filter((r) => r.status === "sent").length], ["In mailing list", new Set(cvReqs.map((r) => (r.email || "").toLowerCase())).size]].map(([l, n]) => (
+              <div className="panel adm-card" key={l}><div className="eyebrow" style={{ fontSize: 11 }}>{l}</div><div className="h1" style={{ fontSize: 34, margin: 0 }}>{n}</div></div>
             ))}
           </div>
+          <div className="adm-recent">
+            <div className="panel adm-card"><div className="sec-h">Latest messages</div>
+              {messages.slice(0, 5).map((m) => <button type="button" key={m.id} className="adm-mini" onClick={() => setTab("messages")}><b>{m.name}</b><span>{m.message}</span></button>)}
+              {messages.length === 0 && <p className="quote">None yet.</p>}</div>
+            <div className="panel adm-card"><div className="sec-h">Latest CV requests</div>
+              {cvReqs.slice(0, 5).map((r) => <button type="button" key={r.id} className="adm-mini" onClick={() => { setTab("cv"); setCvOpen(r.id); }}><b>{r.name}</b><span>{r.company} · {r.status || "pending"}</span></button>)}
+              {cvReqs.length === 0 && <p className="quote">None yet.</p>}</div>
+            <div className="panel adm-card"><div className="sec-h">Latest chat</div>
+              {chat.slice(0, 5).map((c) => <button type="button" key={c.id} className="adm-mini" onClick={() => setTab("messages")}><b>{c.name || "Anonymous"}</b><span>{c.text}</span></button>)}
+              {chat.length === 0 && <p className="quote">None yet.</p>}</div>
+            <div className="panel adm-card"><div className="sec-h">Most viewed projects</div>
+              {[...views].sort((x, y) => y.count - x.count).slice(0, 5).map((v) => <div key={v.id} className="adm-mini" style={{ cursor: "default" }}><b>{(projects.find((p) => p.id === v.id) || {}).title || v.id}</b><span>{v.count} views</span></div>)}
+              {views.length === 0 && <p className="quote">Views are counted from now on.</p>}</div>
+          </div>
           <div className="btn-row"><button className="solid" onClick={() => { setTab("projects"); setEditing(blank()); }}><Plus size={15} />New project</button><button className="thin" onClick={() => setTab("projects")}>Manage projects</button></div>
-        </>
+        </div>
       )}
-      {(tab === "about" || tab === "site") && <SiteEditor key={tab} section={tab} />}
+      {(tab === "about" || tab === "site") && <div className="adm-scroll"><SiteEditor key={tab} section={tab} /></div>}
       {tab === "help" && (
         <section className="panel adm-card">
           <p className="quote">Edits you save here go live on the site straight away (when Firebase is connected). Use the eye icon to hide a project without deleting it. "Download JSON" gives you a backup copy of all projects.</p>
@@ -286,7 +306,7 @@ export default function Dashboard() {
       {tab === "cv" && (
         <section className="panel adm-card">
           <div className="subchips" style={{ marginBottom: 14 }}>
-            {[["pending", "Pending"], ["sent", "Approved and sent"], ["denied", "Denied"], ["list", "Mailing list"]].map(([id, l]) => (
+            {[["pending", "Pending"], ["sent", "Sent"], ["denied", "Denied"], ["list", "Mailing list"]].map(([id, l]) => (
               <button key={id} type="button" className="chip" aria-pressed={cvSub === id} onClick={() => setCvSub(id)}>{l} ({id === "list" ? cvReqs.length : cvReqs.filter((r) => (r.status || "pending") === id).length})</button>
             ))}
             <button type="button" className="thin cv-btn" onClick={() => setLinksDraft(linksDraft ? null : { ...cvLinks })}><Settings size={14} />CV links</button>
@@ -302,26 +322,39 @@ export default function Dashboard() {
           )}
           {!emailReady() && <p className="quote">EmailJS isn't set up yet, so "Send CV" will open your email app instead.</p>}
           {cvSub !== "list" && cvReqs.filter((r) => (r.status || "pending") === cvSub).length === 0 && <p className="quote">Nothing here yet.</p>}
-          {cvSub !== "list" && cvReqs.filter((r) => (r.status || "pending") === cvSub).map((r) => (
-            <div key={r.id} className="proj-row" style={{ alignItems: "flex-start" }}>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div className="proj-title">{r.name} <span style={{ color: "var(--muted)", fontSize: 13 }}>· {r.company} · {r.interest || "no interest given"} · {dateOf(r)}{r.sentCv ? ` · sent: ${CVNAMES[r.sentCv]}` : ""}</span></div>
-                <a href={`mailto:${r.email}`} style={{ color: "var(--accent)", fontSize: 14 }}>{r.email}</a>
-                <p className="quote" style={{ whiteSpace: "pre-wrap" }}>{r.reason}</p>
-                {cvSub !== "denied" && (
-                  <div className="cv-send">
-                    <select aria-label="Which CV to send" value={kindFor[r.id] || defaultKind(r)} onChange={(e) => setKindFor({ ...kindFor, [r.id]: e.target.value })}>{Object.entries(CVNAMES).map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select>
-                    <textarea placeholder="Personal note for the email (optional, makes it feel personal)" value={personal[r.id] || ""} onChange={(e) => setPersonal({ ...personal, [r.id]: e.target.value })} />
+          {cvSub !== "list" && cvReqs.filter((r) => (r.status || "pending") === cvSub).length > 0 && (
+            <table className="adm-table">
+              <thead><tr><th>Name</th><th>Company</th><th>Looking for</th><th>Date</th><th>Status</th></tr></thead>
+              <tbody>
+                {cvReqs.filter((r) => (r.status || "pending") === cvSub).map((r) => (
+                  <tr key={r.id} tabIndex={0} onClick={() => setCvOpen(r.id)} onKeyDown={(e) => e.key === "Enter" && setCvOpen(r.id)}>
+                    <td><b>{r.name}</b></td><td>{r.company}</td><td>{r.interest || "–"}</td><td>{dateOf(r)}</td><td><span className={`st st-${r.status || "pending"}`}>{r.status === "sent" ? "Sent" : r.status === "denied" ? "Denied" : "Pending"}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          {(() => {
+            const r = cvReqs.find((x) => x.id === cvOpen);
+            if (!r) return null;
+            return (
+              <div className="cv-back" role="dialog" aria-modal="true" aria-label="CV request" onClick={(e) => e.target === e.currentTarget && setCvOpen(null)}>
+                <div className="cv-modal" style={{ maxWidth: 560, width: "min(560px,100%)" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}><h2 className="h2" style={{ fontSize: 22, margin: 0 }}>{r.name}</h2><button className="thin icon-btn" aria-label="Close" onClick={() => setCvOpen(null)}><X size={14} /></button></div>
+                  <div className="rc" style={{ color: "var(--text-2)", lineHeight: 1.7 }}>{r.company} · {dateOf(r)}<br />Looking for: {r.interest || "–"}<br /><a href={`mailto:${r.email}`} style={{ color: "var(--accent)" }}>{r.email}</a>{r.sentCv ? <><br />Sent: {CVNAMES[r.sentCv]}</> : null}</div>
+                  <p className="quote" style={{ whiteSpace: "pre-wrap", margin: 0 }}>{r.reason}</p>
+                  <div className="field"><label>Which CV to send</label><select value={kindFor[r.id] || defaultKind(r)} onChange={(e) => setKindFor({ ...kindFor, [r.id]: e.target.value })}>{Object.entries(CVNAMES).map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select></div>
+                  <div className="field"><label>Personal note in the email (optional)</label><textarea placeholder="Makes it feel personal" value={personal[r.id] || ""} onChange={(e) => setPersonal({ ...personal, [r.id]: e.target.value })} /></div>
+                  <div className="btn-row" style={{ marginTop: 0 }}>
+                    <button className="solid" onClick={async () => { await sendCv(r); setCvOpen(null); }}>{r.status === "sent" ? "Send again" : "Send"}</button>
+                    {r.status !== "denied" && <button className="thin" onClick={async () => { await setStatus(r, "denied"); setCvOpen(null); }}>Deny</button>}
+                    {r.status && r.status !== "pending" && <button className="thin" onClick={async () => { await setStatus(r, "pending"); setCvOpen(null); }}>Move to pending</button>}
+                    <a className="thin" href={`mailto:${r.email}`}>Email</a>
                   </div>
-                )}
+                </div>
               </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                {cvSub !== "denied" && <button className="solid" onClick={() => sendCv(r)}>{r.status === "sent" ? "Send again" : "Approve and send"}</button>}
-                {cvSub === "pending" && <button className="thin" onClick={() => setStatus(r, "denied")}>Deny</button>}
-                {cvSub !== "pending" && <button className="thin" onClick={() => setStatus(r, "pending")}>Move to pending</button>}
-              </div>
-            </div>
-          ))}
+            );
+          })()}
           {cvSub === "list" && (
             <>
               <div className="btn-row" style={{ marginTop: 0 }}><button className="thin" onClick={exportCsv}><Download size={14} />Download as CSV</button></div>

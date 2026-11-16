@@ -9,6 +9,8 @@ import Header from "./components/sheet/Header";
 import Drawer from "./components/sheet/Drawer";
 import DiceTray from "./components/sheet/DiceTray";
 import { DiceProvider } from "./lib/dice";
+import NotFound from "./pages/NotFound";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { BACKGROUND_IMAGE } from "./lib/siteConfig";
 
 function Shell() {
@@ -18,12 +20,13 @@ function Shell() {
     <div className="sheet-page" style={BACKGROUND_IMAGE ? { backgroundImage: `linear-gradient(var(--bg-veil),var(--bg-veil)),url(${BACKGROUND_IMAGE})`, backgroundSize: "cover", backgroundAttachment: "fixed" } : undefined}>
       {!adminArea && <Header />}
       <AdminSecretListener />
-      <Routes>
+      <ErrorBoundary><Routes>
         <Route path="/" element={<Home />} />
         <Route path="/project/:id" element={<ProjectPage />} />
         <Route path="/auth" element={<Login />} />
         <Route path="/admin" element={<Dashboard />} />
-      </Routes>
+        <Route path="*" element={<NotFound />} />
+      </Routes></ErrorBoundary>
       {!adminArea && <Drawer />}
       {!adminArea && <DiceTray />}
     </div>

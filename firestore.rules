@@ -61,6 +61,13 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    // Project page view counters: anyone can add exactly 1; only the admin reads.
+    match /views/{id} {
+      allow read, delete: if isAdmin();
+      allow create: if request.resource.data.keys().hasOnly(['count']) && request.resource.data.count == 1;
+      allow update: if isAdmin() || (request.resource.data.keys().hasOnly(['count']) && request.resource.data.count == resource.data.count + 1);
+    }
+
     // Editable site content (About text, skills, links, logo...). Public read, admin write.
     match /settings/{id} {
       allow read: if true;

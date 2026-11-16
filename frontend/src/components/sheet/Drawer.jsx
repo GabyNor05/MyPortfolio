@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { X, Volume2, VolumeX, Send, Sparkles } from "lucide-react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db, isFirebaseConfigured } from "../../lib/firebase";
@@ -58,7 +58,9 @@ export default function Drawer() {
   const { drawerOpen, closeDrawer, log, roll, addLog } = useDice();
   const { facts } = useSettings();
   const [muted, setM] = useState(isMuted());
+  const listRef = useRef(null);
   useEffect(() => onMuteChange(setM), []);
+  useEffect(() => { const el = listRef.current; if (el) el.scrollTop = el.scrollHeight; }, [log.length, drawerOpen]);
   if (!drawerOpen) return null;
 
   const insight = () => roll("Insight check", 0, 20, {
@@ -78,9 +80,9 @@ export default function Drawer() {
         </div>
         <div className="rc" style={{ fontSize: 13, color: "var(--muted)" }}>Every roll appears here. Chat with Gaby below, or roll for a fact about her.</div>
         <button type="button" className="thin" style={{ justifyContent: "center" }} onClick={insight}><Sparkles size={14} />Roll for Insight</button>
-        <div className="log-list">
+        <div className="log-list" ref={listRef}>
           {log.length === 0 && <div className="log-line">No rolls yet. Click a modifier to roll.</div>}
-          {log.map((l) => <div key={l.id} className={`log-line log-${l.kind || "roll"}`}>{l.text}</div>)}
+          {[...log].reverse().map((l) => <div key={l.id} className={`log-line log-${l.kind || "roll"}`}>{l.text}</div>)}
         </div>
         <ChatBox />
       </aside>
