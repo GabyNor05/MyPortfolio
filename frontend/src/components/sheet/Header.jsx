@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaGithub, FaBehance } from "react-icons/fa";
-import { Volume2, Pause, Play, List, Sun, Moon } from "lucide-react";
+import { Volume2, Pause, Play, List, Sun, Moon, ArrowLeft } from "lucide-react";
 import voiceoverDefault from "../../assets/home/converted_V1.mp3";
 import { useSettings } from "../../lib/useSettings";
 import { useDice } from "../../lib/dice";
@@ -44,7 +44,7 @@ export default function Header() {
         </div>
 
         <div className="hdr-actions">
-          {isAdmin && <Link to="/admin" className="solid" style={{ minHeight: 36, padding: "0 16px", fontSize: 12 }}>← Back to admin</Link>}
+          {isAdmin && <Link to="/admin" className="solid" style={{ minHeight: 36, padding: "0 16px", fontSize: 12 }}><ArrowLeft size={14} />Back to admin</Link>}
           <a className="thin" href={LINKS.github} target="_blank" rel="noopener noreferrer"><FaGithub size={14} />GitHub</a>
           <a className="thin" href={LINKS.behance} target="_blank" rel="noopener noreferrer"><FaBehance size={14} />Behance</a>
           <audio ref={audioRef} src={voiceover} onEnded={() => setPlaying(false)} />

@@ -81,6 +81,7 @@ export default function Drawer() {
         <div className="rc" style={{ fontSize: 13, color: "var(--muted)" }}>Every roll appears here. Chat with Gaby below, or roll for a fact about her.</div>
         <button type="button" className="thin" style={{ justifyContent: "center" }} onClick={insight}><Sparkles size={14} />Roll for Insight</button>
         <div className="log-list" ref={listRef}>
+          <div className="log-spacer" />
           {log.length === 0 && <div className="log-line">No rolls yet. Click a modifier to roll.</div>}
           {[...log].reverse().map((l) => <div key={l.id} className={`log-line log-${l.kind || "roll"}`}>{l.text}</div>)}
         </div>

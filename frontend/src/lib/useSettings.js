@@ -5,6 +5,7 @@ import { LINKS, CAMPAIGN } from "./siteConfig";
 import { pageContent, sheet } from "../data/portfolioData";
 
 const TECH = "I really think technology is cool. It has its risks and its dangers, but what it has done for the world is amazing, and above all impactful. Then there's the feeling of unboxing something new. It doesn't have to be the latest thing, just new to me, like a power bank or anything that's going to make my life easier. Unboxing is one of my favourite things. I also love watching how fast it moves. The moment I decide I want a phone, it's already outdated, and by the time it reaches the store there's a newer model. That's just how technology works, and it fascinates me how much the industry has grown and how much is possible with it.";
+const EDU = /^(bachelor|diploma|degree|honours|master|certificate|national senior)/i;
 const pc = (id) => pageContent.find((c) => c.id === id) || {};
 
 // Everything editable from the admin. Firestore (settings/site) overrides these live.
@@ -22,7 +23,8 @@ export const DEFAULTS = {
     { id: "des", label: "Designer", heading: pc("content-003").title, text: pc("content-003").description },
     { id: "tink", label: "Tinkerer", heading: pc("content-004").title, text: TECH },
   ],
-  experience: sheet.experience,
+  education: sheet.experience.filter((x) => EDU.test(x.role)),
+  experience: sheet.experience.filter((x) => !EDU.test(x.role)),
   skills: sheet.skills.map((s) => ({ name: s.name, bonus: s.level, proficient: s.level >= 7 })),
   extraSkills: sheet.extraSkills,
   abilities: sheet.abilities.map((a) => ({ name: a.name, score: a.score, bonus: null, note: a.name === "Maintenance" ? "Not rated yet. I have not had much experience maintaining projects after launch (only one so far), and I am keen to build it." : "" })),
@@ -55,6 +57,7 @@ function start() {
   onSnapshot(doc(db, "settings", "site"), (s) => {
     if (s.exists()) {
       const d = s.data();
+      if (!d.education && Array.isArray(d.experience)) { d.education = d.experience.filter((x) => EDU.test(x.role || "")); d.experience = d.experience.filter((x) => !EDU.test(x.role || "")); }
       cache = { ...DEFAULTS, ...d, links: { ...DEFAULTS.links, ...(d.links || {}) }, cvLinks: { ...DEFAULTS.cvLinks, ...(d.cvLinks || {}) } };
       subs.forEach((f) => f());
     }

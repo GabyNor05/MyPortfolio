@@ -13,6 +13,7 @@ import { TAB_EVENT } from "../tabBus";
 import D20 from "../../../components/sheet/D20";
 import Logo from "../../../components/sheet/Logo";
 import Skills from "./Skills";
+import Modal from "../../../components/Modal";
 import { useSettings } from "../../../lib/useSettings";
 
 const TABS = [["projects", "Projects"], ["about", "About"], ["contact", "Contact"]];
@@ -160,11 +161,11 @@ function CvRequest() {
 
 function About() {
   const [f, setF] = useState("All");
-  const { about, experience } = useSettings();
+  const { about, experience, education } = useSettings();
   return (
     <>
       <div className="subchips">
-        {["All", ...about.map((a) => a.label), "Experience", "Skills"].map((t) => (
+        {["All", ...about.map((a) => a.label), ...(education.length ? ["Education"] : []), "Experience", "Skills"].map((t) => (
           <button key={t} type="button" className="chip" aria-pressed={f === t} onClick={() => setF(t)}>{t}</button>
         ))}
         <CvRequest />
@@ -176,6 +177,18 @@ function About() {
           <p className="quote">{a.text}</p>
         </div>
       ))}
+      {education.length > 0 && (f === "All" || f === "Education") && (
+        <div className="about-block">
+          <div className="sec-h">Education</div>
+          {education.map((x, i) => (
+            <div className="exp" key={x.role + i}>
+              <div className="exp-top"><b>{x.role}</b><span>{x.when}</span></div>
+              <div className="exp-org">{x.org}</div>
+              <p className="quote" style={{ margin: "4px 0 0" }}>{x.text}</p>
+            </div>
+          ))}
+        </div>
+      )}
       {(f === "All" || f === "Experience") && (
         <div className="about-block">
           <div className="sec-h">Experience</div>
@@ -204,6 +217,7 @@ function Contact() {
   const { roll } = useDice();
   const [form, setForm] = useState({ name: "", email: "", reason: REASONS[0], message: "" });
   const [status, setStatus] = useState("idle");
+  const [done, setDone] = useState(false);
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
 
   const submit = async (e) => {
@@ -224,6 +238,7 @@ function Contact() {
         if (n >= REMINDER_EVERY && n % REMINDER_EVERY === 0) notifyOwner(`Reminder: ${n} unresolved messages`, `You have ${n} messages waiting`, "Open your admin dashboard → Messages and mark the ones you've dealt with as resolved.");
       } catch (e) { console.warn("Unresolved counter skipped:", e.message); }
       setStatus("sent");
+      setDone(true);
       roll("Raven sent", 0, 20);
       setForm({ name: "", email: "", reason: REASONS[0], message: "" });
     } catch (err) { console.error(err); setStatus("error"); }
@@ -243,6 +258,7 @@ function Contact() {
         {status === "sent" && <p className="status-ok" role="status">Thank you! Your message was sent.</p>}
         {status === "error" && <p className="status-err" role="alert">Sorry, that didn't send. Please email {ADMIN_EMAIL} directly.</p>}
       </form>
+      {done && <Modal title="Raven sent" onClose={() => setDone(false)} actions={<button type="button" className="solid" onClick={() => setDone(false)}>Lovely</button>}>Thank you! Your message is on its way to Gaby. She will reply to the email you gave her.</Modal>}
       <div className="contact-art" aria-hidden="true"><Logo size={220} /><small>Let's build something</small></div>
       </div>
     </>

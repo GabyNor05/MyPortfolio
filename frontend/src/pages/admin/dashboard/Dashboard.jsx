@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, getDocs, orderBy, query, doc, setDoc, deleteDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { sendEmail, emailReady, EMAILJS } from "../../../lib/emailConfig";
-import { Plus, Pencil, Trash2, Download, UploadCloud, Eye, EyeOff, LogOut, ArrowLeft, LayoutDashboard, FolderKanban, Inbox, HelpCircle, FileText, Check, Settings, X } from "lucide-react";
+import { Plus, Pencil, Trash2, Download, UploadCloud, Eye, EyeOff, LogOut, ArrowLeft, LayoutDashboard, FolderKanban, Inbox, HelpCircle, FileText, Check, Settings, X, MessageCircle } from "lucide-react";
 import { auth, db, isFirebaseConfigured } from "../../../lib/firebase";
 import { ADMIN_EMAILS } from "../../../lib/firebaseConfig";
 import { projectData } from "../../../data/portfolioData";
@@ -16,7 +16,7 @@ const TYPES = ["UX Design", "Interactive Development", "Personal Project", "Hack
 const lines = (v) => v.split("\n").map((x) => x.trim()).filter(Boolean);
 const slug = (t) => "proj-" + (t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || Date.now());
 
-const blank = () => ({ id: "", title: "", type: TYPES[0], solution: "", year: new Date().getFullYear(), shortDescription: "", fullDescription: "", tagline: "", role: "", status: "", hidden: false, tools: [], team: [], highlights: [], actions: [], thumbnail: "", gallery: [], reflection: "", adventure: "", quest: "", video: "", wireframes: [], wireframeNote: "", hasTeam: false });
+const blank = () => ({ id: "", title: "", type: TYPES[0], solution: "", year: new Date().getFullYear(), shortDescription: "", fullDescription: "", tagline: "", role: "", status: "", hidden: false, tools: [], team: [], highlights: [], actions: [], thumbnail: "", gallery: [], reflection: "", adventure: "", quest: "", video: "", wireframes: [], wireframeNote: "", hasTeam: false, volumeWarning: false });
 
 // form <-> project conversion (arrays become editable text)
 const toForm = (p) => ({ ...blank(), ...p, tools: (p.tools || []).join(", "), team: (p.team || []).join("\n"), highlights: (p.highlights || []).join("\n"), actions: (p.actions || []).map((a) => `${a.label} | ${a.url}`).join("\n"), gallery: (p.gallery || []).join("\n"), wireframes: (p.wireframes || []).join("\n"), hasTeam: p.hasTeam !== undefined ? !!p.hasTeam : (p.team || []).length > 0, videoOn: !!p.video });
@@ -63,7 +63,8 @@ function Editor({ project, onSave, onCancel, saving }) {
         <Field label="The quest: what was asked of me, the brief (shown under the adventure)" wide><textarea value={f.quest} onChange={set("quest")} /></Field>
         <Field label="My role"><input value={f.role} onChange={set("role")} /></Field>
         <Field label="Tools (comma separated)"><input value={f.tools} onChange={set("tools")} /></Field>
-        <Field label="Team"><label className="chk"><input type="checkbox" checked={f.hasTeam} onChange={set("hasTeam")} /> This was a team project</label>{f.hasTeam && <textarea style={{ minHeight: 80 }} placeholder="One name per line" value={f.team} onChange={set("team")} />}</Field>
+        <Field label="Prototype warning"><label className="chk"><input type="checkbox" checked={!!f.volumeWarning} onChange={set("volumeWarning")} /> The prototype is loud: ask visitors to lower their volume first</label></Field>
+        <Field label="Team"><label className="chk"><input type="checkbox" checked={f.hasTeam} onChange={set("hasTeam")} /> This was a team project</label>{f.hasTeam && <textarea style={{ minHeight: 80 }} placeholder={"One person per line. Add a link after a slash so people can click through, e.g.\nAndré van Heerden / https://github.com/andre\nKeabetswe Olifant / keabetswe (a GitHub name works too)"} value={f.team} onChange={set("team")} />}</Field>
         <Field label="Highlights (one per line)"><textarea style={{ minHeight: 80 }} value={f.highlights} onChange={set("highlights")} /></Field>
         <Field label="Links (one per line: Label | https://url)" wide><textarea style={{ minHeight: 80 }} value={f.actions} onChange={set("actions")} placeholder={"Figma file | https://figma.com/...\nGitHub repo | https://github.com/..."} /></Field>
         <Field label="Reflection" wide><textarea value={f.reflection} onChange={set("reflection")} /></Field>
@@ -228,30 +229,51 @@ export default function Dashboard() {
       {!isFirebaseConfigured && <div className="panel adm-card" style={{ borderColor: "var(--accent)" }}>Firebase isn't set up yet, so edits stay on this page. Use <b>Download JSON</b> and replace <code>src/data/projects.json</code> to publish them.</div>}
       {note && <div className="panel adm-card" role="status">{note}</div>}
 
-      {tab === "overview" && (
-        <div className="adm-scroll">
-          <div className="adm-stats">
-            {[["Projects", projects.length], ["Live on site", projects.length - hiddenCount], ["Project views", views.reduce((n, v) => n + v.count, 0)], ["Unresolved messages", unresolved], ["Pending CV requests", pendingCv], ["Chat messages", chat.length], ["CVs sent", cvReqs.filter((r) => r.status === "sent").length], ["In mailing list", new Set(cvReqs.map((r) => (r.email || "").toLowerCase())).size]].map(([l, n]) => (
-              <div className="panel adm-card" key={l}><div className="eyebrow" style={{ fontSize: 11 }}>{l}</div><div className="h1" style={{ fontSize: 34, margin: 0 }}>{n}</div></div>
-            ))}
+      {tab === "overview" && (() => {
+        const ms = (x) => { try { return x.createdAt.toMillis(); } catch { return 0; } };
+        const ago = (t) => { if (!t) return ""; const m = Math.round((Date.now() - t) / 60000); return m < 60 ? `${Math.max(m, 1)}m ago` : m < 1440 ? `${Math.round(m / 60)}h ago` : `${Math.round(m / 1440)}d ago`; };
+        const feed = [
+          ...messages.map((m) => ({ k: "msg", id: m.id, who: m.name, text: m.message, t: ms(m), go: () => setTab("messages") })),
+          ...cvReqs.map((r) => ({ k: "cv", id: r.id, who: r.name, text: `asked for your CV · ${r.status || "pending"}`, t: ms(r), go: () => { setTab("cv"); setCvOpen(r.id); } })),
+          ...chat.map((c) => ({ k: "chat", id: c.id, who: c.name || "Anonymous", text: c.text, t: ms(c), go: () => setTab("messages") })),
+        ].sort((a, b) => b.t - a.t).slice(0, 8);
+        const IC = { msg: Inbox, cv: FileText, chat: MessageCircle };
+        const top = [...views].sort((x, y) => y.count - x.count).slice(0, 6);
+        const max = Math.max(1, ...top.map((v) => v.count));
+        const totalViews = views.reduce((n, v) => n + v.count, 0);
+        const rows = [["Projects live", `${projects.length - hiddenCount} of ${projects.length}`], ["Total project views", totalViews], ["CVs sent", cvReqs.filter((r) => r.status === "sent").length], ["People in mailing list", new Set(cvReqs.map((r) => (r.email || "").toLowerCase()).filter(Boolean)).size], ["Chat messages", chat.length]];
+        return (
+          <div className="adm-scroll">
+            <div className="ov-attn">
+              {[["Messages to answer", unresolved, "messages", Inbox], ["CV requests waiting", pendingCv, "cv", FileText]].map(([l, n, t, Icon]) => (
+                <button type="button" key={l} className={`ov-card ${n ? "on" : ""}`} onClick={() => setTab(t)}>
+                  <Icon size={22} /><div><div className="ov-num">{n}</div><div className="ov-lbl">{n ? l : "All clear · " + l.toLowerCase()}</div></div>
+                </button>
+              ))}
+              <button type="button" className="ov-card" onClick={() => { setTab("projects"); setEditing(blank()); }}><Plus size={22} /><div><div className="ov-lbl" style={{ fontSize: 16, color: "var(--text)" }}>New project</div><div className="ov-lbl">Add to the quest log</div></div></button>
+            </div>
+            <div className="ov-grid">
+              <section className="panel adm-card"><div className="sec-h">Recent activity</div>
+                {feed.length === 0 && <p className="quote">Nothing yet. Messages, CV requests and chat will show up here.</p>}
+                {feed.map((f) => { const Icon = IC[f.k]; return (
+                  <button type="button" key={f.k + f.id} className="ov-row" onClick={f.go}><span className={`ov-ic ${f.k}`}><Icon size={15} /></span><span className="ov-body"><b>{f.who}</b><span>{f.text}</span></span><time>{ago(f.t)}</time></button>
+                ); })}
+              </section>
+              <div className="ov-side">
+                <section className="panel adm-card"><div className="sec-h">Most viewed</div>
+                  {top.length === 0 && <p className="quote">Views are counted from now on.</p>}
+                  {top.map((v) => (
+                    <div key={v.id} className="ov-bar"><div className="ov-bar-top"><span>{(projects.find((p) => p.id === v.id) || {}).title || v.id}</span><b>{v.count}</b></div><div className="ov-track"><i style={{ width: `${(v.count / max) * 100}%` }} /></div></div>
+                  ))}
+                </section>
+                <section className="panel adm-card"><div className="sec-h">At a glance</div>
+                  {rows.map(([l, n]) => <div key={l} className="ov-line"><span>{l}</span><b>{n}</b></div>)}
+                </section>
+              </div>
+            </div>
           </div>
-          <div className="adm-recent">
-            <div className="panel adm-card"><div className="sec-h">Latest messages</div>
-              {messages.slice(0, 5).map((m) => <button type="button" key={m.id} className="adm-mini" onClick={() => setTab("messages")}><b>{m.name}</b><span>{m.message}</span></button>)}
-              {messages.length === 0 && <p className="quote">None yet.</p>}</div>
-            <div className="panel adm-card"><div className="sec-h">Latest CV requests</div>
-              {cvReqs.slice(0, 5).map((r) => <button type="button" key={r.id} className="adm-mini" onClick={() => { setTab("cv"); setCvOpen(r.id); }}><b>{r.name}</b><span>{r.company} · {r.status || "pending"}</span></button>)}
-              {cvReqs.length === 0 && <p className="quote">None yet.</p>}</div>
-            <div className="panel adm-card"><div className="sec-h">Latest chat</div>
-              {chat.slice(0, 5).map((c) => <button type="button" key={c.id} className="adm-mini" onClick={() => setTab("messages")}><b>{c.name || "Anonymous"}</b><span>{c.text}</span></button>)}
-              {chat.length === 0 && <p className="quote">None yet.</p>}</div>
-            <div className="panel adm-card"><div className="sec-h">Most viewed projects</div>
-              {[...views].sort((x, y) => y.count - x.count).slice(0, 5).map((v) => <div key={v.id} className="adm-mini" style={{ cursor: "default" }}><b>{(projects.find((p) => p.id === v.id) || {}).title || v.id}</b><span>{v.count} views</span></div>)}
-              {views.length === 0 && <p className="quote">Views are counted from now on.</p>}</div>
-          </div>
-          <div className="btn-row"><button className="solid" onClick={() => { setTab("projects"); setEditing(blank()); }}><Plus size={15} />New project</button><button className="thin" onClick={() => setTab("projects")}>Manage projects</button></div>
-        </div>
-      )}
+        );
+      })()}
       {(tab === "about" || tab === "site") && <div className="adm-scroll"><SiteEditor key={tab} section={tab} /></div>}
       {tab === "help" && (
         <section className="panel adm-card">

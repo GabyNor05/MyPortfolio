@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { FaFigma, FaGithub, FaBehance } from "react-icons/fa";
+import { FaFigma, FaGithub, FaBehance, FaApple, FaGooglePlay, FaLinkedin } from "react-icons/fa";
+import Modal from "../../components/Modal";
 import { ArrowLeft, ArrowRight, Globe, X, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { useProjects, isRealUrl } from "../../lib/useProjects";
 import { img } from "../../lib/assets";
@@ -8,7 +9,20 @@ import { doc, setDoc, increment } from "firebase/firestore";
 import { db, isFirebaseConfigured } from "../../lib/firebase";
 import { useIsAdmin } from "../../lib/useAdmin";
 
-const linkIcon = (a) => (/figma/i.test(a.url) || a.icon === "figma" ? <FaFigma size={14} /> : /github\.com/i.test(a.url) ? <FaGithub size={14} /> : /behance/i.test(a.url) ? <FaBehance size={15} /> : <Globe size={14} />);
+const linkIcon = (a) => (/figma/i.test(a.url) || a.icon === "figma" ? <FaFigma size={14} /> : /github\.com/i.test(a.url) ? <FaGithub size={14} /> : /behance/i.test(a.url) ? <FaBehance size={15} /> : /apps\.apple\.com|testflight|itunes\.apple|app ?store/i.test(a.url + " " + a.label) ? <FaApple size={16} /> : /play\.google\.com|google ?play/i.test(a.url + " " + a.label) ? <FaGooglePlay size={13} /> : <Globe size={14} />);
+
+// "Name / link" -> { name, url }. The link may be a full URL or just a GitHub username.
+export const member = (t) => {
+  const m = String(t).match(/^(.*?)\s*[\/|]\s*((?:https?:\/\/|www\.)\S+|@?[\w-]+)\s*$/);
+  if (!m || !m[1]) return { name: String(t).trim() };
+  let url = m[2];
+  if (!/^(https?:|www\.)/i.test(url)) url = "https://github.com/" + url.replace(/^@/, "");
+  if (/^www\./i.test(url)) url = "https://" + url;
+  return { name: m[1].trim(), url };
+};
+const initials = (n) => n.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join("");
+const memberIcon = (u) => (/github/i.test(u) ? <FaGithub size={13} /> : /behance/i.test(u) ? <FaBehance size={14} /> : /linkedin/i.test(u) ? <FaLinkedin size={13} /> : <Globe size={13} />);
+const isProto = (p, a) => (p.volumeWarning || /duck/i.test(p.title || "")) && (/figma\.com\/proto/i.test(a.url) || /prototype/i.test(a.label || ""));
 const real = (t) => (t && t !== "..." ? t : null);
 
 export default function ProjectPage() {
@@ -16,6 +30,7 @@ export default function ProjectPage() {
   const { projects } = useProjects();
   const [shot, setShot] = useState(0);
   const [box, setBox] = useState(null); // { list, i }
+  const [loud, setLoud] = useState(null);
   const mediaRef = useRef(null);
   const shotsRef = useRef(null);
   const [fade, setFade] = useState(false);
@@ -98,12 +113,14 @@ export default function ProjectPage() {
         <h1 className="h1" style={{ margin: 0 }}>{p.title}</h1>
         {links.length > 0 && (
           <div className="pp-links">
-            {links.map((a, k) => <a key={a.url} className={k === 0 ? "solid" : "thin"} style={{ minHeight: 38 }} href={a.url} target="_blank" rel="noopener noreferrer">{linkIcon(a)}{a.label}</a>)}
+            {links.map((a, k) => isProto(p, a)
+              ? <button type="button" key={a.url} className={k === 0 ? "solid" : "thin"} style={{ minHeight: 38 }} onClick={() => setLoud(a)}>{linkIcon(a)}{a.label}</button>
+              : <a key={a.url} className={k === 0 ? "solid" : "thin"} style={{ minHeight: 38 }} href={a.url} target="_blank" rel="noopener noreferrer">{linkIcon(a)}{a.label}</a>)}
           </div>
         )}
       </div>
       {real(p.tagline) && <div className="sub">{p.tagline}</div>}
-      {real(p.role) && <div className="pp-role"><b>My role:</b> {p.role}</div>}
+      {showTeam && real(p.role) && <div className="pp-role"><b>My role:</b> {p.role}</div>}
       <div className="pp-top">
         <div className="pp-media" ref={mediaRef}>
           {slots.length === 0 ? <div className="media">{p.title} · images coming soon</div> : (
@@ -142,7 +159,7 @@ export default function ProjectPage() {
           {quest && <Block title="The quest (the brief)"><p className="lede" style={{ margin: 0 }}>{quest}</p></Block>}
           {showTeam && (
             <Block title="Party">
-              <ul className="pp-list">{p.team.map((t) => <li key={t}>{t}</li>)}</ul>
+              <div className="party">{p.team.map((t) => { const m = member(t); const inner = <><span className="party-av" aria-hidden="true">{initials(m.name)}</span><span>{m.name}</span>{m.url && <span className="party-ic">{memberIcon(m.url)}</span>}</>; return m.url ? <a key={t} className="party-chip link" href={m.url} target="_blank" rel="noopener noreferrer" aria-label={`${m.name}, opens their profile`}>{inner}</a> : <span key={t} className="party-chip">{inner}</span>; })}</div>
             </Block>
           )}
         </aside>
@@ -173,6 +190,11 @@ export default function ProjectPage() {
         {prev ? <Link className="thin" to={`/project/${prev.id}`}><ArrowLeft size={14} />{prev.title}</Link> : <span />}
         {next ? <Link className="thin" to={`/project/${next.id}`}>{next.title}<ArrowRight size={14} /></Link> : <span />}
       </div>
+      {loud && (
+        <Modal title="Before you go in" onClose={() => setLoud(null)} actions={<><button type="button" className="solid" onClick={() => { window.open(loud.url, "_blank", "noopener,noreferrer"); setLoud(null); }}>Open the prototype</button><button type="button" className="thin" onClick={() => setLoud(null)}>Not now</button></>}>
+          The clicks in this prototype are loud. Please turn your volume down to below 50% before you open it, to save your ears.
+        </Modal>
+      )}
     </div>
   );
 }

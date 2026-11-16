@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { doc, setDoc, deleteDoc } from "firebase/firestore";
-import { Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react";
+import { Plus, Trash2, ArrowUp, ArrowDown, UploadCloud } from "lucide-react";
 import { db, isFirebaseConfigured } from "../../../lib/firebase";
 import { useSettings, DEFAULTS } from "../../../lib/useSettings";
 import { UploadField } from "../../../components/admin/UploadField";
@@ -70,14 +70,15 @@ export default function SiteEditor({ section }) {
   const [msg, setMsg] = useState("");
   const [saving, setSaving] = useState(false);
   const set = (k, v) => setD({ ...d, [k]: v });
+  const logoRef = useRef(null);
   const setLink = (k) => (e) => setD({ ...d, links: { ...d.links, [k]: e.target.value } });
 
   const save = async () => {
     if (!isFirebaseConfigured) { setMsg("Firebase isn't set up, so nothing can be saved live."); return; }
     setSaving(true); setMsg("");
     try {
-      const { about, experience, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData, abilities, saves, saveNotes, languages, training, cloudName, uploadPreset } = d;
-      await setDoc(doc(db, "settings", "site"), { about, experience, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData, abilities, saves, saveNotes, languages, training, cloudName, uploadPreset }, { merge: true });
+      const { about, experience, education, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData, abilities, saves, saveNotes, languages, training, cloudName, uploadPreset } = d;
+      await setDoc(doc(db, "settings", "site"), { about, experience, education, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData, abilities, saves, saveNotes, languages, training, cloudName, uploadPreset }, { merge: true });
       setMsg("Saved. The live site updates straight away.");
     } catch (e) { setMsg("Could not save: " + e.message); }
     setSaving(false);
@@ -89,6 +90,7 @@ export default function SiteEditor({ section }) {
 
   const A = useList(d.about, (v) => set("about", v));
   const E = useList(d.experience, (v) => set("experience", v));
+  const ED = useList(d.education || [], (v) => set("education", v));
   const AB = useList(d.abilities, (v) => set("abilities", v));
   const SN = useList(d.saveNotes, (v) => set("saveNotes", v));
   const LG = useList(d.languages, (v) => set("languages", v));
@@ -130,7 +132,7 @@ export default function SiteEditor({ section }) {
               <UploadField kind="audio" accept="audio/*" value={d.voiceUrl} onChange={(v) => set("voiceUrl", v)} />
             </Field>
             <Field label="Logo (PNG, SVG or JPG; shrunk to 320px and stored with the settings)">
-              <input type="file" accept="image/*" onChange={async (e) => { const f = e.target.files[0]; if (f) set("logoData", await resizeToDataUrl(f)); }} />
+              <span className="upl"><input ref={logoRef} type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files[0]; if (f) set("logoData", await resizeToDataUrl(f)); e.target.value = ""; }} /><button type="button" className="thin upl-btn" onClick={() => logoRef.current.click()}><UploadCloud size={14} />Upload logo</button></span>
             </Field>
             <Field label="Current logo">
               <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
@@ -161,7 +163,7 @@ export default function SiteEditor({ section }) {
   return (
     <>
       <div className="subchips" style={{ marginBottom: 14 }}>
-        {[["text", "About text"], ["exp", "Experience"], ["skills", "Skills"], ["abil", "Ability scores"], ["saves", "Saving throws"], ["lang", "Languages"], ["tools", "Tools"]].map(([id, l]) => (
+        {[["text", "About text"], ["edu", "Education"], ["exp", "Experience"], ["skills", "Skills"], ["abil", "Ability scores"], ["saves", "Saving throws"], ["lang", "Languages"], ["tools", "Tools"]].map(([id, l]) => (
           <button key={id} type="button" className="chip" aria-pressed={sub === id} onClick={() => setSub(id)}>{l}</button>
         ))}
       </div>
@@ -178,6 +180,22 @@ export default function SiteEditor({ section }) {
             </div>
           ))}
           <button type="button" className="thin" onClick={() => A.add({ id: uid(), label: "New section", heading: "", text: "" })}><Plus size={14} />Add section</button>
+        </>
+      )}
+      {sub === "edu" && (
+        <>
+          {(d.education || []).map((x, i) => (
+            <div className="panel adm-card" key={i}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}><div className="sec-h">{x.role || "New course"}</div><RowTools i={i} n={(d.education || []).length} move={ED.move} remove={ED.remove} /></div>
+              <div className="adm-grid">
+                <Field label="Qualification"><input value={x.role} onChange={(e) => ED.upd(i, "role", e.target.value)} /></Field>
+                <Field label="Organisation"><input value={x.org} onChange={(e) => ED.upd(i, "org", e.target.value)} /></Field>
+                <Field label="When (e.g. Jan 2024 – Present)"><input value={x.when} onChange={(e) => ED.upd(i, "when", e.target.value)} /></Field>
+                <Field label="Description" wide><textarea value={x.text} onChange={(e) => ED.upd(i, "text", e.target.value)} /></Field>
+              </div>
+            </div>
+          ))}
+          <button type="button" className="thin" onClick={() => ED.add({ role: "", org: "", when: "", text: "" })}><Plus size={14} />Add education</button>
         </>
       )}
       {sub === "exp" && (

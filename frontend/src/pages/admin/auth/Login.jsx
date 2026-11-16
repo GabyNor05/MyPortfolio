@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, isFirebaseConfigured } from "../../../lib/firebase";
 import { ADMIN_EMAILS } from "../../../lib/firebaseConfig";
@@ -47,7 +48,7 @@ export default function Login() {
           <Link to="/admin" className="solid" style={{ justifyContent: "center", width: "100%" }}>Open dashboard</Link>
         )}
         <p style={{ margin: "18px 0 0", fontSize: 12, color: "var(--muted)" }}>Private area. Only the portfolio owner can sign in.</p>
-        <div style={{ marginTop: 14 }}><Link to="/" style={{ color: "var(--accent)", fontSize: 14 }}>← Back to portfolio</Link></div>
+        <div style={{ marginTop: 14 }}><Link to="/" style={{ color: "var(--accent)", fontSize: 14, display: "inline-flex", alignItems: "center", gap: 6 }}><ArrowLeft size={14} />Back to portfolio</Link></div>
       </section>
     </main>
   );
