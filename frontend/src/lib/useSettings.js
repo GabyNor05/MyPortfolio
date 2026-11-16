@@ -25,6 +25,14 @@ export const DEFAULTS = {
   experience: sheet.experience,
   skills: sheet.skills.map((s) => ({ name: s.name, bonus: s.level, proficient: s.level >= 7 })),
   extraSkills: sheet.extraSkills,
+  abilities: sheet.abilities.map((a) => ({ name: a.name, score: a.score, bonus: null })),
+  saves: sheet.saves,
+  saveNotes: sheet.saveNotes,
+  languages: sheet.languages,
+  training: sheet.training,
+  cloudName: "",
+  uploadPreset: "",
+  cvLinks: { dev: "", ux: "", hybrid: "" },
   facts: [
     "Her cat has strong opinions about her keyboard, usually during a Merge.",
     "Unboxing something new is one of her favourite things. The box is half the fun.",
@@ -47,7 +55,7 @@ function start() {
   onSnapshot(doc(db, "settings", "site"), (s) => {
     if (s.exists()) {
       const d = s.data();
-      cache = { ...DEFAULTS, ...d, links: { ...DEFAULTS.links, ...(d.links || {}) } };
+      cache = { ...DEFAULTS, ...d, links: { ...DEFAULTS.links, ...(d.links || {}) }, cvLinks: { ...DEFAULTS.cvLinks, ...(d.cvLinks || {}) } };
       subs.forEach((f) => f());
     }
   }, (e) => console.warn("Settings not loaded:", e.message));

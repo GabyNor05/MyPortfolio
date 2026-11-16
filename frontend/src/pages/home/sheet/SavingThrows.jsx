@@ -1,14 +1,15 @@
 import React from "react";
 import { Plus } from "lucide-react";
-import { sheet } from "../../../data/portfolioData";
+import { useSettings } from "../../../lib/useSettings";
 import { useDice, signed } from "../../../lib/dice";
 
 export default function SavingThrows() {
   const { roll } = useDice();
+  const { saves, saveNotes } = useSettings();
   return (
     <section className="panel saves" aria-label="Saving throws">
       <div className="saves-grid">
-        {sheet.saves.map((s) => (
+        {saves.map((s) => (
           <div className="save" key={s.name}>
             <div className="save-pill">
               <span className={`dot ${s.proficient ? "on" : ""}`} aria-label={s.proficient ? "Proficient save" : "Not proficient"} />
@@ -19,7 +20,7 @@ export default function SavingThrows() {
         ))}
       </div>
       <div className="notes">
-        {sheet.saveNotes.map((n, i) => (
+        {saveNotes.map((n, i) => (
           <div className="note" key={n.text}><span className={`hex ${i ? "alt" : ""}`} aria-hidden="true">{n.kind === "+" ? <Plus size={13} strokeWidth={3.5} /> : n.kind}</span><span>{n.text}</span></div>
         ))}
       </div>

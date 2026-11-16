@@ -46,3 +46,38 @@ Settings for each template: set "To email" and "Subject" as below.
 </div>
 ```
 Note: say "linked below" rather than "attached" if you prefer; the CV is sent as a link, not an attachment.
+
+
+## 3. Your email signature inside the EmailJS emails
+Images in email must be **PNG or JPG hosted online** (SVG is blocked by Gmail and Outlook). To make an image clickable you wrap it in a link: `<a href="https://gabynor05.github.io/MyPortfolio/"><img ...></a>`. The signature below does that for the photo and the corner logo, and has real text links (Visit website, GitHub, Behance, LinkedIn).
+
+How to use it: in EmailJS, open the template, switch to the **Code editor**, and paste the block below just before the final closing `</div></div>` of the template (under "Kind regards"). Do this for both templates. The images load from your live site (`/brand/`), so they stay available as long as the site is online.
+
+```html
+<table cellpadding="0" cellspacing="0" border="0" style="background:#15122a;border-radius:8px;font-family:Roboto,Arial,sans-serif;width:560px;">
+  <tr>
+    <td style="padding:20px 8px 20px 20px;vertical-align:top;width:104px;">
+      <a href="https://gabynor05.github.io/MyPortfolio/"><img src="https://gabynor05.github.io/MyPortfolio/brand/gaby-circle.png" width="96" height="96" alt="Gaby Norris" style="display:block;border-radius:48px;border:0;"></a>
+    </td>
+    <td style="padding:20px 8px 20px 12px;vertical-align:top;">
+      <div style="font-size:22px;font-weight:bold;color:#ede9ff;line-height:1.2;">Gaby Norris</div>
+      <div style="font-size:14px;color:#ba9fe1;font-weight:bold;padding-top:2px;">Developer / User Experience Designer</div>
+      <div style="font-size:12px;color:#b8b0d8;padding-top:2px;">Final year · Bachelor of Creative Technologies</div>
+      <div style="font-size:13px;color:#ede9ff;padding-top:10px;">
+        <a href="mailto:gabriellenor05@gmail.com" style="color:#ede9ff;text-decoration:none;">gabriellenor05@gmail.com</a> &nbsp;·&nbsp; +27 82 777 3260
+      </div>
+      <div style="font-size:13px;padding-top:8px;color:#b8b0d8;">
+        <a href="https://gabynor05.github.io/MyPortfolio/" style="color:#ba9fe1;text-decoration:underline;">Visit website</a> &nbsp;·&nbsp;
+        <a href="https://github.com/GabyNor05" style="color:#ba9fe1;text-decoration:underline;">GitHub</a> &nbsp;·&nbsp;
+        <a href="https://www.behance.net/gabynorris1" style="color:#ba9fe1;text-decoration:underline;">Behance</a> &nbsp;·&nbsp;
+        <a href="https://www.linkedin.com/in/gaby-norris" style="color:#ba9fe1;text-decoration:underline;">LinkedIn</a>
+      </div>
+    </td>
+    <td style="vertical-align:bottom;width:130px;padding:0;">
+      <a href="https://gabynor05.github.io/MyPortfolio/"><img src="https://gabynor05.github.io/MyPortfolio/brand/sig-corner.png" width="130" height="85" alt="Visit my portfolio" style="display:block;border-bottom-right-radius:8px;border:0;"></a>
+    </td>
+  </tr>
+</table>
+
+```
+To change the photo, replace `frontend/public/brand/gaby-circle.png` in the repo (or put the photo URL from the Figma export in the `src`). Use the Figma export of the dark signature as a PNG if you prefer a single image: host it in `/brand/` and wrap it the same way, but text links inside a flat image are not individually clickable, so the table version above is recommended.

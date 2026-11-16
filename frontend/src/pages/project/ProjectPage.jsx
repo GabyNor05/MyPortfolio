@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, ExternalLink, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, X, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { useProjects, isRealUrl } from "../../lib/useProjects";
 import { img } from "../../lib/assets";
 
@@ -10,10 +10,17 @@ export default function ProjectPage() {
   const { id } = useParams();
   const { projects } = useProjects();
   const [shot, setShot] = useState(0);
-  const [box, setBox] = useState(null);
+  const [box, setBox] = useState(null); // { list, i }
+  const mediaRef = useRef(null);
+  const [railH, setRailH] = useState(null);
   useEffect(() => {
     if (box === null) return;
-    const on = (e) => { if (e.key === "Escape") setBox(null); if (e.key === "ArrowRight") setBox((b) => b + 1); if (e.key === "ArrowLeft") setBox((b) => b - 1); };
+    const n = box.list.length;
+    const on = (e) => {
+      if (e.key === "Escape") setBox(null);
+      if (e.key === "ArrowRight") setBox((b) => ({ ...b, i: (b.i + 1) % n }));
+      if (e.key === "ArrowLeft") setBox((b) => ({ ...b, i: (b.i - 1 + n) % n }));
+    };
     window.addEventListener("keydown", on); return () => window.removeEventListener("keydown", on);
   }, [box]);
   useEffect(() => { window.scrollTo(0, 0); setShot(0); }, [id]);
@@ -21,6 +28,14 @@ export default function ProjectPage() {
   const sorted = [...projects].sort((a, b) => b.year - a.year || a.title.localeCompare(b.title));
   const i = sorted.findIndex((p) => p.id === id);
   const p = sorted[i];
+
+  // keep the right-hand column no taller than the media on the left
+  useLayoutEffect(() => {
+    const el = mediaRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => setRailH(window.innerWidth > 900 ? el.getBoundingClientRect().height : null));
+    ro.observe(el); return () => ro.disconnect();
+  });
 
   if (!p) {
     return (
@@ -31,12 +46,21 @@ export default function ProjectPage() {
     );
   }
   const prev = sorted[i - 1], next = sorted[i + 1];
-  const shots = [p.thumbnail, ...(p.gallery || [])].filter(Boolean);
-  const bi = box === null || !shots.length ? null : ((box % shots.length) + shots.length) % shots.length;
+  const images = [p.thumbnail, ...(p.gallery || [])].filter(Boolean);
+  const hasVideo = !!real(p.video);
+  // slot 0 is the video (if any); the rest are images
+  const slots = [...(hasVideo ? ["__video__"] : []), ...images];
+  const cur = slots[Math.min(shot, slots.length - 1)];
+  const step = (d) => setShot((s) => (s + d + slots.length) % slots.length);
   const links = (p.actions || []).filter((a) => isRealUrl(a.url));
   const tools = Array.isArray(p.tools) ? p.tools : Array.isArray(p.techStack) ? p.techStack : [];
-  const Block = ({ title, children }) => (
-    <section className="panel" style={{ padding: 20 }}>
+  const wires = (p.wireframes || []).filter((w) => /\.(png|jpe?g|webp|gif|svg|avif)(\?|$)|^https?:|^data:/i.test(w));
+  const showTeam = p.hasTeam !== false && (p.team || []).length > 0;
+  const adventure = real(p.adventure) || real(p.fullDescription) || real(p.shortDescription) || "Details coming soon.";
+  const quest = real(p.quest) || (real(p.scenario) && p.scenario !== "Module brief" ? p.scenario : null);
+  const openBox = (list, k) => setBox({ list, i: k });
+  const Block = ({ title, children, style }) => (
+    <section className="panel" style={{ padding: 20, ...style }}>
       <div className="eyebrow" style={{ fontSize: 12, letterSpacing: ".16em", color: "var(--muted)", marginBottom: 6 }}>{title}</div>
       {children}
     </section>
@@ -46,52 +70,76 @@ export default function ProjectPage() {
     <div className="pp">
       <Link to="/" className="thin" style={{ display: "inline-flex" }}><ArrowLeft size={14} />Back to the sheet</Link>
       <div className="eyebrow" style={{ marginTop: 22 }}>{p.type} · {p.solution} · {p.year}{p.status ? ` · ${p.status}` : ""}</div>
-      <h1 className="h1">{p.title}</h1>
+      <div className="pp-head">
+        <h1 className="h1" style={{ margin: 0 }}>{p.title}</h1>
+        {links.length > 0 && (
+          <div className="pp-links">
+            {links.map((a, k) => <a key={a.url} className={k === 0 ? "solid" : "thin"} style={{ minHeight: 38 }} href={a.url} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} />{a.label}</a>)}
+          </div>
+        )}
+      </div>
       {real(p.tagline) && <div className="sub">{p.tagline}</div>}
       <div className="pp-top">
-        <div className="pp-media">
-          {shots.length === 0 ? <div className="media">{p.title} · images coming soon</div> : (
+        <div className="pp-media" ref={mediaRef}>
+          {slots.length === 0 ? <div className="media">{p.title} · images coming soon</div> : (
             <>
-              <button type="button" className="pp-main" onClick={() => setBox(shot)} aria-label="Open image full size"><img src={img(shots[Math.min(shot, shots.length - 1)])} alt={`${p.title} screenshot ${shot + 1}`} /><span className="pp-zoom">Click to enlarge</span></button>
-              {shots.length > 1 && (
-                <div className="shots">{shots.map((s, k) => (
-                  <button key={s} type="button" className="shot" aria-pressed={shot === k} aria-label={`Show image ${k + 1}`} onClick={() => setShot(k)}><img src={img(s)} alt="" /></button>
+              <div className="pp-stage">
+                {cur === "__video__" ? (
+                  <video className="pp-video" src={img(p.video)} poster={images[0] ? img(images[0]) : undefined} autoPlay muted loop playsInline controls />
+                ) : (
+                  <button type="button" className="pp-main" onClick={() => openBox(images, images.indexOf(cur))} aria-label="Open image full size"><img src={img(cur)} alt={`${p.title} screenshot ${shot + 1}`} /><span className="pp-zoom">Click to enlarge</span></button>
+                )}
+                {slots.length > 1 && (
+                  <>
+                    <button type="button" className="pp-arrow pp-prev" aria-label="Previous" onClick={() => step(-1)}><ChevronLeft size={22} /></button>
+                    <button type="button" className="pp-arrow pp-next" aria-label="Next" onClick={() => step(1)}><ChevronRight size={22} /></button>
+                  </>
+                )}
+              </div>
+              {slots.length > 1 && (
+                <div className="shots">{slots.map((s, k) => (
+                  <button key={s + k} type="button" className="shot" aria-pressed={shot === k} aria-label={s === "__video__" ? "Show the video" : `Show image ${k + 1}`} onClick={() => setShot(k)}>
+                    {s === "__video__" ? <span className="shot-vid"><Play size={18} />Video</span> : <img src={img(s)} alt="" />}
+                  </button>
                 ))}</div>
               )}
             </>
           )}
         </div>
-        <aside className="pp-rail">
-          <Block title="The quest"><p className="lede" style={{ margin: 0 }}>{real(p.shortDescription) || real(p.fullDescription) || "Details coming soon."}</p></Block>
-          {links.length > 0 && (
-            <Block title="Links"><div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {links.map((a) => <a key={a.url} className="thin" href={a.url} target="_blank" rel="noopener noreferrer"><ExternalLink size={13} />{a.label}</a>)}
-            </div></Block>
-          )}
-          {tools.length > 0 && <Block title="Tools"><div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>{tools.map((t) => <span className="pill" key={t}>{t}</span>)}</div></Block>}
-          {(real(p.role) || (p.team || []).length > 0) && (
+        <aside className="pp-rail" style={railH ? { maxHeight: railH } : undefined}>
+          <Block title="The adventure"><p className="lede" style={{ margin: 0 }}>{adventure}</p></Block>
+          {quest && <Block title="The quest (the brief)"><p className="lede" style={{ margin: 0 }}>{quest}</p></Block>}
+          {(real(p.role) || showTeam) && (
             <Block title="Party">
               {real(p.role) && <p className="lede" style={{ margin: 0 }}><b>My role:</b> {p.role}</p>}
-              {(p.team || []).length > 0 && <ul className="quote" style={{ margin: "8px 0 0", paddingLeft: 18 }}>{p.team.map((t) => <li key={t}>{t}</li>)}</ul>}
+              {showTeam && <ul className="pp-list" style={{ marginTop: 8 }}>{p.team.map((t) => <li key={t}>{t}</li>)}</ul>}
             </Block>
           )}
         </aside>
       </div>
-      {bi !== null && (
+      {tools.length > 0 && (
+        <Block title="Tools" style={{ marginBottom: 16 }}><div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>{tools.map((t) => <span className="pill" key={t}>{t}</span>)}</div></Block>
+      )}
+      {wires.length > 0 && (
+        <Block title="Wireframes" style={{ marginBottom: 16 }}>
+          <div className="wires">{wires.map((w, k) => <button key={w + k} type="button" className="wire" aria-label={`Open wireframe ${k + 1}`} onClick={() => openBox(wires, k)}><img src={img(w)} alt={`${p.title} wireframe ${k + 1}`} loading="lazy" /></button>)}</div>
+          {real(p.wireframeNote) && <p className="lede" style={{ margin: "12px 0 0" }}>{p.wireframeNote}</p>}
+        </Block>
+      )}
+      {box !== null && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" onClick={(e) => e.target === e.currentTarget && setBox(null)}>
           <button type="button" className="lb-x" aria-label="Close" onClick={() => setBox(null)}><X size={20} /></button>
-          {shots.length > 1 && <button type="button" className="lb-n lb-prev" aria-label="Previous image" onClick={() => setBox(bi - 1)}><ChevronLeft size={26} /></button>}
-          <img src={img(shots[bi])} alt={`${p.title} image ${bi + 1} of ${shots.length}`} />
-          {shots.length > 1 && <button type="button" className="lb-n lb-next" aria-label="Next image" onClick={() => setBox(bi + 1)}><ChevronRight size={26} /></button>}
-          <div className="lb-count">{bi + 1} / {shots.length}</div>
+          {box.list.length > 1 && <button type="button" className="lb-n lb-prev" aria-label="Previous image" onClick={() => setBox({ ...box, i: (box.i - 1 + box.list.length) % box.list.length })}><ChevronLeft size={26} /></button>}
+          <img src={img(box.list[box.i])} alt={`${p.title} image ${box.i + 1} of ${box.list.length}`} />
+          {box.list.length > 1 && <button type="button" className="lb-n lb-next" aria-label="Next image" onClick={() => setBox({ ...box, i: (box.i + 1) % box.list.length })}><ChevronRight size={26} /></button>}
+          <div className="lb-count">{box.i + 1} / {box.list.length}</div>
         </div>
       )}
       <div style={{ display: "grid", gap: 16 }}>
-        {real(p.scenario) && p.scenario !== "Module brief" && <Block title="The scenario"><p className="lede" style={{ margin: 0 }}>{p.scenario}</p></Block>}
-        {real(p.fullDescription) && real(p.fullDescription) !== real(p.shortDescription) && <Block title="The full story"><p className="lede" style={{ margin: 0 }}>{p.fullDescription}</p></Block>}
         {(p.highlights || []).length > 0 && (
-          <Block title="Highlights"><ul className="quote" style={{ margin: 0, paddingLeft: 18 }}>{p.highlights.map((h) => <li key={h} style={{ marginBottom: 4 }}>{h}</li>)}</ul></Block>
+          <Block title="Highlights"><ul className="pp-list">{p.highlights.map((h) => <li key={h}>{h}</li>)}</ul></Block>
         )}
+        {real(p.fullDescription) && real(p.fullDescription) !== adventure && <Block title="The full story"><p className="lede" style={{ margin: 0 }}>{p.fullDescription}</p></Block>}
         {real(p.reflection) && <Block title="Reflection"><p className="lede" style={{ margin: 0 }}>{p.reflection}</p></Block>}
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12, marginTop: 28, flexWrap: "wrap" }}>

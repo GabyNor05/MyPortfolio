@@ -3,6 +3,7 @@ import { doc, setDoc, deleteDoc } from "firebase/firestore";
 import { Plus, Trash2, ArrowUp, ArrowDown } from "lucide-react";
 import { db, isFirebaseConfigured } from "../../../lib/firebase";
 import { useSettings, DEFAULTS } from "../../../lib/useSettings";
+import { UploadField } from "../../../components/admin/UploadField";
 
 const Field = ({ label, children, wide }) => <div className="field" style={wide ? { gridColumn: "1 / -1" } : undefined}><label>{label}</label>{children}</div>;
 const uid = () => Math.random().toString(36).slice(2, 8);
@@ -75,8 +76,8 @@ export default function SiteEditor({ section }) {
     if (!isFirebaseConfigured) { setMsg("Firebase isn't set up, so nothing can be saved live."); return; }
     setSaving(true); setMsg("");
     try {
-      const { about, experience, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData } = d;
-      await setDoc(doc(db, "settings", "site"), { about, experience, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData }, { merge: true });
+      const { about, experience, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData, abilities, saves, saveNotes, languages, training, cloudName, uploadPreset } = d;
+      await setDoc(doc(db, "settings", "site"), { about, experience, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData, abilities, saves, saveNotes, languages, training, cloudName, uploadPreset }, { merge: true });
       setMsg("Saved. The live site updates straight away.");
     } catch (e) { setMsg("Could not save: " + e.message); }
     setSaving(false);
@@ -88,6 +89,10 @@ export default function SiteEditor({ section }) {
 
   const A = useList(d.about, (v) => set("about", v));
   const E = useList(d.experience, (v) => set("experience", v));
+  const AB = useList(d.abilities, (v) => set("abilities", v));
+  const SN = useList(d.saveNotes, (v) => set("saveNotes", v));
+  const LG = useList(d.languages, (v) => set("languages", v));
+  const TR = useList(d.training, (v) => set("training", v));
 
   const footer = (
     <div className="btn-row" style={{ marginTop: 14 }}>
@@ -121,8 +126,8 @@ export default function SiteEditor({ section }) {
         <div className="panel adm-card">
           <div className="sec-h">Voiceover and logo</div>
           <div className="adm-grid">
-            <Field label="Voiceover audio URL (an .mp3 link; leave empty for the built-in one)" wide>
-              <input value={d.voiceUrl} placeholder="https://…/story.mp3" onChange={(e) => set("voiceUrl", e.target.value)} />
+            <Field label="Voiceover audio (upload an mp3, or paste a link; empty = the built-in one)" wide>
+              <UploadField kind="audio" accept="audio/*" value={d.voiceUrl} onChange={(v) => set("voiceUrl", v)} />
             </Field>
             <Field label="Logo (PNG, SVG or JPG; shrunk to 320px and stored with the settings)">
               <input type="file" accept="image/*" onChange={async (e) => { const f = e.target.files[0]; if (f) set("logoData", await resizeToDataUrl(f)); }} />
@@ -134,7 +139,14 @@ export default function SiteEditor({ section }) {
               </div>
             </Field>
           </div>
-          <p style={{ fontSize: 12, color: "var(--muted)" }}>To use your own voiceover, put the mp3 in the site's <code>public</code> folder (then the link is <code>./yourfile.mp3</code>) or any public link, such as Google Drive set to "Anyone with the link" in direct-download form.</p>
+          </div>
+        <div className="panel adm-card">
+          <div className="sec-h">Uploads (images, video, audio)</div>
+          <div className="adm-grid">
+            <Field label="Cloudinary cloud name"><input value={d.cloudName} placeholder="e.g. dxyz12abc" onChange={(e) => set("cloudName", e.target.value.trim())} /></Field>
+            <Field label="Unsigned upload preset name"><input value={d.uploadPreset} placeholder="e.g. portfolio_unsigned" onChange={(e) => set("uploadPreset", e.target.value.trim())} /></Field>
+          </div>
+          <p style={{ fontSize: 12, color: "var(--muted)" }}>Free, no card. Sign up at cloudinary.com, copy the cloud name from the dashboard, then Settings, Upload, Add upload preset, set Signing mode to Unsigned, and paste its name here. After that every Upload button in the admin works.</p>
         </div>
         <div className="panel adm-card">
           <div className="sec-h">"Roll for Insight" facts (game log)</div>
@@ -149,7 +161,7 @@ export default function SiteEditor({ section }) {
   return (
     <>
       <div className="subchips" style={{ marginBottom: 14 }}>
-        {[["text", "About text"], ["exp", "Experience"], ["skills", "Skills"]].map(([id, l]) => (
+        {[["text", "About text"], ["exp", "Experience"], ["skills", "Skills"], ["abil", "Ability scores"], ["saves", "Saving throws"], ["lang", "Languages"], ["tools", "Tools"]].map(([id, l]) => (
           <button key={id} type="button" className="chip" aria-pressed={sub === id} onClick={() => setSub(id)}>{l}</button>
         ))}
       </div>
@@ -189,6 +201,65 @@ export default function SiteEditor({ section }) {
           <SkillList title="Skills panel (home page)" list={d.skills} setList={(v) => set("skills", v)} />
           <SkillList title="Extra skills (About tab, bottom of Skills)" list={d.extraSkills} setList={(v) => set("extraSkills", v)} />
         </>
+      )}
+      {sub === "abil" && (
+        <div className="panel adm-card">
+          <div className="sec-h">Ability scores</div>
+          {d.abilities.map((a, i) => (
+            <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 100px 100px auto", gap: 10, alignItems: "end", marginBottom: 8 }}>
+              <Field label="Name"><input value={a.name} onChange={(e) => AB.upd(i, "name", e.target.value)} /></Field>
+              <Field label="Score"><input type="number" value={a.score ?? ""} placeholder="--" onChange={(e) => AB.upd(i, "score", e.target.value === "" ? null : Number(e.target.value))} /></Field>
+              <Field label="Bonus"><input type="number" value={a.bonus ?? ""} placeholder="auto" onChange={(e) => AB.upd(i, "bonus", e.target.value === "" ? null : Number(e.target.value))} /></Field>
+              <RowTools i={i} n={d.abilities.length} move={AB.move} remove={AB.remove} />
+            </div>
+          ))}
+          <p style={{ fontSize: 12, color: "var(--muted)" }}>Leave the bonus empty to work it out from the score (score 16 gives +3). Leave both empty to show "--".</p>
+          <button type="button" className="thin" onClick={() => AB.add({ name: "", score: 10, bonus: null })}><Plus size={14} />Add ability</button>
+        </div>
+      )}
+      {sub === "saves" && (
+        <>
+          <SkillList title="Saving throws" list={d.saves} setList={(v) => set("saves", v)} />
+          <div className="panel adm-card">
+            <div className="sec-h">Notes under the saves</div>
+            {d.saveNotes.map((n, i) => (
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "90px 1fr auto", gap: 10, alignItems: "center", marginBottom: 8 }}>
+                <select aria-label="Icon" value={n.kind} onChange={(e) => SN.upd(i, "kind", e.target.value)}><option value="A">A (advantage)</option><option value="+">+ (bonus)</option></select>
+                <input aria-label="Note" value={n.text} onChange={(e) => SN.upd(i, "text", e.target.value)} />
+                <RowTools i={i} n={d.saveNotes.length} move={SN.move} remove={SN.remove} />
+              </div>
+            ))}
+            <button type="button" className="thin" onClick={() => SN.add({ kind: "+", text: "" })}><Plus size={14} />Add note</button>
+          </div>
+        </>
+      )}
+      {sub === "lang" && (
+        <div className="panel adm-card">
+          <div className="sec-h">Languages</div>
+          {d.languages.map((l, i) => (
+            <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 100px auto", gap: 10, alignItems: "center", marginBottom: 8 }}>
+              <input aria-label="Language" value={l.name} onChange={(e) => LG.upd(i, "name", e.target.value)} />
+              <input aria-label="Level" type="number" value={l.level} onChange={(e) => LG.upd(i, "level", Number(e.target.value))} />
+              <RowTools i={i} n={d.languages.length} move={LG.move} remove={LG.remove} />
+            </div>
+          ))}
+          <button type="button" className="thin" onClick={() => LG.add({ name: "", level: 5 })}><Plus size={14} />Add language</button>
+        </div>
+      )}
+      {sub === "tools" && (
+        <div className="panel adm-card">
+          <div className="sec-h">Tools, platforms and training</div>
+          {d.training.map((g, i) => (
+            <div key={i} style={{ marginBottom: 14 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: 10, alignItems: "end" }}>
+                <Field label="Group title"><input value={g.title} onChange={(e) => TR.upd(i, "title", e.target.value)} /></Field>
+                <RowTools i={i} n={d.training.length} move={TR.move} remove={TR.remove} />
+              </div>
+              <Field label="Items (comma separated)"><input value={g.items} onChange={(e) => TR.upd(i, "items", e.target.value)} /></Field>
+            </div>
+          ))}
+          <button type="button" className="thin" onClick={() => TR.add({ title: "", items: "" })}><Plus size={14} />Add group</button>
+        </div>
       )}
       {footer}
     </>

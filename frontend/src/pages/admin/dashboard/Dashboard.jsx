@@ -1,23 +1,25 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { collection, getDocs, orderBy, query, doc, setDoc, deleteDoc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, orderBy, query, doc, setDoc, deleteDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { sendEmail, emailReady, EMAILJS } from "../../../lib/emailConfig";
-import { Plus, Pencil, Trash2, Download, UploadCloud, Eye, EyeOff, LogOut, ArrowLeft, LayoutDashboard, FolderKanban, Inbox, HelpCircle, FileText, Check, Settings } from "lucide-react";
+import { Plus, Pencil, Trash2, Download, UploadCloud, Eye, EyeOff, LogOut, ArrowLeft, LayoutDashboard, FolderKanban, Inbox, HelpCircle, FileText, Check, Settings, X } from "lucide-react";
 import { auth, db, isFirebaseConfigured } from "../../../lib/firebase";
 import { ADMIN_EMAILS } from "../../../lib/firebaseConfig";
 import { projectData } from "../../../data/portfolioData";
 import SiteEditor from "./SiteEditor";
+import { UploadField, UploadList } from "../../../components/admin/UploadField";
+import { useSettings } from "../../../lib/useSettings";
 import headshot from "../../../assets/home/headshot.jpg";
 
 const TYPES = ["UX Design", "Interactive Development", "Personal Project", "Hackathon"];
 const lines = (v) => v.split("\n").map((x) => x.trim()).filter(Boolean);
 const slug = (t) => "proj-" + (t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || Date.now());
 
-const blank = () => ({ id: "", title: "", type: TYPES[0], solution: "", year: new Date().getFullYear(), shortDescription: "", fullDescription: "", tagline: "", role: "", status: "", hidden: false, tools: [], team: [], highlights: [], actions: [], thumbnail: "", gallery: [], reflection: "" });
+const blank = () => ({ id: "", title: "", type: TYPES[0], solution: "", year: new Date().getFullYear(), shortDescription: "", fullDescription: "", tagline: "", role: "", status: "", hidden: false, tools: [], team: [], highlights: [], actions: [], thumbnail: "", gallery: [], reflection: "", adventure: "", quest: "", video: "", wireframes: [], wireframeNote: "", hasTeam: false });
 
 // form <-> project conversion (arrays become editable text)
-const toForm = (p) => ({ ...blank(), ...p, tools: (p.tools || []).join(", "), team: (p.team || []).join("\n"), highlights: (p.highlights || []).join("\n"), actions: (p.actions || []).map((a) => `${a.label} | ${a.url}`).join("\n"), gallery: (p.gallery || []).join("\n") });
+const toForm = (p) => ({ ...blank(), ...p, tools: (p.tools || []).join(", "), team: (p.team || []).join("\n"), highlights: (p.highlights || []).join("\n"), actions: (p.actions || []).map((a) => `${a.label} | ${a.url}`).join("\n"), gallery: (p.gallery || []).join("\n"), wireframes: (p.wireframes || []).join("\n"), hasTeam: p.hasTeam !== undefined ? !!p.hasTeam : (p.team || []).length > 0, videoOn: !!p.video });
 const fromForm = (f) => ({
   ...f,
   id: f.id || slug(f.title),
@@ -27,6 +29,9 @@ const fromForm = (f) => ({
   team: lines(f.team),
   highlights: lines(f.highlights),
   gallery: lines(f.gallery),
+  wireframes: lines(f.wireframes || ""),
+  video: f.videoOn ? (f.video || "") : "",
+  team: f.hasTeam ? lines(f.team) : [],
   actions: lines(f.actions).map((l) => {
     const [label, ...rest] = l.split("|");
     const url = rest.join("|").trim();
@@ -53,15 +58,23 @@ function Editor({ project, onSave, onCancel, saving }) {
         <Field label="Tagline"><input value={f.tagline} onChange={set("tagline")} /></Field>
         <Field label="Status (e.g. Incomplete)"><input value={f.status} onChange={set("status")} /></Field>
         <Field label="Short description (shown on the list, 1 to 2 lines)" wide><input value={f.shortDescription} onChange={set("shortDescription")} /></Field>
-        <Field label="Summary (shown on hover and the project page)" wide><textarea value={f.fullDescription} onChange={set("fullDescription")} /></Field>
+        <Field label="Summary / full story (shown on hover and lower on the page)" wide><textarea value={f.fullDescription} onChange={set("fullDescription")} /></Field>
+        <Field label="The adventure: what the product is and what the solution was (shown first, top right)" wide><textarea value={f.adventure} onChange={set("adventure")} /></Field>
+        <Field label="The quest: what was asked of me, the brief (shown under the adventure)" wide><textarea value={f.quest} onChange={set("quest")} /></Field>
         <Field label="My role"><input value={f.role} onChange={set("role")} /></Field>
         <Field label="Tools (comma separated)"><input value={f.tools} onChange={set("tools")} /></Field>
-        <Field label="Team (one per line)"><textarea style={{ minHeight: 80 }} value={f.team} onChange={set("team")} /></Field>
+        <Field label="Team"><label className="chk"><input type="checkbox" checked={f.hasTeam} onChange={set("hasTeam")} /> This was a team project</label>{f.hasTeam && <textarea style={{ minHeight: 80 }} placeholder="One name per line" value={f.team} onChange={set("team")} />}</Field>
         <Field label="Highlights (one per line)"><textarea style={{ minHeight: 80 }} value={f.highlights} onChange={set("highlights")} /></Field>
         <Field label="Links (one per line: Label | https://url)" wide><textarea style={{ minHeight: 80 }} value={f.actions} onChange={set("actions")} placeholder={"Figma file | https://figma.com/...\nGitHub repo | https://github.com/..."} /></Field>
         <Field label="Reflection" wide><textarea value={f.reflection} onChange={set("reflection")} /></Field>
-        <Field label="Cover image (URL or path like projects/nia/cover.jpg)"><input value={f.thumbnail} onChange={set("thumbnail")} /></Field>
-        <Field label="More images (one URL or path per line)"><textarea style={{ minHeight: 80 }} value={f.gallery} onChange={set("gallery")} /></Field>
+        <Field label="Cover image" wide><UploadField value={f.thumbnail} onChange={(v) => setF({ ...f, thumbnail: v })} /></Field>
+        <Field label="Video content" wide>
+          <label className="chk"><input type="checkbox" checked={!!f.videoOn} onChange={set("videoOn")} /> This project has a video (mock-up or demo). It plays first, muted, on the project page.</label>
+          {f.videoOn && <UploadField kind="video" accept="video/*" value={f.video} onChange={(v) => setF({ ...f, video: v })} placeholder="Upload a video, or paste a link" />}
+        </Field>
+        <Field label="More images" wide><UploadList value={f.gallery} onChange={(v) => setF({ ...f, gallery: v })} /></Field>
+        <Field label="Wireframes (shown as a horizontal strip)" wide><UploadList value={f.wireframes} onChange={(v) => setF({ ...f, wireframes: v })} /></Field>
+        <Field label="Why wireframes helped, or what struggled (shown under the strip)" wide><textarea value={f.wireframeNote} onChange={set("wireframeNote")} /></Field>
         <Field label="Visibility"><label style={{ display: "flex", gap: 8, alignItems: "center", textTransform: "none", letterSpacing: 0, fontSize: 15, color: "var(--text)" }}><input type="checkbox" checked={f.hidden} onChange={set("hidden")} /> Hide this project from the site</label></Field>
       </div>
       <div className="btn-row">
@@ -81,8 +94,12 @@ export default function Dashboard() {
   const [cvReqs, setCvReqs] = useState([]);
   const [chat, setChat] = useState([]);
   const readLs = (k) => { try { return localStorage.getItem(k) || ""; } catch { return ""; } };
-  const [cvDev, setCvDev] = useState(() => readLs("cvDev") || readLs("cvLink"));
-  const [cvUx, setCvUx] = useState(() => readLs("cvUx"));
+  const cfg = useSettings();
+  const [linksDraft, setLinksDraft] = useState(null);
+  const [cvSub, setCvSub] = useState("pending");
+  const [kindFor, setKindFor] = useState({});
+  const [preview, setPreview] = useState(null);
+  const cvLinks = { dev: cfg.cvLinks.dev || readLs("cvDev") || readLs("cvLink"), ux: cfg.cvLinks.ux || readLs("cvUx"), hybrid: cfg.cvLinks.hybrid };
   const [editing, setEditing] = useState(null);
   const [saving, setSaving] = useState(false);
   const [note, setNote] = useState("");
@@ -152,26 +169,37 @@ export default function Dashboard() {
   const removeChat = async (id) => { await deleteDoc(doc(db, "chat", id)); loadChat(); };
   const removeMessage = async (id) => { await deleteDoc(doc(db, "messages", id)); const l = await loadMessages(); l && syncCount(l); };
   const toggleResolved = async (m) => { await updateDoc(doc(db, "messages", m.id), { resolved: !m.resolved }); const l = await loadMessages(); l && syncCount(l); };
-  const saveLs = (k, set) => (v) => { set(v); try { localStorage.setItem(k, v); } catch { /* ignore */ } };
-  const linkFor = (r) => (r.interest === "Software development" ? cvDev : cvUx);
+  const CVNAMES = { dev: "Development CV", ux: "UX CV", hybrid: "Hybrid CV" };
+  const defaultKind = (r) => (r.interest === "Software development" ? "dev" : r.interest === "User experience design" ? "ux" : "hybrid");
   const [personal, setPersonal] = useState({});
+  const saveCvLinks = async () => {
+    try { await setDoc(doc(db, "settings", "site"), { cvLinks: linksDraft }, { merge: true }); setLinksDraft(null); setNote("CV links saved."); } catch (e) { setNote("Could not save CV links: " + e.message); }
+  };
+  const setStatus = async (r, status) => { await updateDoc(doc(db, "cvRequests", r.id), { status }); loadCv(); };
   const sendCv = async (r) => {
-    const cvLink = linkFor(r);
-    if (!cvLink) { setNote(`Paste your ${r.interest === "Software development" ? "development" : "UX / hybrid"} CV link first (boxes at the top of this page).`); return; }
+    const kind = kindFor[r.id] || defaultKind(r);
+    const cvLink = cvLinks[kind];
+    if (!cvLink) { setNote(`Add your ${CVNAMES[kind]} link first (the "CV links" button).`); return; }
     const ok = await sendEmail(EMAILJS.cvTemplate, { to_email: r.email, to_name: r.name, cv_link: cvLink, personal_message: personal[r.id] || "", interest: r.interest || "" });
     if (!ok) { window.location.href = `mailto:${r.email}?subject=${encodeURIComponent("My CV")}&body=${encodeURIComponent(`Hi ${r.name},\n\n${personal[r.id] ? personal[r.id] + "\n\n" : "Thanks for your interest. "}Here is my CV: ${cvLink}\n\nGaby`)}`; }
-    await updateDoc(doc(db, "cvRequests", r.id), { status: "sent" });
-    setNote(ok ? `CV sent to ${r.email}.` : "EmailJS isn't set up yet, so I opened your email app instead.");
+    await updateDoc(doc(db, "cvRequests", r.id), { status: "sent", sentCv: kind, sentAt: serverTimestamp() });
+    setNote(ok ? `${CVNAMES[kind]} sent to ${r.email}.` : "EmailJS isn't set up yet, so I opened your email app instead.");
     loadCv();
+  };
+  const dateOf = (r) => { try { return r.createdAt.toDate().toLocaleDateString(); } catch { return ""; } };
+  const exportCsv = () => {
+    const rows = [["Name", "Company", "Email", "Looking for", "Status", "CV sent", "Date", "Reason"], ...cvReqs.map((r) => [r.name, r.company, r.email, r.interest || "", r.status || "pending", r.sentCv ? CVNAMES[r.sentCv] : "", dateOf(r), (r.reason || "").replace(/\s+/g, " ")])];
+    const csv = rows.map((r) => r.map((c) => `"${String(c ?? "").replace(/"/g, '""')}"`).join(",")).join("\n");
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" })); a.download = "cv-mailing-list.csv"; a.click();
   };
   const removeCv = async (id) => { await deleteDoc(doc(db, "cvRequests", id)); loadCv(); };
   const unresolved = messages.filter((m) => !m.resolved).length;
-  const pendingCv = cvReqs.filter((r) => r.status !== "sent").length;
+  const pendingCv = cvReqs.filter((r) => !r.status || r.status === "pending").length;
 
   if (user === undefined) return <main className="page"><p className="lede">Loading…</p></main>;
   if (!isAdmin) return <main className="page"><div className="panel adm-card"><h1 className="h2">Not authorised</h1><p className="lede">Please <Link to="/auth" style={{ color: "var(--accent)" }}>sign in</Link> with the owner account.</p></div></main>;
 
-  const NAV = [["overview", "Overview", LayoutDashboard], ["projects", "Projects", FolderKanban], ["messages", "Messages", Inbox], ["cv", "CV requests", FileText], ["about", "About page", Pencil], ["site", "Site settings", Settings], ["help", "How to publish", HelpCircle]];
+  const NAV = [["overview", "Overview", LayoutDashboard], ["projects", "Projects", FolderKanban], ["messages", "Messages", Inbox], ["cv", "CV requests", FileText], ["about", "Content editor", Pencil], ["site", "Site settings", Settings], ["help", "How to publish", HelpCircle]];
   const hiddenCount = projects.filter((p) => p.hidden).length;
   return (
     <div className="adm-shell">
@@ -224,7 +252,7 @@ export default function Dashboard() {
           <div style={{ marginTop: 14 }}>
             {sorted.map((p) => (
               <div className="proj-row" key={p.id} style={{ opacity: p.hidden ? 0.55 : 1 }}>
-                <div style={{ flex: "2 1 200px", minWidth: 0 }}><div className="proj-title">{p.title}</div><div className="proj-blurb">{p.type} · {p.solution} · {p.year}{p.hidden ? " · hidden" : ""}</div></div>
+                <div style={{ flex: "2 1 200px", minWidth: 0, cursor: "pointer" }} onClick={() => setPreview(p)}><div className="proj-title">{p.title}</div><div className="proj-blurb">{p.type} · {p.solution} · {p.year}{p.hidden ? " · hidden" : ""}</div></div>
                 <div style={{ display: "flex", gap: 6 }}>
                   <button className="thin icon-btn" aria-label={p.hidden ? `Show ${p.title}` : `Hide ${p.title}`} onClick={() => toggleHidden(p)}>{p.hidden ? <EyeOff size={14} /> : <Eye size={14} />}</button>
                   <button className="thin" onClick={() => setEditing(p)}><Pencil size={13} />Edit</button>
@@ -233,29 +261,83 @@ export default function Dashboard() {
               </div>
             ))}
           </div>
+          {preview && (
+            <div className="drawer-proj" role="dialog" aria-label={`${preview.title} details`}>
+              <div className="drawer-scrim" onClick={() => setPreview(null)} aria-hidden="true" />
+              <aside className="drawer" style={{ width: 460 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}><span className="cz" style={{ fontWeight: 700, fontSize: 20 }}>{preview.title}</span><button className="thin icon-btn" aria-label="Close" onClick={() => setPreview(null)}><X size={14} /></button></div>
+                {preview.thumbnail && <img src={/^https?:/.test(preview.thumbnail) ? preview.thumbnail : import.meta.env.BASE_URL + preview.thumbnail} alt="" style={{ width: "100%", borderRadius: 8 }} />}
+                <div className="rc" style={{ color: "var(--accent)" }}>{preview.type} · {preview.solution} · {preview.year}{preview.status ? ` · ${preview.status}` : ""}{preview.hidden ? " · hidden" : ""}</div>
+                {preview.tagline && <div><b>Tagline:</b> {preview.tagline}</div>}
+                <div className="quote" style={{ margin: 0 }}>{preview.adventure || preview.fullDescription || preview.shortDescription}</div>
+                {preview.quest && <div className="quote" style={{ margin: 0 }}><b>Quest:</b> {preview.quest}</div>}
+                <div className="rc" style={{ fontSize: 13, color: "var(--text-2)", lineHeight: 1.7 }}>
+                  Role: {preview.role || "–"}<br />Team: {preview.hasTeam !== false && (preview.team || []).length ? preview.team.join(", ") : "no team"}<br />
+                  Tools: {(preview.tools || []).join(", ") || "–"}<br />Video: {preview.video ? "yes" : "no"} · Images: {1 * !!preview.thumbnail + (preview.gallery || []).length} · Wireframes: {(preview.wireframes || []).length} · Highlights: {(preview.highlights || []).length}<br />
+                  Links: {(preview.actions || []).map((a) => a.label).join(", ") || "–"}
+                </div>
+                <div className="btn-row"><button className="solid" onClick={() => { setEditing(preview); setPreview(null); }}><Pencil size={13} />Edit</button><Link className="thin" to={`/project/${preview.id}`}>View on site</Link></div>
+              </aside>
+            </div>
+          )}
         </section>
       ))}
 
       {tab === "cv" && (
         <section className="panel adm-card">
-          <div className="field"><label htmlFor="cvd">Development CV link (sent for software development / engineering). Stored only in this browser.</label><input id="cvd" placeholder="https://drive.google.com/…" value={cvDev} onChange={(e) => saveLs("cvDev", setCvDev)(e.target.value)} /></div>
-          <div className="field"><label htmlFor="cvu">UX / hybrid CV link (sent for UX design)</label><input id="cvu" placeholder="https://drive.google.com/…" value={cvUx} onChange={(e) => saveLs("cvUx", setCvUx)(e.target.value)} /></div>
+          <div className="subchips" style={{ marginBottom: 14 }}>
+            {[["pending", "Pending"], ["sent", "Approved and sent"], ["denied", "Denied"], ["list", "Mailing list"]].map(([id, l]) => (
+              <button key={id} type="button" className="chip" aria-pressed={cvSub === id} onClick={() => setCvSub(id)}>{l} ({id === "list" ? cvReqs.length : cvReqs.filter((r) => (r.status || "pending") === id).length})</button>
+            ))}
+            <button type="button" className="thin cv-btn" onClick={() => setLinksDraft(linksDraft ? null : { ...cvLinks })}><Settings size={14} />CV links</button>
+          </div>
+          {linksDraft && (
+            <div className="panel adm-card" style={{ marginBottom: 14 }}>
+              <div className="sec-h">Your three CV links (stored permanently)</div>
+              <div className="adm-grid">
+                {Object.keys(CVNAMES).map((k) => <Field key={k} label={CVNAMES[k]}><input placeholder="https://drive.google.com/…" value={linksDraft[k] || ""} onChange={(e) => setLinksDraft({ ...linksDraft, [k]: e.target.value })} /></Field>)}
+              </div>
+              <div className="btn-row"><button className="solid" onClick={saveCvLinks}>Save links</button><button className="thin" onClick={() => setLinksDraft(null)}>Cancel</button></div>
+            </div>
+          )}
           {!emailReady() && <p className="quote">EmailJS isn't set up yet, so "Send CV" will open your email app instead.</p>}
-          {cvReqs.length === 0 && <p className="quote">No CV requests yet.</p>}
-          {cvReqs.map((r) => (
+          {cvSub !== "list" && cvReqs.filter((r) => (r.status || "pending") === cvSub).length === 0 && <p className="quote">Nothing here yet.</p>}
+          {cvSub !== "list" && cvReqs.filter((r) => (r.status || "pending") === cvSub).map((r) => (
             <div key={r.id} className="proj-row" style={{ alignItems: "flex-start" }}>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div className="proj-title">{r.name} <span style={{ color: "var(--muted)", fontSize: 13 }}>· {r.company} · {r.interest || "no interest given"}{r.status === "sent" ? " · sent" : ""}</span></div>
+                <div className="proj-title">{r.name} <span style={{ color: "var(--muted)", fontSize: 13 }}>· {r.company} · {r.interest || "no interest given"} · {dateOf(r)}{r.sentCv ? ` · sent: ${CVNAMES[r.sentCv]}` : ""}</span></div>
                 <a href={`mailto:${r.email}`} style={{ color: "var(--accent)", fontSize: 14 }}>{r.email}</a>
                 <p className="quote" style={{ whiteSpace: "pre-wrap" }}>{r.reason}</p>
+                {cvSub !== "denied" && (
+                  <div className="cv-send">
+                    <select aria-label="Which CV to send" value={kindFor[r.id] || defaultKind(r)} onChange={(e) => setKindFor({ ...kindFor, [r.id]: e.target.value })}>{Object.entries(CVNAMES).map(([k, l]) => <option key={k} value={k}>{l}</option>)}</select>
+                    <textarea placeholder="Personal note for the email (optional, makes it feel personal)" value={personal[r.id] || ""} onChange={(e) => setPersonal({ ...personal, [r.id]: e.target.value })} />
+                  </div>
+                )}
               </div>
-              <div className="cv-send">
-                <textarea placeholder="Personal note for the email (optional, makes it feel personal)" value={personal[r.id] || ""} onChange={(e) => setPersonal({ ...personal, [r.id]: e.target.value })} />
+              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                {cvSub !== "denied" && <button className="solid" onClick={() => sendCv(r)}>{r.status === "sent" ? "Send again" : "Approve and send"}</button>}
+                {cvSub === "pending" && <button className="thin" onClick={() => setStatus(r, "denied")}>Deny</button>}
+                {cvSub !== "pending" && <button className="thin" onClick={() => setStatus(r, "pending")}>Move to pending</button>}
               </div>
-              <button className="solid" onClick={() => sendCv(r)}>{r.status === "sent" ? "Send again" : "Send CV"}</button>
-              <button className="thin icon-btn" aria-label="Delete request" onClick={() => removeCv(r.id)}><Trash2 size={14} /></button>
             </div>
           ))}
+          {cvSub === "list" && (
+            <>
+              <div className="btn-row" style={{ marginTop: 0 }}><button className="thin" onClick={exportCsv}><Download size={14} />Download as CSV</button></div>
+              <p style={{ fontSize: 12, color: "var(--muted)" }}>Everyone who has ever asked for your CV. Stored permanently in your database, so you can email them later.</p>
+              {cvReqs.map((r) => (
+                <div key={r.id} className="proj-row" style={{ alignItems: "center" }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div className="proj-title">{r.name} <span style={{ color: "var(--muted)", fontSize: 13 }}>· {r.company} · {r.interest || ""} · {r.status || "pending"} · {dateOf(r)}</span></div>
+                    <a href={`mailto:${r.email}`} style={{ color: "var(--accent)", fontSize: 14 }}>{r.email}</a>
+                  </div>
+                  <a className="thin" href={`mailto:${r.email}`}>Email</a>
+                  <button className="thin icon-btn" aria-label="Delete from list" onClick={() => window.confirm(`Remove ${r.name} from your records for good?`) && removeCv(r.id)}><Trash2 size={14} /></button>
+                </div>
+              ))}
+            </>
+          )}
         </section>
       )}
 

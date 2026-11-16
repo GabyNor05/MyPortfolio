@@ -143,10 +143,6 @@
         "url": "https://github.com/andrevanheerden"
       }
     ],
-    "wireframes": [
-      "./images/wireframes/psychPixels/home",
-      "./images/wireframes/psychPixels/history"
-    ],
     "reflection": "This project was a deep dive into the world of e-commerce development, and it taught me a lot about the complexities of building a platform that can handle product listings, user accounts, and secure transactions. One of the biggest challenges was integrating a payment gateway, which required me to learn about security best practices and how to handle sensitive user data. I also had to learn how to manage state effectively in a React application with multiple components and user interactions. Overall, this project was a great learning experience that helped me develop my skills in both frontend and backend development.",
     "tools": [
       "MongoDB",
@@ -223,10 +219,6 @@
         "url": "https://github.com/KBOlifant"
       }
     ],
-    "wireframes": [
-      "./images/wireframes/budgGo/home",
-      "./images/wireframes/budgGo/history"
-    ],
     "reflection": "...",
     "tools": [],
     "category": "dev",
@@ -257,10 +249,6 @@
         "icon": "github",
         "url": "https://github.com/GabyNor05/Whelmer"
       }
-    ],
-    "wireframes": [
-      "./images/wireframes/whelmer/home",
-      "./images/wireframes/whelmer/history"
     ],
     "reflection": "...",
     "tools": [
@@ -319,10 +307,6 @@
         "url": ""
       }
     ],
-    "wireframes": [
-      "./images/wireframes/sheIsDesign/home",
-      "./images/wireframes/sheIsDesign/history"
-    ],
     "reflection": "...",
     "tools": [
       "React",
@@ -371,12 +355,6 @@
         "url": ""
       }
     ],
-    "wireframes": [
-      "./images/wireframes/medHQ/home",
-      "./images/wireframes/medHQ/website",
-      "./images/wireframes/medHQ/mobile/history",
-      "./images/wireframes/medHQ/desktop/history"
-    ],
     "reflection": "...",
     "hidden": true,
     "tools": [],
@@ -418,10 +396,6 @@
         "url": ""
       }
     ],
-    "wireframes": [
-      "./images/wireframes/amadea/mobile/home",
-      "./images/wireframes/amadea/desktop/home"
-    ],
     "reflection": "...",
     "tools": [
       "Figma",
@@ -459,9 +433,6 @@
         "url": "https://www.figma.com/design/JgGpE1CPDKr3nMxVIDEh52/Story-Weave?node-id=310-101"
       }
     ],
-    "wireframes": [
-      "./images/wireframes/storyWeave/splash"
-    ],
     "reflection": "...",
     "tools": [
       "Figma",
@@ -495,20 +466,6 @@
         "icon": "figma",
         "url": "https://www.figma.com/design/X2TuJacy9HjFsjW0z4jMmh/Nia?node-id=450-8"
       }
-    ],
-    "wireframes": [
-      "./nia/wireframes/app/splash",
-      "./nia/wireframes/app/onboarding1",
-      "./nia/wireframes/app/onboarding2",
-      "./nia/wireframes/app/onboarding3",
-      "./nia/wireframes/app/onboarding4",
-      "./nia/wireframes/app/home",
-      "./nia/wireframes/app/notebook",
-      "./nia/wireframes/app/calendar",
-      "./nia/wireframes/watch/splash",
-      "./nia/wireframes/watch/home",
-      "./nia/wireframes/watch/brainDump",
-      "./nia/wireframes/watch/breakReminder"
     ],
     "reflection": "How do we stop professional burnout without driving users crazy? By pairing wearable heart rate tracking with desktop app monitoring, the ecosystem catches the exact moment deep focus turns into stressful frustration. Instead of forcing interruptions, it sends a gentle wrist buzz for a break and offers a quick voice brain dump to clear your head. The biggest lesson was finding the line between helpful tracking and feeling spied on. Our research showed that monitoring biometrics and screens feels like surveillance without strict boundaries. We solved this by building absolute user control directly into the interface, allowing anyone to manually set their focus baseline, choose tracked apps, or completely turn off break prompts.",
     "tools": [
@@ -545,17 +502,6 @@
         "icon": "figma",
         "url": "https://www.figma.com/design/qFKRQ6PGmi5dpGjKfBgTiW/RD---Wireframes?node-id=58-469"
       }
-    ],
-    "wireframes": [
-      "./masterChef/wireframes/desktop/before",
-      "./masterChef/wireframes/desktop/during",
-      "./masterChef/wireframes/desktop/after",
-      "./masterChef/wireframes/tablet/before",
-      "./masterChef/wireframes/tablet/during",
-      "./masterChef/wireframes/tablet/after",
-      "./masterChef/wireframes/mobile/before",
-      "./masterChef/wireframes/desktop/during",
-      "./masterChef/wireframes/mobile/after"
     ],
     "reflection": "Spoonful's brand activation, MasterChef Broadway and responsive website successfully combined culinary performance with theatrical spectacle.  The three phases of the activation (before, during, and after the event), provided viewers with continuous opportunities to interact with the brand.  Future improvements include expanding accessibility features, adding VR or live streaming for remote participation, and turning the website into a year-round engagement hub that sustains community interest outside of the festival.",
     "tools": [
