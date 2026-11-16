@@ -12,8 +12,7 @@ function drawLogo(ctx, cx, cy, s) {
   poly([[50, 5], [91, 28], [91, 72], [50, 95], [9, 72], [9, 28], [50, 5]], 3.5, 1);
   poly([[28, 60], [72, 60], [50, 95], [28, 60]], 2, 0.5); poly([[9, 28], [28, 60]], 2, 0.5); poly([[91, 28], [72, 60]], 2, 0.5);
   poly([[50, 5], [28, 60]], 2, 0.5); poly([[50, 5], [72, 60]], 2, 0.5);
-  poly([[50, 17], [50, 42]], 3.5, 1); poly([[40, 25], [60, 25]], 3.5, 1);
-  ctx.globalAlpha = 1; ctx.font = "700 23px 'Roboto Condensed', Arial, sans-serif"; ctx.textAlign = "center"; ctx.fillText("GN", 50, 78);
+  ctx.globalAlpha = 1; ctx.font = "700 26px 'Roboto Condensed', Arial, sans-serif"; ctx.textAlign = "center"; ctx.fillText("GN", 50, 66);
   ctx.restore();
 }
 
@@ -93,7 +92,7 @@ export default function Dice3D({ value, onSettled, onDone }) {
 
     const resize = () => {
       const w = window.innerWidth, h = window.innerHeight; renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix();
-      const s = w < 700 ? 0.75 : 1; die.scale.setScalar(s); die.userData.s = s;
+      const s = w < 700 ? 0.55 : 0.75; die.scale.setScalar(s); die.userData.s = s;
     };
     resize(); window.addEventListener("resize", resize);
 

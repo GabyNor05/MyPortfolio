@@ -171,14 +171,20 @@ export const sheet = {
   saveNotes: [
     { kind: "A", text: "advantage when normalising databases" },
     { kind: "+", text: "+1 on every save with a red cappuccino in hand" },
-    { kind: "+", text: "+1 on Merge saves when the cat hits Escape, not Enter" },
   ],
   experience: [
     { role: "Bachelor of Creative Technologies", org: "Open Window Institute", when: "Jan 2024 – Nov 2026", text: "Interactive Development and UX Design: building full-stack React and React Native apps and designing high-fidelity mobile experiences. Coursework in HCI, Web Development, Software Engineering, Data Structures & Algorithms and UX Research." },
     { role: "Receptionist (part-time)", org: "The Pod Practice", when: "Jan 2024 – Dec 2026", text: "Run the front desk of a busy podiatry practice: patient communication, scheduling and records admin, keeping things organised under time pressure." },
     { role: "Tutor (part-time)", org: "Educare", when: "Jan 2024 – Present", text: "Tutor primary and high-school learners across the IEB and CAPS curricula, adapting explanations to how each learner thinks." },
   ],
-  extraSkills: ["Teamwork", "Communication", "Tutoring", "Attention to detail", "Empathy", "Time management"],
+  extraSkills: [
+    { name: "Teamwork", bonus: 2, proficient: false },
+    { name: "Communication", bonus: 2, proficient: false },
+    { name: "Tutoring", bonus: 2, proficient: false },
+    { name: "Attention to detail", bonus: 2, proficient: false },
+    { name: "Empathy", bonus: 2, proficient: false },
+    { name: "Time management", bonus: 2, proficient: false },
+  ],
   languages: [
     { name: "JavaScript", level: 7 },
     { name: "TypeScript", level: 5 },
