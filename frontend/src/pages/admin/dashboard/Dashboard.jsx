@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import Modal from "../../../components/Modal";
 import { Link } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, getDocs, orderBy, query, doc, setDoc, deleteDoc, updateDoc, serverTimestamp } from "firebase/firestore";
@@ -19,7 +20,7 @@ const slug = (t) => "proj-" + (t.toLowerCase().replace(/[^a-z0-9]+/g, "-").repla
 const blank = () => ({ id: "", title: "", type: TYPES[0], solution: "", year: new Date().getFullYear(), shortDescription: "", fullDescription: "", tagline: "", role: "", status: "", hidden: false, tools: [], team: [], highlights: [], actions: [], thumbnail: "", gallery: [], reflection: "", adventure: "", quest: "", video: "", wireframes: [], wireframeNote: "", hasTeam: false, volumeWarning: false, videoKind: "demo" });
 
 // form <-> project conversion (arrays become editable text)
-const toForm = (p) => ({ ...blank(), ...p, tools: (p.tools || []).join(", "), team: (p.team || []).join("\n"), highlights: (p.highlights || []).join("\n"), actions: (p.actions || []).map((a) => `${a.label} | ${a.url}`).join("\n"), gallery: (p.gallery || []).join("\n"), wireframes: (p.wireframes || []).join("\n"), hasTeam: p.hasTeam !== undefined ? !!p.hasTeam : (p.team || []).length > 0, videoOn: !!p.video });
+const toForm = (p) => ({ ...blank(), ...p, tools: (p.tools || []).join(", "), team: (p.team || []).join("\n"), highlights: (p.highlights || []).join("\n"), actions: (p.actions || []).map((a) => `${a.label} | ${a.url}`).join("\n"), gallery: (p.gallery || []).join("\n"), wireframes: (p.wireframes || []).join("\n"), hasTeam: p.hasTeam !== undefined ? !!p.hasTeam : (p.team || []).length > 0, videoOn: !!p.video, hasWires: (p.wireframes || []).length > 0 });
 const fromForm = (f) => ({
   ...f,
   id: f.id || slug(f.title),
@@ -29,7 +30,8 @@ const fromForm = (f) => ({
   team: lines(f.team),
   highlights: lines(f.highlights),
   gallery: lines(f.gallery),
-  wireframes: lines(f.wireframes || ""),
+  wireframes: f.hasWires === false ? [] : lines(f.wireframes || ""),
+  wireframeNote: f.hasWires === false ? "" : f.wireframeNote,
   video: f.videoOn ? (f.video || "") : "",
   team: f.hasTeam ? lines(f.team) : [],
   actions: lines(f.actions).map((l) => {
@@ -70,15 +72,45 @@ function ReplyBox({ to, name, original, template, onSent }) {
   );
 }
 
-function Editor({ project, onSave, onCancel, saving }) {
+const ETABS = [["info", "Project info"], ["story", "The story"], ["team", "Team"], ["media", "Media"], ["links", "Links"]];
+
+function Editor({ project, onSave, onCancel, saving, apiRef }) {
   const [f, setF] = useState(() => toForm(project));
+  const [tab, setTab] = useState("info");
+  const [bad, setBad] = useState("");
+  const start = useRef(JSON.stringify(toForm(project)));
+  const dirty = () => JSON.stringify(f) !== start.current;
   const set = (k) => (e) => setF({ ...f, [k]: e.target.type === "checkbox" ? e.target.checked : e.target.value });
+  const submit = async () => {
+    if (!f.title.trim()) { setTab("info"); setBad("Give the project a title first."); return false; }
+    setBad("");
+    await onSave(fromForm(f));
+    start.current = JSON.stringify(f);
+    return true;
+  };
+  if (apiRef) apiRef.current = { dirty, submit };
+  useEffect(() => {
+    const h = (e) => { if (dirty()) { e.preventDefault(); e.returnValue = ""; } };
+    window.addEventListener("beforeunload", h);
+    return () => window.removeEventListener("beforeunload", h);
+  });
+  const hasWires = f.hasWires !== undefined ? f.hasWires : (f.wireframes || "").trim().length > 0;
+  const pane = (id, children) => <div className="adm-grid" hidden={tab !== id}>{children}</div>;
   return (
-    <form className="panel adm-card" onSubmit={(e) => { e.preventDefault(); onSave(fromForm(f)); }}>
-      <div className="sec-h">{project.id ? `Edit: ${project.title}` : "New project"}</div>
-      <div className="adm-grid">
-        <div className="sec-h sub" style={{ gridColumn: "1 / -1" }}>Basics</div>
-        <Field label="Title"><input required value={f.title} onChange={set("title")} /></Field>
+    <form className="panel adm-card ed" onSubmit={(e) => { e.preventDefault(); submit(); }}>
+      <div className="ed-bar">
+        <div className="sec-h" style={{ margin: 0 }}>{project.id ? `Edit: ${project.title}` : "New project"}{dirty() && <span className="ed-dirty">Unsaved changes</span>}</div>
+        <div className="btn-row" style={{ margin: 0 }}>
+          <button type="button" className="thin" onClick={onCancel}>Close</button>
+          <button className="solid" disabled={saving}>{saving ? "Saving…" : "Save project"}</button>
+        </div>
+      </div>
+      {bad && <div className="status-err" role="alert">{bad}</div>}
+      <div className="subchips" role="tablist" aria-label="Project sections">
+        {ETABS.map(([id, l]) => <button key={id} type="button" role="tab" className="chip" aria-selected={tab === id} aria-pressed={tab === id} onClick={() => setTab(id)}>{l}</button>)}
+      </div>
+      {pane("info", <>
+        <Field label="Title"><input value={f.title} onChange={set("title")} /></Field>
         <Field label="Type"><select value={f.type} onChange={set("type")}>{[...new Set([...TYPES, f.type])].map((t) => <option key={t}>{t}</option>)}</select></Field>
         <Field label="Solution (e.g. Mobile App)"><input value={f.solution} onChange={set("solution")} /></Field>
         <Field label="Year"><input type="number" value={f.year} onChange={set("year")} /></Field>
@@ -86,35 +118,38 @@ function Editor({ project, onSave, onCancel, saving }) {
         <Field label="Status (e.g. Incomplete)"><input value={f.status} onChange={set("status")} /></Field>
         <Field label="Short description (project list, 1 to 2 lines)" wide><input value={f.shortDescription} onChange={set("shortDescription")} /></Field>
         <Field label="Tools (comma separated)" wide><input value={f.tools} onChange={set("tools")} /></Field>
-        <div className="sec-h sub" style={{ gridColumn: "1 / -1" }}>The story</div>
+        <Field label="Thumbnail (the case-study header. Only shown in the project list)" wide><UploadField value={f.thumbnail} onChange={(v) => setF({ ...f, thumbnail: v })} /></Field>
+        <Field label="Visibility"><label className="chk"><input type="checkbox" checked={f.hidden} onChange={set("hidden")} /> Hide this project from the site</label></Field>
+      </>)}
+      {pane("story", <>
         <Field label="The adventure: what the product is and what the solution was (shown first, top right)" wide><textarea value={f.adventure} onChange={set("adventure")} /></Field>
         <Field label="The quest: what was asked of me, the brief" wide><textarea value={f.quest} onChange={set("quest")} /></Field>
         <Field label="Summary / full story" wide><textarea value={f.fullDescription} onChange={set("fullDescription")} /></Field>
         <Field label="Highlights (one per line)"><textarea style={{ minHeight: 90 }} value={f.highlights} onChange={set("highlights")} /></Field>
         <Field label="Reflection"><textarea style={{ minHeight: 90 }} value={f.reflection} onChange={set("reflection")} /></Field>
-        <div className="sec-h sub" style={{ gridColumn: "1 / -1" }}>Team</div>
+      </>)}
+      {pane("team", <>
         <Field label="Team project?" wide><label className="chk"><input type="checkbox" checked={f.hasTeam} onChange={set("hasTeam")} /> Yes, I worked with other people</label></Field>
         {f.hasTeam && <Field label="My role in the team"><input value={f.role} onChange={set("role")} /></Field>}
         {f.hasTeam && <Field label="Team (one per line, add a link after a slash)"><textarea style={{ minHeight: 90 }} placeholder={"André van Heerden / https://github.com/andre\nKeabetswe Olifant / keabetswe"} value={f.team} onChange={set("team")} /></Field>}
-        <div className="sec-h sub" style={{ gridColumn: "1 / -1" }}>Media</div>
-        <Field label="Thumbnail (only used in the project list, not on the project page)" wide><UploadField value={f.thumbnail} onChange={(v) => setF({ ...f, thumbnail: v })} /></Field>
+      </>)}
+      {pane("media", <>
+        <Field label="Project images (shown first on the project page, above the video)" wide><UploadList value={f.gallery} onChange={(v) => setF({ ...f, gallery: v })} /></Field>
         <Field label="Video" wide>
           <label className="chk"><input type="checkbox" checked={!!f.videoOn} onChange={set("videoOn")} /> This project has a video. It plays first, muted.</label>
           {f.videoOn && <select value={f.videoKind || "demo"} onChange={set("videoKind")} aria-label="Video type"><option value="demo">Demo video (the working product)</option><option value="mockup">Mock-up video (the design)</option></select>}
           {f.videoOn && <UploadField kind="video" accept="video/*" value={f.video} onChange={(v) => setF({ ...f, video: v })} placeholder="Upload a video, or paste a link" />}
         </Field>
-        <Field label="Case-study header and more images" wide><UploadList value={f.gallery} onChange={(v) => setF({ ...f, gallery: v })} /></Field>
-        <Field label="Wireframes (shown as a horizontal strip)" wide><UploadList value={f.wireframes} onChange={(v) => setF({ ...f, wireframes: v })} /></Field>
-        <Field label="Why wireframes helped, or what struggled" wide><textarea value={f.wireframeNote} onChange={set("wireframeNote")} /></Field>
-        <div className="sec-h sub" style={{ gridColumn: "1 / -1" }}>Links and visibility</div>
+        <Field label="Wireframes" wide>
+          <label className="chk"><input type="checkbox" checked={hasWires} onChange={(e) => setF({ ...f, hasWires: e.target.checked })} /> This project has wireframes</label>
+          {hasWires && <UploadList value={f.wireframes} onChange={(v) => setF({ ...f, wireframes: v })} />}
+          {hasWires && <textarea placeholder="Why wireframes helped, or what struggled (shown under the strip)" value={f.wireframeNote} onChange={set("wireframeNote")} />}
+        </Field>
+      </>)}
+      {pane("links", <>
         <Field label="Links (one per line: Label | https://url)" wide><textarea style={{ minHeight: 80 }} value={f.actions} onChange={set("actions")} placeholder={"Figma file | https://figma.com/...\nGitHub repo | https://github.com/..."} /></Field>
         <Field label="Loud prototype"><label className="chk"><input type="checkbox" checked={!!f.volumeWarning} onChange={set("volumeWarning")} /> Warn visitors to lower their volume before the prototype opens</label></Field>
-        <Field label="Visibility"><label className="chk"><input type="checkbox" checked={f.hidden} onChange={set("hidden")} /> Hide this project from the site</label></Field>
-      </div>
-      <div className="btn-row">
-        <button className="solid" disabled={saving}>{saving ? "Saving…" : "Save project"}</button>
-        <button type="button" className="thin" onClick={onCancel}>Cancel</button>
-      </div>
+      </>)}
     </form>
   );
 }
@@ -137,6 +172,10 @@ export default function Dashboard() {
   const [preview, setPreview] = useState(null);
   const cvLinks = { dev: cfg.cvLinks.dev || readLs("cvDev") || readLs("cvLink"), ux: cfg.cvLinks.ux || readLs("cvUx"), hybrid: cfg.cvLinks.hybrid };
   const [editing, setEditing] = useState(null);
+  const edRef = useRef(null);
+  const [ask, setAsk] = useState(null);
+  // leaving the editor with unsaved changes asks first
+  const guard = (go) => { if (editing && edRef.current && edRef.current.dirty()) setAsk({ go }); else go(); };
   const [saving, setSaving] = useState(false);
   const [note, setNote] = useState("");
 
@@ -247,7 +286,7 @@ export default function Dashboard() {
         <div className="adm-brand"><img src={headshot} alt="" className="adm-avatar" /><div><b>Portfolio</b><div style={{ fontSize: 12, color: "var(--muted)" }}>Admin</div></div></div>
         <nav aria-label="Admin sections">
           {NAV.map(([id, label, Icon]) => (
-            <button key={id} type="button" className="adm-link" aria-current={tab === id ? "page" : undefined} onClick={() => { setTab(id); setEditing(null); }}>
+            <button key={id} type="button" className="adm-link" aria-current={tab === id ? "page" : undefined} onClick={() => guard(() => { setTab(id); setEditing(null); })}>
               <Icon size={16} />{label}{id === "messages" && unresolved > 0 && <span className="adm-badge">{unresolved}</span>}{id === "cv" && pendingCv > 0 && <span className="adm-badge">{pendingCv}</span>}
             </button>
           ))}
@@ -307,6 +346,13 @@ export default function Dashboard() {
           </div>
         );
       })()}
+      {ask && (
+        <Modal title="You have unsaved changes" onClose={() => setAsk(null)} actions={<>
+          <button type="button" className="solid" onClick={async () => { const ok = await edRef.current.submit(); if (ok) { const g = ask.go; setAsk(null); g(); } else setAsk(null); }}>Save changes</button>
+          <button type="button" className="thin" onClick={() => { const g = ask.go; setAsk(null); g(); }}>Discard changes</button>
+          <button type="button" className="thin" onClick={() => setAsk(null)}>Keep editing</button>
+        </>}>Do you want to save what you changed in this project before you leave?</Modal>
+      )}
       {(tab === "about" || tab === "site") && <div className="adm-scroll"><SiteEditor key={tab} section={tab} /></div>}
       {tab === "help" && (
         <section className="panel adm-card">
@@ -316,7 +362,7 @@ export default function Dashboard() {
       )}
 
       {tab === "projects" && (editing ? (
-        <Editor project={editing} onSave={save} onCancel={() => setEditing(null)} saving={saving} />
+        <Editor key={editing.id || "new"} project={editing} onSave={save} onCancel={() => guard(() => setEditing(null))} saving={saving} apiRef={edRef} />
       ) : (
         <section className="panel adm-card">
           <div className="btn-row" style={{ marginTop: 0 }}>

@@ -432,3 +432,9 @@ input[type="checkbox"]:checked::after { transform:rotate(-45deg) scale(1); }
 input[type="checkbox"]:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 .sec-h.sub { margin-top:10px; padding-top:12px; border-top:1px solid var(--line-soft); }
 .adm-grid > .sec-h.sub:first-child { border-top:0; margin-top:0; padding-top:0; }
+/* project editor: sticky save bar, always-square tick boxes */
+.ed-bar { position:sticky; top:0; z-index:5; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:10px 0; margin:-4px 0 6px; background:var(--panel-solid); border-bottom:1px solid var(--line-soft); }
+.ed-dirty { margin-left:12px; font-family:'Roboto',sans-serif; font-size:12px; font-weight:500; color:#0e0c1a; background:var(--accent); border-radius:999px; padding:2px 10px; text-transform:none; letter-spacing:0; }
+.ed .subchips { margin:8px 0 14px; }
+.adm-main input[type=checkbox], .cv-modal input[type=checkbox] { width:20px !important; height:20px !important; min-width:20px; min-height:20px !important; max-width:20px; padding:0 !important; flex:none; aspect-ratio:1/1; }
+.chk { align-items:flex-start; } .chk input { margin-top:1px; }
