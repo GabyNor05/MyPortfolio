@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { X, Volume2, VolumeX, Send, Sparkles } from "lucide-react";
+import { X, Volume2, VolumeX, Send, Sparkles, ChevronDown } from "lucide-react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db, isFirebaseConfigured } from "../../lib/firebase";
 import { notifyOwner } from "../../lib/emailConfig";
@@ -55,6 +55,39 @@ function ChatBox() {
   );
 }
 
+const pad = (n) => String(n).padStart(2, "0");
+// today: time only. Yesterday and "2 days ago" in words. Older: the date.
+function when(at) {
+  if (!at) return "";
+  const t = new Date(at), n = new Date();
+  const hm = `${pad(t.getHours())}:${pad(t.getMinutes())}`;
+  const days = Math.round((new Date(n.getFullYear(), n.getMonth(), n.getDate()) - new Date(t.getFullYear(), t.getMonth(), t.getDate())) / 864e5);
+  if (days <= 0) return hm;
+  if (days === 1) return `Yesterday ${hm}`;
+  if (days === 2) return `2 days ago ${hm}`;
+  return `${t.getDate()} ${t.toLocaleString("en-GB", { month: "short" })} ${t.getFullYear()} ${hm}`;
+}
+
+function Bubble({ l }) {
+  const [open, setOpen] = useState(false);
+  const time = <div className="b-time">{when(l.at)}</div>;
+  if (l.kind === "roll") {
+    const hasD = typeof l.d === "number";
+    const formula = hasD ? `1d${l.sides}${l.mod ? (l.mod > 0 ? "+" : "-") + Math.abs(l.mod) : "+0"}` : "";
+    const nat = l.sides === 20 && l.d === 20 ? " crit" : l.sides === 20 && l.d === 1 ? " fail" : "";
+    return (
+      <button type="button" className={`bub roll${nat}`} onClick={() => hasD && setOpen(!open)} aria-expanded={hasD ? open : undefined}>
+        <span className="b-row"><span className="b-total">{l.total}</span><span><span className="b-kind">{l.label}</span>{formula && <span className="b-formula">{formula}</span>}</span>{hasD && <ChevronDown size={14} className={`b-chev ${open ? "up" : ""}`} />}</span>
+        {open && hasD && <span className="b-more">I rolled a {l.d} on the d{l.sides}{l.mod ? ` and added ${l.mod}` : ", with nothing to add"}, so the result is {l.total}.{nat === " crit" ? " A natural 20!" : nat === " fail" ? " A natural 1." : ""}</span>}
+        {time}
+      </button>
+    );
+  }
+  if (l.kind === "chat") return <div className="bub me">{l.text}{time}</div>;
+  if (l.kind === "fact") return <div className="bub fact"><span className="b-kind">Fun fact</span>{l.text.replace(/^Insight \(\d+\): /, "")}{time}</div>;
+  return <div className="bub sys">{l.text}{time}</div>;
+}
+
 export default function Drawer() {
   const { drawerOpen, closeDrawer, log, roll, addLog } = useDice();
   const { facts } = useSettings();
@@ -84,7 +117,7 @@ export default function Drawer() {
         <div className="log-list" ref={listRef}>
           <div className="log-spacer" />
           {log.length === 0 && <div className="log-line">No rolls yet. Click a modifier to roll.</div>}
-          {[...log].reverse().map((l) => <div key={l.id} className={`log-line log-${l.kind || "roll"}`}>{l.text}</div>)}
+          {[...log].reverse().map((l) => <Bubble key={l.id} l={l} />)}
         </div>
         <ChatBox />
       </aside>

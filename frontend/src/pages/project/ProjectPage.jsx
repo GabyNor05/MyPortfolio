@@ -141,7 +141,7 @@ export default function ProjectPage() {
               {slots.length > 1 && (
                 <div className={`shots ${fade ? "fade" : ""}`} ref={shotsRef}>{slots.map((s, k) => (
                   <button key={s + k} type="button" className="shot" aria-pressed={shot === k} aria-label={s === "__video__" ? "Show the video" : `Show image ${k + 1}`} onClick={() => setShot(k)}>
-                    {s === "__video__" ? <span className="shot-vid"><Play size={18} />Video</span> : <img src={img(s)} alt="" />}
+                    {s === "__video__" ? <span className="shot-vid"><Play size={18} />{p.videoKind === "mockup" ? "Mock-up" : "Demo"}</span> : <img src={img(s)} alt="" />}
                   </button>
                 ))}</div>
               )}

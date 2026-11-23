@@ -17,7 +17,7 @@ export function DiceProvider({ children }) {
   useEffect(() => () => clearTimeout(timer.current), []);
 
   // roll("Bugs save", +4, 20) -> "Bugs save: d20 (13) + 4 = 17"
-  const addLog = useCallback((entry) => setLog((l) => [{ id: Date.now() + Math.random(), ...entry }, ...l].slice(0, 60)), []);
+  const addLog = useCallback((entry) => setLog((l) => [{ id: Date.now() + Math.random(), at: Date.now(), ...entry }, ...l].slice(0, 60)), []);
 
   const roll = useCallback((label, mod = 0, sides = 20, opts = {}) => {
     if (busy.current) return;
@@ -31,7 +31,7 @@ export function DiceProvider({ children }) {
         : `${label}: d${sides} (${d}) ${mod >= 0 ? "+" : "-"} ${Math.abs(mod)} = ${total}`;
       if (sides === 20 && d === 20) text += " Natural 20!";
       if (sides === 20 && d === 1) text += " Natural 1";
-      addLog({ kind: "roll", total: String(total), text });
+      addLog({ kind: "roll", total: String(total), text, label, d, sides, mod });
       if (sides === 20 && d === 20) sfx.crit(); else if (sides === 20 && d === 1) sfx.fail(); else sfx.result();
       if (opts.onDone) opts.onDone(d, total);
       setRolling(false);

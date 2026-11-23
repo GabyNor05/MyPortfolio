@@ -77,8 +77,8 @@ export default function SiteEditor({ section }) {
     if (!isFirebaseConfigured) { setMsg("Firebase isn't set up, so nothing can be saved live."); return; }
     setSaving(true); setMsg("");
     try {
-      const { about, experience, education, contactIntro, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData, abilities, saves, saveNotes, languages, training, cloudName, uploadPreset } = d;
-      await setDoc(doc(db, "settings", "site"), { about, experience, education, contactIntro, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData, abilities, saves, saveNotes, languages, training, cloudName, uploadPreset }, { merge: true });
+      const { about, experience, education, contactIntro, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData, abilities, saves, saveNotes, languages, training, cloudName, uploadPreset, replyTemplate } = d;
+      await setDoc(doc(db, "settings", "site"), { about, experience, education, contactIntro, skills, extraSkills, facts, name, role, bottomLine, campaign, intro, links, voiceUrl, logoData, abilities, saves, saveNotes, languages, training, cloudName, uploadPreset, replyTemplate }, { merge: true });
       setMsg("Saved. The live site updates straight away.");
     } catch (e) { setMsg("Could not save: " + e.message); }
     setSaving(false);
@@ -144,6 +144,8 @@ export default function SiteEditor({ section }) {
             <Field label="Cloudinary cloud name"><input value={d.cloudName} placeholder="e.g. dxyz12abc" onChange={(e) => set("cloudName", e.target.value.trim())} /></Field>
             <Field label="Unsigned upload preset name"><input value={d.uploadPreset} placeholder="e.g. portfolio_unsigned" onChange={(e) => set("uploadPreset", e.target.value.trim())} /></Field>
           </div>
+          <div className="sec-h" style={{ marginTop: 14 }}>Email replies</div>
+          <div className="adm-grid"><Field label="EmailJS reply template ID (see EMAILJS_TEMPLATES.md, section 3)"><input value={d.replyTemplate || ""} placeholder="e.g. template_abc123" onChange={(e) => set("replyTemplate", e.target.value.trim())} /></Field></div>
           <p style={{ fontSize: 12, color: "var(--muted)" }}>Free, no card. Sign up at cloudinary.com, copy the cloud name from the dashboard, then Settings, Upload, Add upload preset, set Signing mode to Unsigned, and paste its name here. After that every Upload button in the admin works.</p>
         </div>
         <div className="panel adm-card">

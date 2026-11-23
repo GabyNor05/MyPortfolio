@@ -81,3 +81,10 @@ How to use it: in EmailJS, open the template, switch to the **Code editor**, and
 
 ```
 To change the photo, replace `frontend/public/brand/gaby-circle.png` in the repo (or put the photo URL from the Figma export in the `src`). Use the Figma export of the dark signature as a PNG if you prefer a single image: host it in `/brand/` and wrap it the same way, but text links inside a flat image are not individually clickable, so the table version above is recommended.
+
+## 3. Reply template (admin "Reply by email")
+Create a third EmailJS template, then paste its ID in Site settings, Uploads, "EmailJS reply template ID".
+- To email: `{{to_email}}`
+- Subject: `{{subject}}`
+- Fields used: `{{to_name}}`, `{{reply}}` (what you type), `{{their_message}}` (their original message, quoted underneath).
+Suggested body: "Hi {{to_name}}, {{reply}}" then a quote block "You wrote: {{their_message}}", then the signature block from section 2.

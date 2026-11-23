@@ -34,6 +34,7 @@ export const DEFAULTS = {
   training: sheet.training,
   cloudName: "",
   uploadPreset: "",
+  replyTemplate: "",
   cvLinks: { dev: "", ux: "", hybrid: "" },
   contactIntro: pc("content-006").description || "",
   facts: [

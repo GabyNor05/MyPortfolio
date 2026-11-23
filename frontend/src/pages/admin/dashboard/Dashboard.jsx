@@ -16,7 +16,7 @@ const TYPES = ["UX Design", "Interactive Development", "Personal Project", "Hack
 const lines = (v) => v.split("\n").map((x) => x.trim()).filter(Boolean);
 const slug = (t) => "proj-" + (t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || Date.now());
 
-const blank = () => ({ id: "", title: "", type: TYPES[0], solution: "", year: new Date().getFullYear(), shortDescription: "", fullDescription: "", tagline: "", role: "", status: "", hidden: false, tools: [], team: [], highlights: [], actions: [], thumbnail: "", gallery: [], reflection: "", adventure: "", quest: "", video: "", wireframes: [], wireframeNote: "", hasTeam: false, volumeWarning: false });
+const blank = () => ({ id: "", title: "", type: TYPES[0], solution: "", year: new Date().getFullYear(), shortDescription: "", fullDescription: "", tagline: "", role: "", status: "", hidden: false, tools: [], team: [], highlights: [], actions: [], thumbnail: "", gallery: [], reflection: "", adventure: "", quest: "", video: "", wireframes: [], wireframeNote: "", hasTeam: false, volumeWarning: false, videoKind: "demo" });
 
 // form <-> project conversion (arrays become editable text)
 const toForm = (p) => ({ ...blank(), ...p, tools: (p.tools || []).join(", "), team: (p.team || []).join("\n"), highlights: (p.highlights || []).join("\n"), actions: (p.actions || []).map((a) => `${a.label} | ${a.url}`).join("\n"), gallery: (p.gallery || []).join("\n"), wireframes: (p.wireframes || []).join("\n"), hasTeam: p.hasTeam !== undefined ? !!p.hasTeam : (p.team || []).length > 0, videoOn: !!p.video });
@@ -44,6 +44,32 @@ function Field({ label, children, wide }) {
   return <div className="field" style={wide ? { gridColumn: "1 / -1" } : undefined}><label>{label}</label>{children}</div>;
 }
 
+// Reply by email to someone who left a message or a chat note
+function ReplyBox({ to, name, original, template, onSent }) {
+  const [open, setOpen] = useState(false);
+  const [text, setText] = useState("");
+  const [st, setSt] = useState("");
+  if (!to) return null;
+  const send = async () => {
+    if (!template) { setSt("Add the reply template ID in Site settings first."); return; }
+    setSt("Sending…");
+    const ok = await sendEmail(template, { to_email: to, to_name: name || "there", reply: text, their_message: original, subject: "Reply from Gaby Norris" });
+    setSt(ok ? "Sent." : "That did not send. Check the template ID.");
+    if (ok) { setText(""); setOpen(false); onSent && onSent(); }
+  };
+  return (
+    <div style={{ marginTop: 6 }}>
+      {!open ? <button type="button" className="thin" onClick={() => setOpen(true)}>Reply by email</button> : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <textarea style={{ minHeight: 90 }} value={text} onChange={(e) => setText(e.target.value)} placeholder={`Write your reply to ${name || "them"}. Their message is quoted underneath automatically.`} />
+          <div style={{ display: "flex", gap: 8 }}><button type="button" className="solid" disabled={!text.trim()} onClick={send}>Send email</button><button type="button" className="thin" onClick={() => setOpen(false)}>Cancel</button></div>
+        </div>
+      )}
+      {st && <div role="status" style={{ fontSize: 13, color: "var(--muted)", marginTop: 4 }}>{st}</div>}
+    </div>
+  );
+}
+
 function Editor({ project, onSave, onCancel, saving }) {
   const [f, setF] = useState(() => toForm(project));
   const set = (k) => (e) => setF({ ...f, [k]: e.target.type === "checkbox" ? e.target.checked : e.target.value });
@@ -51,32 +77,39 @@ function Editor({ project, onSave, onCancel, saving }) {
     <form className="panel adm-card" onSubmit={(e) => { e.preventDefault(); onSave(fromForm(f)); }}>
       <div className="sec-h">{project.id ? `Edit: ${project.title}` : "New project"}</div>
       <div className="adm-grid">
+        <div className="sec-h sub" style={{ gridColumn: "1 / -1" }}>Basics</div>
         <Field label="Title"><input required value={f.title} onChange={set("title")} /></Field>
         <Field label="Type"><select value={f.type} onChange={set("type")}>{[...new Set([...TYPES, f.type])].map((t) => <option key={t}>{t}</option>)}</select></Field>
         <Field label="Solution (e.g. Mobile App)"><input value={f.solution} onChange={set("solution")} /></Field>
         <Field label="Year"><input type="number" value={f.year} onChange={set("year")} /></Field>
         <Field label="Tagline"><input value={f.tagline} onChange={set("tagline")} /></Field>
         <Field label="Status (e.g. Incomplete)"><input value={f.status} onChange={set("status")} /></Field>
-        <Field label="Short description (shown on the list, 1 to 2 lines)" wide><input value={f.shortDescription} onChange={set("shortDescription")} /></Field>
-        <Field label="Summary / full story (shown on hover and lower on the page)" wide><textarea value={f.fullDescription} onChange={set("fullDescription")} /></Field>
+        <Field label="Short description (project list, 1 to 2 lines)" wide><input value={f.shortDescription} onChange={set("shortDescription")} /></Field>
+        <Field label="Tools (comma separated)" wide><input value={f.tools} onChange={set("tools")} /></Field>
+        <div className="sec-h sub" style={{ gridColumn: "1 / -1" }}>The story</div>
         <Field label="The adventure: what the product is and what the solution was (shown first, top right)" wide><textarea value={f.adventure} onChange={set("adventure")} /></Field>
-        <Field label="The quest: what was asked of me, the brief (shown under the adventure)" wide><textarea value={f.quest} onChange={set("quest")} /></Field>
-        <Field label="My role"><input value={f.role} onChange={set("role")} /></Field>
-        <Field label="Tools (comma separated)"><input value={f.tools} onChange={set("tools")} /></Field>
-        <Field label="Prototype warning"><label className="chk"><input type="checkbox" checked={!!f.volumeWarning} onChange={set("volumeWarning")} /> The prototype is loud: ask visitors to lower their volume first</label></Field>
-        <Field label="Team"><label className="chk"><input type="checkbox" checked={f.hasTeam} onChange={set("hasTeam")} /> This was a team project</label>{f.hasTeam && <textarea style={{ minHeight: 80 }} placeholder={"One person per line. Add a link after a slash so people can click through, e.g.\nAndré van Heerden / https://github.com/andre\nKeabetswe Olifant / keabetswe (a GitHub name works too)"} value={f.team} onChange={set("team")} />}</Field>
-        <Field label="Highlights (one per line)"><textarea style={{ minHeight: 80 }} value={f.highlights} onChange={set("highlights")} /></Field>
-        <Field label="Links (one per line: Label | https://url)" wide><textarea style={{ minHeight: 80 }} value={f.actions} onChange={set("actions")} placeholder={"Figma file | https://figma.com/...\nGitHub repo | https://github.com/..."} /></Field>
-        <Field label="Reflection" wide><textarea value={f.reflection} onChange={set("reflection")} /></Field>
-        <Field label="Cover image" wide><UploadField value={f.thumbnail} onChange={(v) => setF({ ...f, thumbnail: v })} /></Field>
-        <Field label="Video content" wide>
-          <label className="chk"><input type="checkbox" checked={!!f.videoOn} onChange={set("videoOn")} /> This project has a video (mock-up or demo). It plays first, muted, on the project page.</label>
+        <Field label="The quest: what was asked of me, the brief" wide><textarea value={f.quest} onChange={set("quest")} /></Field>
+        <Field label="Summary / full story" wide><textarea value={f.fullDescription} onChange={set("fullDescription")} /></Field>
+        <Field label="Highlights (one per line)"><textarea style={{ minHeight: 90 }} value={f.highlights} onChange={set("highlights")} /></Field>
+        <Field label="Reflection"><textarea style={{ minHeight: 90 }} value={f.reflection} onChange={set("reflection")} /></Field>
+        <div className="sec-h sub" style={{ gridColumn: "1 / -1" }}>Team</div>
+        <Field label="Team project?" wide><label className="chk"><input type="checkbox" checked={f.hasTeam} onChange={set("hasTeam")} /> Yes, I worked with other people</label></Field>
+        {f.hasTeam && <Field label="My role in the team"><input value={f.role} onChange={set("role")} /></Field>}
+        {f.hasTeam && <Field label="Team (one per line, add a link after a slash)"><textarea style={{ minHeight: 90 }} placeholder={"André van Heerden / https://github.com/andre\nKeabetswe Olifant / keabetswe"} value={f.team} onChange={set("team")} /></Field>}
+        <div className="sec-h sub" style={{ gridColumn: "1 / -1" }}>Media</div>
+        <Field label="Thumbnail (only used in the project list, not on the project page)" wide><UploadField value={f.thumbnail} onChange={(v) => setF({ ...f, thumbnail: v })} /></Field>
+        <Field label="Video" wide>
+          <label className="chk"><input type="checkbox" checked={!!f.videoOn} onChange={set("videoOn")} /> This project has a video. It plays first, muted.</label>
+          {f.videoOn && <select value={f.videoKind || "demo"} onChange={set("videoKind")} aria-label="Video type"><option value="demo">Demo video (the working product)</option><option value="mockup">Mock-up video (the design)</option></select>}
           {f.videoOn && <UploadField kind="video" accept="video/*" value={f.video} onChange={(v) => setF({ ...f, video: v })} placeholder="Upload a video, or paste a link" />}
         </Field>
-        <Field label="More images" wide><UploadList value={f.gallery} onChange={(v) => setF({ ...f, gallery: v })} /></Field>
+        <Field label="Case-study header and more images" wide><UploadList value={f.gallery} onChange={(v) => setF({ ...f, gallery: v })} /></Field>
         <Field label="Wireframes (shown as a horizontal strip)" wide><UploadList value={f.wireframes} onChange={(v) => setF({ ...f, wireframes: v })} /></Field>
-        <Field label="Why wireframes helped, or what struggled (shown under the strip)" wide><textarea value={f.wireframeNote} onChange={set("wireframeNote")} /></Field>
-        <Field label="Visibility"><label style={{ display: "flex", gap: 8, alignItems: "center", textTransform: "none", letterSpacing: 0, fontSize: 15, color: "var(--text)" }}><input type="checkbox" checked={f.hidden} onChange={set("hidden")} /> Hide this project from the site</label></Field>
+        <Field label="Why wireframes helped, or what struggled" wide><textarea value={f.wireframeNote} onChange={set("wireframeNote")} /></Field>
+        <div className="sec-h sub" style={{ gridColumn: "1 / -1" }}>Links and visibility</div>
+        <Field label="Links (one per line: Label | https://url)" wide><textarea style={{ minHeight: 80 }} value={f.actions} onChange={set("actions")} placeholder={"Figma file | https://figma.com/...\nGitHub repo | https://github.com/..."} /></Field>
+        <Field label="Loud prototype"><label className="chk"><input type="checkbox" checked={!!f.volumeWarning} onChange={set("volumeWarning")} /> Warn visitors to lower their volume before the prototype opens</label></Field>
+        <Field label="Visibility"><label className="chk"><input type="checkbox" checked={f.hidden} onChange={set("hidden")} /> Hide this project from the site</label></Field>
       </div>
       <div className="btn-row">
         <button className="solid" disabled={saving}>{saving ? "Saving…" : "Save project"}</button>
@@ -405,6 +438,7 @@ export default function Dashboard() {
                 <div className="proj-title">{m.name} <span style={{ color: "var(--muted)", fontSize: 13 }}>· {m.reason}</span></div>
                 <a href={`mailto:${m.email}`} style={{ color: "var(--accent)", fontSize: 14 }}>{m.email}</a>
                 <p className="quote" style={{ whiteSpace: "pre-wrap" }}>{m.message}</p>
+                <ReplyBox to={m.email} name={m.name} original={m.message} template={cfg.replyTemplate} onSent={() => !m.resolved && toggleResolved(m)} />
               </div>
               <button className="thin" onClick={() => toggleResolved(m)}><Check size={14} />{m.resolved ? "Resolved" : "Mark resolved"}</button>
               <button className="thin icon-btn" aria-label="Delete message" onClick={() => removeMessage(m.id)}><Trash2 size={14} /></button>
@@ -417,6 +451,7 @@ export default function Dashboard() {
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div className="proj-title">{c.name || "Anonymous"} {c.email && <a href={`mailto:${c.email}`} style={{ color: "var(--accent)", fontSize: 14 }}>· {c.email}</a>}</div>
                 <p className="quote" style={{ whiteSpace: "pre-wrap" }}>{c.text}</p>
+                <ReplyBox to={c.email} name={c.name} original={c.text} template={cfg.replyTemplate} />
               </div>
               <button className="thin icon-btn" aria-label="Delete chat message" onClick={() => removeChat(c.id)}><Trash2 size={14} /></button>
             </div>
