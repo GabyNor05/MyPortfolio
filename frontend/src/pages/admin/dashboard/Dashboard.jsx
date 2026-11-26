@@ -53,7 +53,14 @@ function ReplyBox({ to, name, original, template, onSent }) {
   const [st, setSt] = useState("");
   if (!to) return null;
   const send = async () => {
-    if (!template) { setSt("Add the reply template ID in Site settings first."); return; }
+    if (!template) {
+      const q = (original || "").split("\n").map((l) => "> " + l).join("\n");
+      const body = `${text}\n\n${name || "You"} wrote:\n${q}`;
+      window.location.href = `mailto:${to}?subject=${encodeURIComponent("Re: your message to Gaby Norris")}&body=${encodeURIComponent(body)}`;
+      setSt("Opening your email app with the reply ready to send.");
+      onSent && onSent();
+      return;
+    }
     setSt("Sending…");
     const ok = await sendEmail(template, { to_email: to, to_name: name || "there", reply: text, their_message: original, subject: "Reply from Gaby Norris" });
     setSt(ok ? "Sent." : "That did not send. Check the template ID.");
