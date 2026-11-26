@@ -23,7 +23,7 @@ Export 3-4 PNG frames each (cover, a key flow, final screens), name like nia-1.p
 ## E. Brand (15 min)
 - [ ] Open Personal Projects -> Portfolio page -> far right "Brand kit" section: check logo, email signature, Behance banner
 - [ ] Photo shoot: pick 1 photo for the Behance banner (right side; dark background, space on the left)
-- [ ] Confirm the Behance handle: site uses gabynorris1, CV says gabynorris
+- [ ] Confirm the Behance handle: site uses fixed: gabynorris everywhere
 
 ## F. Content gaps
 - [ ] BudgGo: when started, describe it (React Native / Expo)

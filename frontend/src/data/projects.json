@@ -13,9 +13,9 @@
     "fullDescription": "A mobile app that uses image recognition to identify edible mushrooms and flag toxic lookalikes. Offline mode, an in-app journal and community review support safe, educated foraging.",
     "actions": [
       {
-        "label": "Figma file",
+        "label": "Prototype",
         "icon": "figma",
-        "url": "https://www.figma.com/design/NDu5zIjWSzORTB8lb0V9nm/ForageScan?node-id=0-1"
+        "url": "https://www.figma.com/proto/NDu5zIjWSzORTB8lb0V9nm/ForageScan?node-id=18-384&starting-point-node-id=18-384&scaling=scale-down"
       }
     ],
     "reflection": "The Forage Scan project demonstrated how design can bridge safety, education, and community in nature-based activities. By offering dependable image identification, professional input, and offline accessibility, the system immediately addressed the problem of safe foraging. Future improvements will include community features to promote knowledge-sharing, and adding seasonal identification recommendations to improve user experience. The project proved the importance of making design decisions based on research when creating practical, user-centred digital solutions.",
@@ -242,7 +242,8 @@
     "team": [],
     "highlights": [],
     "status": "",
-    "gallery": []
+    "gallery": [],
+    "hidden": true
   },
   {
     "id": "proj-007",
@@ -344,7 +345,8 @@
       "projects/sheisdesign/g1.jpg",
       "projects/sheisdesign/g2.jpg",
       "projects/sheisdesign/g3.jpg"
-    ]
+    ],
+    "tagline": "A home for South Africa's female design students."
   },
   {
     "id": "proj-009",
@@ -389,9 +391,9 @@
     "fullDescription": "A team of four redesigned the online presence of Amadea Safe House, a non-profit in Pretoria. The goal was a clearer, more trustworthy site that makes it easy for supporters to connect and contribute.",
     "actions": [
       {
-        "label": "Figma file",
+        "label": "Prototype",
         "icon": "figma",
-        "url": "https://www.figma.com/design/mxub4SDMQx8DkFhLZH0tGo/Amadea-Wireframes?node-id=0-1"
+        "url": "https://www.figma.com/proto/mxub4SDMQx8DkFhLZH0tGo/Amadea-Safehouse?node-id=193-953&starting-point-node-id=193-953&scaling=scale-down"
       }
     ],
     "collaborators": [
@@ -448,9 +450,9 @@
     "fullDescription": "StoryWeave is a tablet app designed so early primary learners with moderate dyslexia can complete reading and writing tasks more easily, confidently and independently. It follows a full UX process from research and persona to sketches, wireframes, style guide and high-fidelity screens.",
     "actions": [
       {
-        "label": "Figma file",
+        "label": "Prototype",
         "icon": "figma",
-        "url": "https://www.figma.com/design/JgGpE1CPDKr3nMxVIDEh52/Story-Weave?node-id=310-101"
+        "url": "https://www.figma.com/make/9wez5v54silaeQRynjUBKZ/StoryWeave-App"
       }
     ],
     "reflection": "...",
@@ -473,7 +475,8 @@
       "projects/storyweave/3.jpg",
       "projects/storyweave/4.jpg",
       "projects/storyweave/5.jpg"
-    ]
+    ],
+    "tagline": "Stories you draw, write and share."
   },
   {
     "id": "proj-012",
@@ -488,9 +491,9 @@
     "fullDescription": "Nia (Swahili for purpose) is a wearable AI ecosystem that helps focused professionals spot invisible overload and offload mental residue after work. A smartwatch reads heart rate and work activity, then nudges the user with gentle haptics while they stay in control.",
     "actions": [
       {
-        "label": "Figma file",
+        "label": "Prototype",
         "icon": "figma",
-        "url": "https://www.figma.com/design/X2TuJacy9HjFsjW0z4jMmh/Nia?node-id=450-8"
+        "url": "https://www.figma.com/proto/X2TuJacy9HjFsjW0z4jMmh/Nia?node-id=127-4492&starting-point-node-id=127-4492&scaling=scale-down"
       }
     ],
     "reflection": "How do we stop professional burnout without driving users crazy? By pairing wearable heart rate tracking with desktop app monitoring, the ecosystem catches the exact moment deep focus turns into stressful frustration. Instead of forcing interruptions, it sends a gentle wrist buzz for a break and offers a quick voice brain dump to clear your head. The biggest lesson was finding the line between helpful tracking and feeling spied on. Our research showed that monitoring biometrics and screens feels like surveillance without strict boundaries. We solved this by building absolute user control directly into the interface, allowing anyone to manually set their focus baseline, choose tracked apps, or completely turn off break prompts.",
@@ -530,9 +533,9 @@
     "fullDescription": "The festival's digital hub, covering event info, participating chefs and performers, and interactive features. Its design blends theatre and gastronomy.",
     "actions": [
       {
-        "label": "Figma file",
+        "label": "Prototype",
         "icon": "figma",
-        "url": "https://www.figma.com/design/qFKRQ6PGmi5dpGjKfBgTiW/RD---Wireframes?node-id=58-469"
+        "url": "https://www.figma.com/proto/qFKRQ6PGmi5dpGjKfBgTiW/MasterChef-Broadway?node-id=60-700&starting-point-node-id=60-700&scaling=scale-down"
       }
     ],
     "reflection": "Spoonful's brand activation, MasterChef Broadway and responsive website successfully combined culinary performance with theatrical spectacle.  The three phases of the activation (before, during, and after the event), provided viewers with continuous opportunities to interact with the brand.  Future improvements include expanding accessibility features, adding VR or live streaming for remote participation, and turning the website into a year-round engagement hub that sustains community interest outside of the festival.",
@@ -562,7 +565,7 @@
     "thumbnail": "projects/get-up-and-go/phones.jpg",
     "scenario": "Module brief",
     "tagline": "A geolocation habit breaker.",
-    "reflection": "",
+    "reflection": "I loved building Get Up & Go. They asked for a mobile app and I handed in an app with a partner web portal as well, so I definitely went over scope, but it is one of the projects I am proudest of. I love that I can open it on my own phone anywhere, anytime.",
     "tools": [
       "Expo SDK 54",
       "Expo Router",
@@ -611,16 +614,21 @@
     "thumbnail": "projects/makerspace/5.jpg",
     "scenario": "Module brief",
     "tagline": "From request to ready, without the guessing.",
-    "reflection": "",
+    "reflection": "This was such an interesting project. It was exciting to redesign something that already exists and then take it much further than where it started, from a confusing set of separate tools to one clear platform for students and staff.",
     "tools": [
       "Figma",
       "Service design"
     ],
     "actions": [
       {
-        "label": "Figma file",
+        "label": "Prototype",
         "icon": "figma",
-        "url": "https://www.figma.com/design/ZqO3qFy1fpA8sOxnYuBZKp/Service-Design-G8?node-id=1176-3597"
+        "url": "https://www.figma.com/proto/ZqO3qFy1fpA8sOxnYuBZKp/Makerspace?node-id=800-4087&starting-point-node-id=800-4087&scaling=scale-down"
+      },
+      {
+        "label": "Behance case study",
+        "icon": "behance",
+        "url": "https://www.behance.net/gallery/254904563/Term-3-Case-Study-Open-window-Makerspace"
       }
     ],
     "title": "MakerSpace",
@@ -648,15 +656,20 @@
     "thumbnail": "projects/uplifters/cover.jpg",
     "scenario": "Module brief",
     "tagline": "See exactly how your giving changes lives.",
-    "reflection": "",
+    "reflection": "Uplifters pushed me to design for trust. Itemised needs, verified organisations and clear proof of impact meant every screen had to answer the question 'where does my money go?'. I enjoyed turning a big idea into a flow that donors and small organisations can actually follow.",
     "tools": [
       "Figma"
     ],
     "actions": [
       {
-        "label": "Figma file",
+        "label": "Prototype",
         "icon": "figma",
-        "url": "https://www.figma.com/design/v4z97EeOhVzp0bkVzubTHP/Uplifters?node-id=62-169"
+        "url": "https://www.figma.com/proto/v4z97EeOhVzp0bkVzubTHP/Uplifters?node-id=62-169&starting-point-node-id=62-169&scaling=scale-down"
+      },
+      {
+        "label": "Behance case study",
+        "icon": "behance",
+        "url": "https://www.behance.net/gallery/258217995/Uplifters-Manifesto-in-Motion"
       }
     ],
     "title": "Uplifters",
@@ -688,16 +701,16 @@
     "id": "proj-017",
     "thumbnail": "projects/hackathon/3.jpg",
     "scenario": "Module brief",
-    "tagline": "",
-    "reflection": "",
+    "tagline": "An AR board game GM console.",
+    "reflection": "I was ill during the hackathon, so I worked on SPACEDUCKED from home and was not there on the day itself. That meant planning carefully and communicating clearly with my team, and I am proud of how much we still got done together.",
     "tools": [
       "Figma"
     ],
     "actions": [
       {
-        "label": "Figma file",
+        "label": "Prototype",
         "icon": "figma",
-        "url": "https://www.figma.com/design/u1Ieuy4qXE2EmqVi5XZgbE/Hackathon-26?node-id=0-1"
+        "url": "https://www.figma.com/proto/u1Ieuy4qXE2EmqVi5XZgbE/SPACEDUCKED?node-id=206-2&starting-point-node-id=206-2&scaling=scale-down"
       }
     ],
     "title": "Creative Technologies Hackathon",
@@ -709,12 +722,18 @@
     "fullDescription": "SpaceDUCKED is an AR board-game console that helps a game master bring a crisis aboard the QSS Brooklyn 99 to life with high-energy, dramatic narration.",
     "role": "",
     "team": [],
-    "highlights": [],
+    "highlights": [
+      "A game master console for an AR board game",
+      "Dramatic space-crisis story aboard the QSS Brooklyn 99",
+      "Gold-on-navy interface with side-quest mobile screens",
+      "Worked remotely from home while ill, so the hand-over had to be clear"
+    ],
     "status": "",
     "gallery": [
       "projects/hackathon/4.jpg",
       "projects/hackathon/5.jpg"
-    ]
+    ],
+    "volumeWarning": true
   },
   {
     "id": "proj-018",
@@ -759,6 +778,7 @@
     ],
     "wireframes": [
       "projects/stagevote/1.jpg"
-    ]
+    ],
+    "hidden": true
   }
 ]
